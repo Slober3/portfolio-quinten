@@ -1,0 +1,3 @@
+{
+  "install": "if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; elif [ -f package-lock.json ]; then npm ci --no-audit --no-fund; elif [ -f package.json ]; then npm install --no-audit --no-fund; else echo \"No package.json yet; Node $(node -v) and npm $(npm -v) are ready.\"; fi"
+}
