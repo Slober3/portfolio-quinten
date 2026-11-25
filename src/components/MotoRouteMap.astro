@@ -19,15 +19,15 @@ const isNl = locale === 'nl';
 >
   <div class="border-b border-border-subtle px-5 py-4 flex flex-wrap items-center justify-between gap-3">
     <div>
-      <p class="font-mono text-[11px] uppercase tracking-wider text-status">
-        LAZY-LOADED MAPLIBRE GL JS · GPX ±5 KM OPSEC TRIM
+      <p class="font-mono text-[11px] uppercase tracking-wider text-kinetic">
+        {isNl ? 'Interactieve route · Eifel & Rursee' : 'Interactive route · Eifel & Rursee'}
       </p>
       <h3 id="moto-map-heading" class="mt-0.5 font-display text-lg font-bold text-ink-primary">
-        {isNl ? 'Eifel & Rursee Bochtenroute (Demo-track)' : 'Eifel & Rursee Backroad Loop (Demo Track)'}
+        {isNl ? 'Bochtige binnendoorwegen rond de Rursee' : 'Twisty backroads around the Rursee'}
       </h3>
     </div>
 
-    <!-- WCAG 2.2 SC 2.5.7 accessible non-drag map controls -->
+    <!-- Accessible non-drag map controls -->
     <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label={isNl ? 'Kaartbediening' : 'Map controls'}>
       <button type="button" data-map-action="zoom-in" aria-label="Zoom in" class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]">+</button>
       <button type="button" data-map-action="zoom-out" aria-label="Zoom out" class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]">−</button>
@@ -44,7 +44,7 @@ const isNl = locale === 'nl';
         aria-pressed="false"
         class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-telemetry hover:border-telemetry cursor-pointer min-h-[44px]"
       >
-        {isNl ? 'Kaartlaag: Uit' : 'Basemap: Off'}
+        {isNl ? 'Stratenkaart: Uit' : 'Road map: Off'}
       </button>
     </div>
   </div>
@@ -52,27 +52,27 @@ const isNl = locale === 'nl';
   <div class="relative h-[340px] sm:h-[400px] bg-surface-2">
     <div data-map-canvas class="w-full h-full"></div>
     <div data-map-status class="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-border-subtle bg-canvas/90 px-3 py-1.5 font-mono text-[11px] text-ink-secondary backdrop-blur">
-      {isNl ? 'Offline-safe vectorraster actief · Start/finish ±5 km getrimd' : 'Offline-safe vector grid active · Start/finish ±5 km trimmed'}
+      {isNl ? 'Routelijn actief · Klik op “Stratenkaart” voor wegenachtergrond' : 'Route line active · Toggle “Road map” for street background'}
     </div>
   </div>
 
-  <!-- Telemetry metrics + elevation sparkline -->
+  <!-- Route metrics + elevation sparkline -->
   <div class="border-t border-border-subtle bg-surface-1 p-5 grid grid-cols-1 md:grid-cols-[1fr_260px] gap-5 items-center">
     <dl class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">
       <div>
-        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Gepubliceerde afstand' : 'Sanitized distance'}</dt>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Afstand' : 'Distance'}</dt>
         <dd data-meta-km class="mt-0.5 text-sm font-semibold text-kinetic">56.0 km</dd>
       </div>
       <div>
-        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Privacy-trim' : 'OpSec Trim'}</dt>
-        <dd class="mt-0.5 text-sm font-semibold text-status">± 5.0 km</dd>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Regio' : 'Region'}</dt>
+        <dd class="mt-0.5 text-sm font-semibold text-ink-primary">Eifel / Rursee</dd>
       </div>
       <div>
         <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Hoogtemeters' : 'Elevation gain'}</dt>
         <dd data-meta-ele class="mt-0.5 text-sm font-semibold text-ink-primary">+323 m</dd>
       </div>
       <div>
-        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Bronbestand' : 'GPX File'}</dt>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Routebestand' : 'Route file'}</dt>
         <dd class="mt-0.5 text-sm font-semibold text-telemetry">
           <a href={`/gpx/${gpxSlug}.gpx`} download class="underline underline-offset-2 hover:text-kinetic">
             {isNl ? 'Download GPX' : 'Download GPX'}
@@ -185,8 +185,8 @@ const isNl = locale === 'nl';
             data: {
               type: 'FeatureCollection',
               features: [
-                { type: 'Feature', properties: { role: 'Trimmed Start' }, geometry: { type: 'Point', coordinates: coords[0] } },
-                { type: 'Feature', properties: { role: 'Trimmed End' }, geometry: { type: 'Point', coordinates: coords[coords.length - 1] } },
+                { type: 'Feature', properties: { role: 'Start' }, geometry: { type: 'Point', coordinates: coords[0] } },
+                { type: 'Feature', properties: { role: 'End' }, geometry: { type: 'Point', coordinates: coords[coords.length - 1] } },
               ],
             },
           },
@@ -236,7 +236,7 @@ const isNl = locale === 'nl';
             paint: { 'line-color': light ? '#B45309' : '#F59E0B', 'line-width': 3.5 },
           },
           {
-            id: 'trimmed-markers',
+            id: 'route-markers',
             type: 'circle',
             source: 'endpoints',
             paint: {
@@ -289,8 +289,8 @@ const isNl = locale === 'nl';
             btn.setAttribute('aria-pressed', String(tilesEnabled));
             const isDutch = document.documentElement.lang.startsWith('nl');
             btn.textContent = tilesEnabled
-              ? (isDutch ? 'Kaartlaag: Carto' : 'Basemap: Carto')
-              : (isDutch ? 'Kaartlaag: Uit' : 'Basemap: Off');
+              ? (isDutch ? 'Stratenkaart: Aan' : 'Road map: On')
+              : (isDutch ? 'Stratenkaart: Uit' : 'Road map: Off');
           }
         });
       });
@@ -298,7 +298,10 @@ const isNl = locale === 'nl';
       if (tileBtn) tileBtn.setAttribute('aria-pressed', 'false');
     } catch {
       if (statusEl) {
-        statusEl.textContent = 'MapLibre vector canvas unavailable — GPX file ready for direct download below.';
+        const isDutch = document.documentElement.lang.startsWith('nl');
+        statusEl.textContent = isDutch
+          ? 'Kaartweergave niet beschikbaar — het GPX-bestand kan hieronder direct gedownload worden.'
+          : 'Map preview unavailable — you can download the GPX route file directly below.';
       }
     }
   }

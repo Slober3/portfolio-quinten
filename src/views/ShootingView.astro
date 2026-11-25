@@ -13,48 +13,48 @@ const isNl = locale === 'nl';
 const legalSteps = [
   {
     step: '01',
-    title: isNl ? 'Aansluiten bij een erkende schietclub & Veiligheidsbasis' : 'Join a Recognized Club & Safety Foundation',
+    title: isNl ? 'Aansluiten bij een erkende schietclub & veiligheidsbasis' : 'Join an accredited club & learn safety fundamentals',
     body: isNl
-      ? 'Start altijd bij een erkende club (zoals LEDO Lier binnen de Vlaamse Schietsportkoepel / VSK). Je leert eerst de vier universele vuurwapenveiligheidsregels, veilige wapenhantering en baandiscipline onder begeleiding van clubinstructeurs.'
-      : 'Start at an accredited club (such as LEDO Lier under the Flemish Sport Shooting Federation / VSK), mastering the four universal firearm safety rules and range commands under instructor supervision.',
+      ? 'Start altijd bij een erkende club (zoals LEDO Lier binnen de Vlaamse Schietsportkoepel / VSK). Je leert eerst de vier universele veiligheidsregels, correcte hantering en baandiscipline onder begeleiding van clubinstructeurs.'
+      : 'Start at an accredited club (such as LEDO Lier under the Flemish Sport Shooting Federation / VSK), mastering the four universal safety rules and range discipline under instructor supervision.',
   },
   {
     step: '02',
     title: isNl ? 'Voorlopige Sportschutterslicentie (VSSL) & Model VL3' : 'Preliminary License (VSSL) & Model VL3',
     body: isNl
-      ? 'Via de federatie vraag je een voorlopige sportschutterslicentie aan met uittreksel uit het strafregister (Model 596.1-5A) en medisch attest. Gedurende minstens 6 maanden bouw je onder toezicht praktijkervaring op per wapencategorie (zoals vastgelegd op het opleidingsattest / Model VL3).'
-      : 'Through the federation you obtain a preliminary license backed by a clean background extract and medical certificate, logging supervised range sessions over at least 6 months per category (VL3 training record).',
+      ? 'Via de federatie vraag je een voorlopige sportschutterslicentie aan met uittreksel uit het strafregister (Model 596.1-5A) en medisch attest. Gedurende minstens 6 maanden bouw je onder toezicht praktijkervaring op per wapencategorie (bijgehouden op Model VL3).'
+      : 'Through the federation you request a preliminary license supported by a clean background extract and medical certificate, logging supervised range sessions over at least 6 months per category (VL3 training record).',
   },
   {
     step: '03',
-    title: isNl ? 'Theoretische & Praktische Proef → Definitieve SSL' : 'Theory & Practical Exams → Full SSL',
+    title: isNl ? 'Theoretische & praktische proef → definitieve SSL' : 'Theory & practical exams → full SSL',
     body: isNl
       ? 'Je legt een officiële theoretische proef af over de Belgische Wapenwet en veiligheidsregels, gevolgd door een praktische proef per gewenste categorie (bv. revolver, pistool, gladloop of getrokken loop). Na slagen ontvang je jouw definitieve Sportschutterslicentie (SSL).'
       : 'Pass the official Belgian Weapons Act theory exam and category-specific practical safety exam to receive your full Sport Shooter License (SSL).',
   },
   {
     step: '04',
-    title: isNl ? 'Model 9 vs. Model 4 & 12 Jaarlijkse Schietbeurten' : 'Model 9 vs. Model 4 & 12 Annual Sessions',
+    title: isNl ? 'Model 9 vs. Model 4 & 12 jaarlijkse schietbeurten' : 'Model 9 vs. Model 4 & 12 annual sessions',
     body: isNl
-      ? 'Bepaalde sportwapens kunnen met een geldige SSL via Model 9 worden geregistreerd; voor andere kalibers of types vraag je een voorafgaande Model 4-vergunning aan bij de provinciegouverneur. Om je SSL geldig te houden, registreer je minstens 12 geldige schietbeurten per jaar gespreid over minstens twee trimesters.'
-      : 'Eligible sporting firearms can be registered via Model 9 under a valid SSL, whereas other categories require prior Model 4 authorization from the provincial governor. Keeping an SSL active requires logging at least 12 valid range sessions per year across multiple quarters.',
+      ? 'Bepaalde sportwapens kunnen met een geldige SSL via Model 9 worden geregistreerd; voor andere kalibers of types vraag je vooraf een Model 4-vergunning aan bij de provinciegouverneur. Om je SSL actief te houden, registreer je minstens 12 geldige schietbeurten per jaar gespreid over minstens twee trimesters.'
+      : 'Eligible sporting firearms can be registered via Model 9 under a valid SSL, whereas other categories require prior Model 4 authorization from the provincial governor. Keeping an SSL valid requires logging at least 12 range sessions per year across multiple quarters.',
   },
   {
     step: '05',
-    title: isNl ? 'Veilige Bewaring & Vijfjaarlijkse Controle' : 'Safe Storage & Five-Year Statutory Check',
+    title: isNl ? 'Veilige bewaring & vijfjaarlijkse controle' : 'Safe storage & five-year statutory check',
     body: isNl
-      ? 'Wettelijke opslagvereisten (afgesloten bewaring, gescheiden van munitie conform het KB en afhankelijk van aantallen) en de verplichte vijfjaarlijkse hertoetsing zorgen dat verantwoord bezit altijd aantoonbaar blijft.'
-      : 'Strict statutory storage rules (locked storage separated from ammunition per Royal Decree thresholds) and five-year administrative checks ensure continued legal compliance.',
+      ? 'Wettelijke opslagvereisten (afgesloten bewaring, gescheiden van munitie conform het KB) en de verplichte vijfjaarlijkse hertoetsing zorgen ervoor dat verantwoord bezit altijd aantoonbaar blijft.'
+      : 'Strict statutory storage rules (locked storage separated from ammunition per Royal Decree) and five-year administrative checks ensure ongoing legal compliance.',
   },
 ];
 ---
 
 <EditorialLayout
   locale={locale}
-  title={isNl ? 'Schietsport, Wetgeving & Computer Vision — Quinten Desmyter' : 'Sport Shooting, Legislation & Computer Vision — Quinten Desmyter'}
+  title={isNl ? 'Schietsport & Belgische wetgeving — Quinten Desmyter' : 'Sport Shooting & Belgian Legislation — Quinten Desmyter'}
   description={isNl
-    ? 'VSK-sportschutter bij LEDO Lier: focus op vuurwapenveiligheid, de herwerkte Belgische wetgevingsgids "From Zero to Item", persoonlijke trainingsdata en Computer Vision R&D.'
-    : 'VSK sport shooter at LEDO Lier: safety-first training, Belgian legislation guide "From Zero to Item", personal training logs, and Computer Vision R&D.'}
+    ? 'VSK-sportschutter bij LEDO Lier: de gids "From Zero to Item" over de Belgische wapenwetgeving, persoonlijke trainingsstatistieken en beeldherkenning op schietschijven.'
+    : 'VSK sport shooter at LEDO Lier: the "From Zero to Item" guide to Belgian regulation, personal training logs, and target-scoring vision experiments.'}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
     <header class="space-y-5 border-b border-border-subtle pb-10">
@@ -63,39 +63,39 @@ const legalSteps = [
       </p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
         {isNl
-          ? 'Schietsport, Belgische Wetgeving & Computer Vision.'
-          : 'Sport Shooting, Belgian Legislation & Computer Vision.'}
+          ? 'Schietsport, Belgische wetgeving & trainingsdata.'
+          : 'Sport shooting, Belgian regulation & training data.'}
       </h1>
       <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
-          ? 'Als gelicentieerd VSK-sportschutter bij LEDO Lier benader ik de discipline vanuit veiligheid, ademhaling en techniek. Vanuit mijn eigen trainingsregistratie ontstond zowel een heldere wetgevingsgids als technisch onderzoek rond objectieve doelkaart-analyse.'
-          : 'As a licensed VSK sport shooter at LEDO Lier, I approach precision shooting through safety, discipline, and technique — combining a clear Belgian regulatory guide with technical R&D into target scoring.'}
+          ? 'Als gelicentieerd VSK-sportschutter bij LEDO Lier trek ik naar de schietstand voor rust, ademhaling en herhaalbare precisie. Omdat startende schutters vaak door de bomen het wettelijke bos niet meer zien, schreef ik een helder stappenplan — en kijk ik vanuit mijn IT-achtergrond naar geautomatiseerde doelkaart-analyse.'
+          : 'As a licensed VSK sport shooter at LEDO Lier, I enjoy the sport for its calm focus, breathing discipline, and repeatable technique. Because newcomers often find Belgian regulations confusing, I put together a clear roadmap — alongside an IT side project exploring automated target scoring.'}
       </p>
     </header>
 
-    <div class="aspect-[21/9] overflow-hidden rounded-2xl border border-border-subtle">
-      <EditorialVisuals kind="cvTarget" />
+    <div class="aspect-[21/9] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+      <EditorialVisuals kind="cvTarget" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 960px" />
     </div>
 
-    <!-- Reworked Web Guide: From Zero to Item -->
+    <!-- Web Guide: From Zero to Item -->
     <section class="space-y-8">
       <div class="space-y-2">
         <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
-          {isNl ? 'HERWERKTE WEBGIDS · BELGISCHE WAPENWETGEVING' : 'REWORKED WEB GUIDE · BELGIAN REGULATION'}
+          {isNl ? 'STAPPENPLAN · BELGISCHE WAPENWETGEVING' : 'ROADMAP · BELGIAN REGULATION'}
         </p>
         <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          “From Zero to Item” — {isNl ? 'Stappenplan & Veiligheid voor Starters' : 'Safety & Regulatory Roadmap for Starters'}
+          “From Zero to Item” — {isNl ? 'Van eerste proefbeurt tot sportschutterslicentie' : 'From first supervised visit to full sport license'}
         </h2>
-        <p class="text-sm sm:text-base text-ink-secondary">
+        <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
           {isNl
-            ? 'Een nuchtere samenvatting van het wettelijk kader voor aspirant-sportschutters in Vlaanderen (VSK), zonder onnodig jargon en met respect voor strikte veiligheidsnormen.'
-            : 'A practical overview of the Flemish regulatory journey for sport shooters, emphasizing safety discipline and statutory accuracy.'}
+            ? 'Een nuchter overzicht van de vijf wettelijke stappen voor aspirant-sportschutters in Vlaanderen (VSK), met veiligheid steeds op plaats één.'
+            : 'A practical overview of the five statutory steps for aspiring sport shooters in Flanders (VSK), always putting safety first.'}
         </p>
       </div>
 
       <div class="divide-y divide-border-subtle border-y border-border-subtle">
         {legalSteps.map((s) => (
-          <article class="py-6 grid grid-cols-1 md:grid-cols-[120px_1fr] gap-3 md:gap-8">
+          <article class="py-6 grid grid-cols-1 md:grid-cols-[100px_1fr] gap-3 md:gap-8">
             <span class="font-mono text-lg font-bold text-kinetic">{s.step}</span>
             <div class="space-y-2">
               <h3 class="font-display text-xl font-bold text-ink-primary">{s.title}</h3>
@@ -115,27 +115,27 @@ const legalSteps = [
       </aside>
     </section>
 
-    <!-- Honest Personal Stats & OpenCV R&D Link -->
+    <!-- Honest Personal Stats & OpenCV Link -->
     <section class="editorial-card rounded-2xl p-6 sm:p-8 space-y-4">
       <p class="font-mono text-xs uppercase tracking-wider text-telemetry">
-        {isNl ? 'PERSOONLIJKE TRAININGSDATA & OPENCV VERKENNING' : 'PERSONAL TRAINING STATS & OPENCV EXPLORATION'}
+        {isNl ? 'EIGEN TRAININGSDATA & BEELDHERKENNING' : 'PERSONAL TRAINING STATS & COMPUTER VISION'}
       </p>
       <h2 class="font-display text-2xl font-bold text-ink-primary">
         {isNl
-          ? 'Van persoonlijke schietstatistieken naar geautomatiseerde kaartanalyse'
-          : 'From personal shooting stats to automated target analysis'}
+          ? 'Persoonlijke statistieken en onderzoek rond doelkaarten'
+          : 'Personal training logs and automated target analysis'}
       </h2>
       <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
         {isNl
-          ? 'Om mijn persoonlijke voortgang op de baan op te volgen gebruik ik bestaande tools zoals RangeBook en Shooting Companion puur voor eigen gebruik. Die structuur inspireert mijn eigen technische verkenning rond Computer Vision (OpenCV) voor het automatisch rechtzetten en scoren van ISSF 25m/50m papieren doelkaarten.'
-          : 'To track my own training statistics privately, I use existing tools such as RangeBook and Shooting Companion purely for personal use. That workflow inspires ongoing Computer Vision R&D around automating perspective correction and ISSF 25m/50m target evaluation.'}
+          ? 'Om mijn eigen vooruitgang op de baan netjes bij te houden gebruik ik bestaande apps zoals RangeBook en Shooting Companion puur voor persoonlijk gebruik. Vanuit die gewoonte onderzoek ik als technisch zijproject hoe Computer Vision (OpenCV) papieren 25m/50m ISSF-doelkaarten automatisch kan rechtzetten en uittellen.'
+          : 'To keep track of my own training progress privately, I use existing apps such as RangeBook and Shooting Companion purely for personal stats. That habit inspired a technical side project exploring how Computer Vision (OpenCV) can deskew and score 25m/50m paper ISSF targets automatically.'}
       </p>
       <div class="pt-1">
         <a
           href={`${STATIC_ROUTES.projects[locale]}${isNl ? 'schietsport-computer-vision/' : 'shooting-computer-vision/'}`}
           class="font-mono text-xs font-semibold text-telemetry hover:underline"
         >
-          {isNl ? 'Lees het volledige Computer Vision dossier →' : 'Read the full Computer Vision dossier →'}
+          {isNl ? 'Lees meer over het Computer Vision project →' : 'Read about the Computer Vision project →'}
         </a>
       </div>
     </section>

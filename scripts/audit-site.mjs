@@ -6,13 +6,31 @@
  *  2. Bilingual SEO & hreflang integrity (nl-BE, en, x-default; never bare "be")
  *  3. HTML lang, canonical, <title>, <meta description>, single <h1>, skip-link, img[alt]
  *  4. Valid JSON-LD parsing, schema coverage, zero double-escaped HTML entities, zero PII keys
- *  5. Sitemap presence & performance budget stats
+ *  5. Zero unfilled placeholders or internal developer/OpSec jargon in visible page copy
+ *  6. Sitemap presence & performance budget stats
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const rootDir = process.cwd();
 const distDir = path.join(rootDir, 'dist');
+
+const FORBIDDEN_PUBLIC_COPY = [
+  { label: 'Placeholder label', regex: /\bplaceholder\b/i },
+  { label: 'Demo ID badge', regex: /\bDemo ID\b/i },
+  { label: 'Demo-track label', regex: /\bDemo[- ]track\b/i },
+  { label: 'Unfilled portrait slot', regex: /Portret-slot|Portrait slot/i },
+  { label: 'Unfilled showreel slot', regex: /Showreel-slot|Showreel slot/i },
+  { label: 'Internal CONTENT-TODO reference', regex: /CONTENT-TODO/i },
+  { label: 'Internal .env reference', regex: /(?<![a-z0-9])\.env\b/i },
+  { label: 'Internal OpSec meta-jargon', regex: /\bOpSec\b/i },
+  { label: 'Developer library name in copy (PhotoSwipe)', regex: /\bPhotoSwipe\b/i },
+  { label: 'Developer library name in copy (MapLibre)', regex: /\bMapLibre\b/i },
+  { label: 'Developer form provider in copy', regex: /\b(Web3Forms|Formspree)\b/i },
+  { label: 'Developer MDX label in copy', regex: /\bMDX (ARTIKELEN|NOTES)\b/i },
+  { label: 'Sharp pipeline jargon in copy', regex: /Sharp-pijplijn|Sharp pipeline|keepIccProfile|EXIF GPS STRIPPED/i },
+  { label: 'Fake YouTube placeholder ID', regex: /dQw4w9WgXcQ|M7lc1UVf-VE/ },
+];
 
 async function walkFiles(dir) {
   const out = [];
@@ -29,12 +47,11 @@ function resolveDistTarget(href) {
   const clean = href.split('#')[0].split('?')[0];
   if (!clean.startsWith('/')) return null;
   const rel = clean.replace(/^\/+/, '');
-  const candidates = [
+  return [
     path.join(distDir, rel),
     path.join(distDir, rel, 'index.html'),
     path.join(distDir, `${rel}.html`),
   ];
-  return candidates;
 }
 
 async function existsFile(filePath) {
@@ -46,6 +63,15 @@ async function existsFile(filePath) {
   }
 }
 
+function extractVisibleText(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ');
+}
+
 async function main() {
   const files = await walkFiles(distDir);
   const htmlFiles = files.filter((f) => f.endsWith('.html'));
@@ -53,7 +79,7 @@ async function main() {
   const warnings = [];
   const jsonLdTypes = new Set();
 
-  // Check sitemaps
+  // Check sitemaps & robots
   if (!(await existsFile(path.join(distDir, 'sitemap-index.xml')))) {
     errors.push('Missing dist/sitemap-index.xml');
   }
@@ -173,10 +199,18 @@ async function main() {
         errors.push(`Invalid JSON-LD syntax in ${rel}: ${e.message}`);
       }
     }
+
+    // 5. Public copy quality gate (zero unfilled placeholders or internal jargon)
+    const visibleText = extractVisibleText(html);
+    for (const rule of FORBIDDEN_PUBLIC_COPY) {
+      if (rule.regex.test(visibleText)) {
+        errors.push(`Unwanted public copy (${rule.label}) detected in ${rel}`);
+      }
+    }
   }
 
   // Verify key expected schemas exist
-  for (const requiredType of ['ProfilePage', 'Person', 'Book', 'VideoObject', 'BlogPosting', 'CreativeWork', 'BreadcrumbList']) {
+  for (const requiredType of ['ProfilePage', 'Person', 'Book', 'BlogPosting', 'CreativeWork', 'BreadcrumbList']) {
     if (!jsonLdTypes.has(requiredType)) {
       warnings.push(`Expected JSON-LD schema "@type": "${requiredType}" not found across site`);
     }
@@ -199,7 +233,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('[audit-site] PASS — zero broken internal links, valid hreflang/WCAG/JSON-LD across all pages.');
+  console.log('[audit-site] PASS — zero broken links, valid hreflang/WCAG/JSON-LD, and zero placeholder/jargon leaks.');
 }
 
 main().catch((err) => {

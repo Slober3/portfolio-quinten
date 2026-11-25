@@ -35,68 +35,70 @@ const teachingModules = [
     code: 'CLOUD & INFRA',
     title: 'AWS, Docker, Kubernetes & Linux',
     desc: isNl
-      ? 'Containerisatie, orchestratie en cloud-fundamenten voor 1ITF en 1ACS met aandacht voor reproduceerbaarheid en netwerkarchitectuur.'
-      : 'Containers, orchestration, and Linux/cloud foundations for 1ITF and 1ACS focused on reproducibility.',
+      ? 'Containers, orchestratie en cloud-fundamenten voor studenten uit 1ITF en 1ACS — steeds met de nadruk op begrijpen hoe het netwerk en besturingssysteem eronder echt werken.'
+      : 'Containers, orchestration, and Linux/cloud foundations for 1ITF and 1ACS students — always focusing on understanding the operating system and networking underneath.',
   },
   {
-    code: 'SYSADMIN',
-    title: 'Windows SysAdmin & Systems as Code',
+    code: 'WINDOWS SYSADMIN',
+    title: 'Active Directory, PowerShell & Systems as Code',
     desc: isNl
-      ? 'Active Directory, UAC, Registry, PowerShell-automatisering en geautomatiseerde infrastructuurvalidatie met Pester.'
-      : 'Active Directory, UAC, Registry internals, PowerShell automation, and Pester infrastructure testing.',
+      ? 'Van Active Directory, UAC en het Windows-register tot herhaalbare PowerShell-scripts en geautomatiseerde controles met Pester.'
+      : 'From Active Directory, UAC, and Registry internals to repeatable PowerShell automation and automated verification with Pester.',
   },
   {
-    code: 'NETWORKING',
-    title: 'Cisco CCNA 1 & 2 · Network Services · RTC Antwerpen',
+    code: 'NETWERKEN',
+    title: 'Cisco CCNA 1 & 2 · RTC Antwerpen',
     desc: isNl
-      ? 'Switching, routing, subnetting en praktische labworkshops, zowel in het hoger onderwijs als via RTC Train-the-Trainer.'
-      : 'Switching, routing, subnetting, and hands-on Train-the-Trainer lab workshops with RTC Antwerp.',
+      ? 'Switching, routing, subnetting en praktisch troubleshooten — zowel in de bacheloropleiding als in Train-the-Trainer workshops voor leerkrachten via RTC Antwerpen.'
+      : 'Switching, routing, subnetting, and practical troubleshooting — both in the degree program and in Train-the-Trainer workshops through RTC Antwerp.',
     link: externalLinks.thomasMoreRtc,
     linkLabel: isNl ? 'RTC-vorming Datacommunicatie ↗' : 'RTC Networking Workshop ↗',
   },
   {
-    code: 'IOT & SEC',
-    title: 'IoT / Embedded Development & Cybersecurity',
+    code: 'IOT & SECURITY',
+    title: 'IoT / Embedded & Cybersecurity',
     desc: isNl
-      ? 'Sensoren, microcontrollers (ESP32), veilige netwerksegmentatie en defensieve honeypot-monitoring.'
-      : 'Sensors, microcontrollers (ESP32), network segmentation, and defensive honeypot telemetry.',
+      ? 'Sensoren en microcontrollers (zoals ESP32), veilige netwerksegmentatie en kleinschalige honeypots om dreigingen concreet en zichtbaar te maken.'
+      : 'Sensors and microcontrollers (such as ESP32), network segmentation, and lightweight honeypots that make real-world threats tangible.',
   },
 ];
 ---
 
 <EditorialLayout
   locale={locale}
-  title={isNl ? 'Tech & Onderwijs — Quinten Desmyter' : 'Tech & Teaching — Quinten Desmyter'}
+  title={isNl ? 'Onderwijs & IT — Quinten Desmyter' : 'Teaching & IT — Quinten Desmyter'}
   description={isNl
-    ? 'Thomas More IT Factory, RTC Antwerpen, gepubliceerde ISBN-handboeken (Cybersecurity & Python), GitHub Slober3 en TryHackMe.'
-    : 'Thomas More IT Factory, RTC Antwerp, published ISBN handbooks (Cybersecurity & Python), GitHub Slober3, and TryHackMe.'}
+    ? 'Praktijklector aan Thomas More IT Factory (Campus Geel), RTC Antwerpen workshops, twee gepubliceerde IT-boeken, GitHub Slober3 en TryHackMe.'
+    : 'Senior lecturer at Thomas More IT Factory (Geel Campus), RTC Antwerp workshops, two published IT handbooks, GitHub Slober3, and TryHackMe.'}
   jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
-    <header class="space-y-5 border-b border-border-subtle pb-10">
-      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
-        {isNl ? 'TECH & ONDERWIJS · THOMAS MORE IT FACTORY' : 'TECH & TEACHING · THOMAS MORE IT FACTORY'}
-      </p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
-        {isNl
-          ? 'Cloud, Netwerken, Cybersecurity & Didactiek.'
-          : 'Cloud, Networking, Cybersecurity & Practical Didactics.'}
-      </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
-        {isNl
-          ? 'Mijn focus ligt op heldere fundamenten en reproduceerbare labs binnen Thomas More IT Factory (Campus Geel) en RTC Antwerpen. Daarnaast ben ik betrokken als coach bij studentenorganisatie SIN.'
-          : 'Focused on solid engineering fundamentals and reproducible labs at Thomas More IT Factory (Geel Campus) and RTC Antwerp. Alongside teaching, I also coach at student organization SIN.'}
-      </p>
-    </header>
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-border-subtle pb-12">
+      <div class="lg:col-span-7 space-y-5">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+          {isNl ? 'ONDERWIJS & IT · THOMAS MORE CAMPUS GEEL' : 'TEACHING & IT · THOMAS MORE GEEL CAMPUS'}
+        </p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+          {isNl
+            ? 'Cloud, netwerken, cybersecurity en praktijkgericht onderwijs.'
+            : 'Cloud, networking, cybersecurity, and hands-on teaching.'}
+        </h1>
+        <p class="text-base sm:text-lg text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Binnen de IT Factory van Thomas More (Campus Geel) geef ik praktijkvakken aan eerstejaars en gevorderde studenten (1ITF & 1ACS) en begeleid ik workshops via RTC Antwerpen. Daarnaast ben ik ook betrokken als coach bij studentenorganisatie SIN.'
+            : 'At Thomas More IT Factory (Geel Campus), I teach practical infrastructure and security labs across 1ITF and 1ACS, and facilitate teacher workshops via RTC Antwerp. Alongside teaching, I am also involved as a coach at student organization SIN.'}
+        </p>
+      </div>
 
-    <div class="aspect-[21/7] overflow-hidden rounded-2xl border border-border-subtle">
-      <EditorialVisuals kind="cloud" />
-    </div>
+      <div class="lg:col-span-5 aspect-[16/10] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+        <EditorialVisuals kind="cloud" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 460px" />
+      </div>
+    </header>
 
     <!-- Teaching Tracks -->
     <section class="space-y-6">
       <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-        {isNl ? 'Vakgebieden & Onderwijspraktijk' : 'Teaching Domains & Lab Tracks'}
+        {isNl ? 'Vakgebieden & labs' : 'Courses & lab focus'}
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {teachingModules.map((mod) => (
@@ -120,10 +122,10 @@ const teachingModules = [
     <section class="space-y-6">
       <div>
         <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
-          {isNl ? 'BOEKENKAST · AUTEUR' : 'BOOKSHELF · AUTHOR'}
+          {isNl ? 'BOEKENKAST' : 'BOOKSHELF'}
         </p>
         <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          {isNl ? 'Gepubliceerde handboeken' : 'Published Handbooks'}
+          {isNl ? 'Twee handboeken voor starters en studenten' : 'Two handbooks for students and starters'}
         </h2>
       </div>
 
@@ -149,18 +151,26 @@ const teachingModules = [
       </div>
     </section>
 
-    <!-- GitHub Slober3 & TryHackMe -->
-    <section class="space-y-6">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="font-mono text-xs uppercase tracking-wider text-status">GITHUB · SLOBER3</p>
-          <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-            {isNl ? 'Gecureerde Open Source & Hardware' : 'Curated Open Source & Hardware'}
+    <!-- GitHub Slober3, Hardware & TryHackMe -->
+    <section class="space-y-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-3">
+          <p class="font-mono text-xs uppercase tracking-wider text-status">GITHUB · @SLOBER3</p>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+            {isNl ? 'Open source, scripts & eigen hardware' : 'Open source, scripts & custom hardware'}
           </h2>
+          <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
+            {isNl
+              ? 'Naast het lesgeven bouw ik graag kleine hulpmiddelen, security-experimenten en eigen elektronica. Hieronder staan enkele projecten die publiek op GitHub of PCBWay staan.'
+              : 'Outside the classroom, I like building small utilities, security experiments, and custom electronics. Here are a few highlights published on GitHub and PCBWay.'}
+          </p>
+          <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="inline-block font-mono text-xs font-semibold text-telemetry hover:underline pt-1">
+            github.com/Slober3 ↗
+          </a>
         </div>
-        <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
-          github.com/Slober3 ↗
-        </a>
+        <div class="lg:col-span-5 aspect-[16/10] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+          <EditorialVisuals kind="pcb" locale={locale} sizes="(max-width: 1024px) 96vw, 440px" />
+        </div>
       </div>
 
       <div class="divide-y divide-border-subtle border-y border-border-subtle">
@@ -170,7 +180,7 @@ const teachingModules = [
               <h3 class="font-display text-lg font-bold text-ink-primary">{repo.name}</h3>
               <p class="font-mono text-xs text-telemetry">{repo.stack}</p>
             </div>
-            <p class="text-sm sm:text-base text-ink-secondary">{repo.description[locale]}</p>
+            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{repo.description[locale]}</p>
             <a href={repo.url} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline whitespace-nowrap">
               {repo.url.includes('pcbway') ? 'PCBWay ↗' : 'GitHub ↗'}
             </a>
@@ -179,7 +189,9 @@ const teachingModules = [
       </div>
 
       <div class="rounded-2xl border border-border-subtle bg-surface-1 p-5 flex flex-wrap items-center justify-between gap-4">
-        <span class="font-mono text-xs uppercase tracking-wider text-status">TryHackMe Learning Paths</span>
+        <span class="font-mono text-xs uppercase tracking-wider text-status">
+          {isNl ? 'TryHackMe certificaten' : 'TryHackMe certificates'}
+        </span>
         <div class="flex flex-wrap gap-2">
           {tryHackMeBadges.map((b) => (
             <span class="rounded-full border border-status/35 bg-status/10 px-3 py-1 font-mono text-xs text-status">

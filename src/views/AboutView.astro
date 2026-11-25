@@ -1,5 +1,6 @@
 ---
 import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import EditorialVisuals from '@/components/EditorialVisuals.astro';
 import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
 import { timeline } from '@/data/profile';
 
@@ -26,54 +27,40 @@ const jsonLd = {
     sameAs: ['https://github.com/Slober3', 'https://www.youtube.com/@QuintenMoto'],
   },
 };
-
-const personalHighlights = [
-  {
-    tag: 'JAPANSE CULTUUR & VERHALEN',
-    tagEn: 'JAPANESE CULTURE & FICTION',
-    title: isNl ? 'Anime, FACTS, Ramen & Sci-Fi / LitRPG' : 'Anime, FACTS, Ramen & Sci-Fi / LitRPG',
-    body: isNl
-      ? 'Voorliefde voor Japanse cultuur, anime en een goede kom ramen (zoals Takumi en studentenuitstappen zoals Thomas More gaat naar FACTS), naast sci-fi en post-apocalyptische/LitRPG-verhalen zoals Stargate SG-1 en Dungeon Crawler Carl.'
-      : 'Long-standing love for Japanese culture, anime, and ramen (from Takumi bowls to student outings like Thomas More visits FACTS), alongside sci-fi and post-apocalyptic/LitRPG favorites like Stargate SG-1 and Dungeon Crawler Carl.',
-  },
-  {
-    tag: 'ANALOOG VAKMANSCHAP',
-    tagEn: 'ANALOG CRAFT',
-    title: isNl ? 'Laser-cutting (SVG/DXF), Kalimba & Groepsreizen' : 'Laser-Cutting (SVG/DXF), Kalimba & Travel Planning',
-    body: isNl
-      ? 'Buiten de code-editor ontwerp ik graag strakke SVG/DXF lasercut-stukken, oefen ik nieuwe melodieën op een Hokema B17 17-key kalimba (C-majeur) en plan ik gestructureerde groepsreizen — met teckel Stitch als trouwe thuisbasis.'
-      : 'Away from terminals, I draft precision SVG/DXF laser-cut pieces, practice melodies on a Hokema B17 17-key kalimba (C major), organize structured group road trips, and unwind on walks with dachshund Stitch.',
-  },
-];
 ---
 
 <EditorialLayout
   locale={locale}
   title={isNl ? 'Over mij — Quinten Desmyter' : 'About — Quinten Desmyter'}
   description={isNl
-    ? 'Het verhaal, de didactische visie en de loopbaan van Quinten Desmyter: Thomas More IT Factory, RTC Antwerpen en persoonlijke interesses.'
-    : 'Biography, teaching philosophy, and career timeline of Quinten Desmyter: Thomas More IT Factory, RTC Antwerp, and off-clock interests.'}
+    ? 'Wie is Quinten Desmyter? Mijn verhaal, aanpak voor de klas aan Thomas More IT Factory, loopbaan en wat mij buiten de uren bezighoudt.'
+    : 'Meet Quinten Desmyter: my story, teaching approach at Thomas More IT Factory, career timeline, and what I enjoy off the clock.'}
   jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
-    <!-- Hero Bio + Editorial Portrait Frame -->
-    <header class="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-8 lg:gap-12 items-start border-b border-border-subtle pb-12">
-      <div class="space-y-6">
+    <!-- Personal Intro + Workspace Visual -->
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-border-subtle pb-12">
+      <div class="lg:col-span-7 space-y-6">
         <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
           {isNl ? 'OVER MIJ · REGIO LIER / KEMPEN, BELGIË' : 'ABOUT · LIER / CAMPINE REGION, BELGIUM'}
         </p>
         <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
           {isNl
-            ? 'Systemen bouwen, helder uitleggen en onderweg blijven leren.'
-            : 'Building reliable systems, teaching clearly, and staying curious off the clock.'}
+            ? 'Techniek helder maken, zelf blijven bouwen en graag onderweg zijn.'
+            : 'Making technology clear, building things myself, and enjoying the open road.'}
         </h1>
-        <p class="text-lg text-ink-secondary leading-relaxed">
+        <p class="text-base sm:text-lg text-ink-secondary leading-relaxed">
           {isNl
-            ? 'Als praktijklector aan de IT Factory van Thomas More (Campus Geel) deel ik mijn dagelijkse passie voor cloud, netwerken en cybersecurity met studenten uit 1ITF en 1ACS. Naast mijn werk voor de klas ben ik als coach betrokken bij studentenorganisatie SIN, geef ik Cisco-workshops via RTC Antwerpen en trek ik er graag op uit met de Honda CB750 Hornet.'
-            : 'As a senior lecturer at Thomas More IT Factory (Geel Campus), I teach cloud, networking, and cybersecurity across the 1ITF and 1ACS programs. Beyond the classroom I am also involved as a coach at student organization SIN, facilitate Cisco labs via RTC Antwerp, and spend weekends riding twisty roads on a Honda CB750 Hornet.'}
+            ? 'Ik werk als praktijklector aan de IT Factory van Thomas More (Campus Geel), waar ik studenten begeleid in cloud, netwerken, Windows-beheer, cybersecurity en IoT. Naast mijn lessen ben ik als coach betrokken bij studentenorganisatie SIN en verzorg ik Cisco-workshops via RTC Antwerpen.'
+            : 'I work as a senior lecturer at Thomas More IT Factory (Geel Campus), guiding students through cloud, networking, Windows administration, cybersecurity, and IoT. Beyond teaching, I am involved as a coach at student organization SIN and run Cisco workshops through RTC Antwerp.'}
+        </p>
+        <p class="text-base text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Wat mij in alles aanspreekt — of het nu gaat om een netwerklab, een eigen bordspel, precisie op de schietstand of een bochtige rit in de Eifel — is de combinatie van rust, structuur en plezier in het ambacht.'
+            : 'Across everything I do — whether debugging a network lab, balancing a tabletop game, practicing precision sport shooting, or riding backroads in the Eifel — I enjoy the mix of calm focus, clear structure, and genuine craft.'}
         </p>
 
-        <div class="flex flex-wrap items-center gap-4 pt-2">
+        <div class="flex flex-wrap items-center gap-3.5 pt-1">
           <a
             href={cvHref}
             download
@@ -85,62 +72,66 @@ const personalHighlights = [
             href={STATIC_ROUTES.contact[locale]}
             class="inline-flex items-center rounded-full border border-border-subtle bg-surface-1 px-6 py-3 text-sm font-semibold text-ink-primary hover:border-telemetry transition-colors min-h-[44px]"
           >
-            {isNl ? 'Neem contact op' : 'Get in touch'}
+            {isNl ? 'Contact opnemen' : 'Get in touch'}
           </a>
         </div>
       </div>
 
-      <!-- Editorial Portrait Slot (ready for real headshot via CONTENT-TODO.md) -->
-      <figure class="editorial-card rounded-2xl p-5 flex flex-col justify-between gap-4">
-        <div class="aspect-[4/5] rounded-xl border border-border-subtle bg-surface-2 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
-          <div class="h-20 w-20 rounded-2xl border border-kinetic/40 bg-kinetic/10 flex items-center justify-center font-display text-3xl font-bold text-kinetic">
-            QD
-          </div>
-          <p class="mt-4 font-display text-sm font-bold text-ink-primary">Quinten Desmyter</p>
-          <p class="mt-1 font-mono text-[10px] uppercase tracking-wider text-ink-secondary">
-            {isNl ? 'Portret-slot klaar' : 'Portrait slot ready'}
-          </p>
+      <figure class="lg:col-span-5">
+        <div class="aspect-[4/3] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2 shadow-lg">
+          <EditorialVisuals kind="cloud" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 420px" />
         </div>
-        <figcaption class="font-mono text-[11px] text-ink-secondary leading-relaxed">
-          {isNl ? 'Systemen, Precisie & Vrijheid · Kempen, BE' : 'Systems, Precision & Freedom · Campine, BE'}
+        <figcaption class="mt-3 font-mono text-[11px] text-ink-secondary">
+          {isNl ? 'Quinten Desmyter · Regio Lier / Kempen & Campus Geel' : 'Quinten Desmyter · Lier Region & Geel Campus'}
         </figcaption>
       </figure>
     </header>
 
-    <!-- Didactic Philosophy -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="editorial-card rounded-2xl p-6 space-y-2">
-        <p class="font-mono text-xs text-telemetry">01 · FLIP THE CLASSROOM</p>
-        <h2 class="font-display text-lg font-bold text-ink-primary">
-          {isNl ? 'Ruimte voor echt labwerk' : 'Room for real lab debugging'}
-        </h2>
-        <p class="text-sm text-ink-secondary">
-          {isNl
-            ? 'Basisstof wordt voorbereid vóór de les, zodat contacttijd gaat naar onderwijsleergesprekken en samen fouten opsporen.'
-            : 'Core theory happens before class so lab hours focus on interactive coaching and diagnosing real failures together.'}
+    <!-- How I Teach -->
+    <section class="space-y-6">
+      <div class="space-y-1.5">
+        <p class="font-mono text-xs uppercase tracking-wider text-telemetry">
+          {isNl ? 'HOE IK LESGEEF' : 'HOW I TEACH'}
         </p>
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Drie dingen die ik belangrijk vind in de klas' : 'Three principles I care about in class'}
+        </h2>
       </div>
-      <div class="editorial-card rounded-2xl p-6 space-y-2">
-        <p class="font-mono text-xs text-kinetic">02 · HANDS-ON PRECISIE</p>
-        <h2 class="font-display text-lg font-bold text-ink-primary">
-          {isNl ? 'Van tekstboek naar productielab' : 'From handbook to real lab'}
-        </h2>
-        <p class="text-sm text-ink-secondary">
-          {isNl
-            ? 'Of het nu gaat om PowerShell/Pester, Cisco CCNA of een ESP32-honeypot: studenten leren door te bouwen en te testen.'
-            : 'Whether configuring Pester tests, Cisco routers, or ESP32 honeypots, students learn by shipping verifiable work.'}
-        </p>
-      </div>
-      <div class="editorial-card rounded-2xl p-6 space-y-2">
-        <p class="font-mono text-xs text-status">03 · BREDE BLIK</p>
-        <h2 class="font-display text-lg font-bold text-ink-primary">
-          {isNl ? 'Pragmatisch & benaderbaar' : 'Pragmatic & approachable'}
-        </h2>
-        <p class="text-sm text-ink-secondary">
-          {isNl
-            ? 'Techniek mag inhoudelijk scherp zijn zonder wollig jargon — en mag gerust wat droge humor bevatten.'
-            : 'Engineering should stay sharp without jargon — with room for grounded clarity and subtle humor.'}
-        </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="editorial-card rounded-2xl p-6 space-y-2.5">
+          <p class="font-mono text-xs text-telemetry">01 · FLIP THE CLASSROOM</p>
+          <h3 class="font-display text-lg font-bold text-ink-primary">
+            {isNl ? 'Tijd maken voor echt werk' : 'Time for real troubleshooting'}
+          </h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">
+            {isNl
+              ? 'De basistheorie verwerken studenten op hun eigen tempo vooraf, zodat de lestijd gaat naar samen bouwen, vragen stellen en fouten doorgronden.'
+              : 'Students review core concepts beforehand at their own pace so class hours go toward building, asking questions, and diagnosing real issues together.'}
+          </p>
+        </div>
+        <div class="editorial-card rounded-2xl p-6 space-y-2.5">
+          <p class="font-mono text-xs text-kinetic">02 · PRAKTIJK EERST</p>
+          <h3 class="font-display text-lg font-bold text-ink-primary">
+            {isNl ? 'Van voorbeeld naar eigen lab' : 'From concept to working lab'}
+          </h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">
+            {isNl
+              ? 'Of het nu gaat om PowerShell en Pester, Cisco CCNA of een kleine ESP32-opstelling: iets zelf laten werken blijft veel langer hangen dan enkel slides bekijken.'
+              : 'Whether writing Pester checks, configuring Cisco routers, or flashing an ESP32, making something actually work sticks far better than passively reading slides.'}
+          </p>
+        </div>
+        <div class="editorial-card rounded-2xl p-6 space-y-2.5">
+          <p class="font-mono text-xs text-status">03 · NUCHTER & HELDER</p>
+          <h3 class="font-display text-lg font-bold text-ink-primary">
+            {isNl ? 'Geen onnodig jargon' : 'Sharp without the buzzwords'}
+          </h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">
+            {isNl
+              ? 'Complexe systemen vragen geen ingewikkelde taal. Ik hou van duidelijke uitleg, eerlijke feedback en af en toe wat droge humor.'
+              : 'Complex systems don’t need pretentious language. I value clear explanations, honest feedback, and a bit of dry humor along the way.'}
+          </p>
+        </div>
       </div>
     </section>
 
@@ -148,16 +139,16 @@ const personalHighlights = [
     <section class="space-y-8">
       <div>
         <p class="font-mono text-xs uppercase tracking-wider text-telemetry">
-          {isNl ? 'LOOPBAAN & OPLEIDING' : 'CAREER & EDUCATION TIMELINE'}
+          {isNl ? 'LOOPBAAN & ACHTERGROND' : 'CAREER & BACKGROUND'}
         </p>
         <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          {isNl ? 'Waar techniek en onderwijs samenkomen' : 'Where engineering meets education'}
+          {isNl ? 'Mijn traject tot hier' : 'My path so far'}
         </h2>
       </div>
 
       <div class="divide-y divide-border-subtle border-y border-border-subtle">
         {timeline.map((step) => (
-          <article class="py-6 grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-8">
+          <article class="py-6 grid grid-cols-1 md:grid-cols-[190px_1fr] gap-3 md:gap-8">
             <p class="font-mono text-xs text-kinetic font-semibold">
               {isNl ? step.period : step.periodEn}
             </p>
@@ -171,27 +162,74 @@ const personalHighlights = [
       </div>
     </section>
 
-    <!-- Personal Culture, Sci-Fi, Kalimba & Stitch -->
-    <section class="space-y-6">
+    <!-- Off the Clock with Real Photography -->
+    <section class="space-y-8">
       <div>
         <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
-          {isNl ? 'PERSOONLIJKE NOOT · BUITEN DE LESUREN' : 'PERSONAL NOTE · OFF THE CLOCK'}
+          {isNl ? 'BUITEN DE LESUREN' : 'OFF THE CLOCK'}
         </p>
         <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          {isNl ? 'Cultuur, creativiteit & teckel Stitch' : 'Culture, craft & dachshund Stitch'}
+          {isNl ? 'Verhalen, hout, muziek en teckel Stitch' : 'Stories, craft, music, and dachshund Stitch'}
         </h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {personalHighlights.map((item) => (
-          <article class="editorial-card rounded-2xl p-6 space-y-2.5">
+        <article class="editorial-card rounded-2xl overflow-hidden flex flex-col">
+          <div class="aspect-[16/10] bg-surface-2 border-b border-border-subtle overflow-hidden">
+            <EditorialVisuals kind="craft" locale={locale} sizes="(max-width: 768px) 96vw, 480px" />
+          </div>
+          <div class="p-6 space-y-2.5 flex-1">
             <p class="font-mono text-[11px] uppercase tracking-wider text-status">
-              {isNl ? item.tag : item.tagEn}
+              {isNl ? 'MAKEN & MUZIEK' : 'MAKING & MUSIC'}
             </p>
-            <h3 class="font-display text-xl font-bold text-ink-primary">{item.title}</h3>
-            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{item.body}</p>
-          </article>
-        ))}
+            <h3 class="font-display text-xl font-bold text-ink-primary">
+              {isNl ? 'Laser-cutting (SVG/DXF), kalimba & bordspellen' : 'Laser-cutting (SVG/DXF), kalimba & tabletop'}
+            </h3>
+            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
+              {isNl
+                ? 'Na een dag achter schermen werk ik graag met iets tastbaars: strakke SVG/DXF-ontwerpen uitsnijden met de laser, nieuwe melodieën oefenen op mijn Hokema B17 17-toets kalimba (C-majeur) of sleutelen aan fysieke spelonderdelen voor Weavers Fate en D&D.'
+                : 'After a day on screens, I love making physical things: drafting clean SVG/DXF laser-cut pieces, practicing melodies on my Hokema B17 17-key kalimba (C major), or prototyping pieces for Weavers Fate and tabletop sessions.'}
+            </p>
+          </div>
+        </article>
+
+        <article class="editorial-card rounded-2xl overflow-hidden flex flex-col">
+          <div class="aspect-[16/10] bg-surface-2 border-b border-border-subtle overflow-hidden">
+            <EditorialVisuals kind="stitch" locale={locale} sizes="(max-width: 768px) 96vw, 480px" />
+          </div>
+          <div class="p-6 space-y-2.5 flex-1">
+            <p class="font-mono text-[11px] uppercase tracking-wider text-kinetic">
+              {isNl ? 'CULTUUR, REIZEN & THUIS' : 'CULTURE, TRAVEL & HOME'}
+            </p>
+            <h3 class="font-display text-xl font-bold text-ink-primary">
+              {isNl ? 'Sci-Fi, anime, ramen & teckel Stitch' : 'Sci-Fi, anime, ramen & dachshund Stitch'}
+            </h3>
+            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
+              {isNl
+                ? 'Ik heb een zwak voor Japanse cultuur, anime, een goede kom ramen (zoals bij Takumi) en uitstappen naar FACTS, naast sci-fi en post-apocalyptische/LitRPG-verhalen zoals Stargate SG-1 en Dungeon Crawler Carl. Verder plan ik graag groepsreizen — en thuis is er natuurlijk altijd een wandeling met mijn teckel Stitch.'
+                : 'I have a soft spot for Japanese culture, anime, a great bowl of ramen (like Takumi), and outings to FACTS, alongside sci-fi and post-apocalyptic/LitRPG favorites such as Stargate SG-1 and Dungeon Crawler Carl. I also enjoy organizing group trips — and unwinding back home with my dachshund Stitch.'}
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border-subtle bg-surface-1 px-6 py-5 text-sm">
+        <p class="text-ink-secondary">
+          {isNl
+            ? 'Benieuwd welke spullen ik dagelijks gebruik of waar mijn aandacht nu ligt?'
+            : 'Curious about the gear I use daily or what I’m currently focused on?'}
+        </p>
+        <div class="flex flex-wrap gap-4 font-mono text-xs font-semibold">
+          <a href={STATIC_ROUTES.uses[locale]} class="text-telemetry hover:underline">
+            {isNl ? 'Bekijk /uses →' : 'See /uses →'}
+          </a>
+          <a href={STATIC_ROUTES.now[locale]} class="text-kinetic hover:underline">
+            {isNl ? 'Bekijk /now →' : 'See /now →'}
+          </a>
+          <a href={STATIC_ROUTES.shooting[locale]} class="text-status hover:underline">
+            {isNl ? 'Schietsport & gids →' : 'Sport shooting & guide →'}
+          </a>
+        </div>
       </div>
     </section>
   </div>

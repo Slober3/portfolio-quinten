@@ -1,5 +1,6 @@
 ---
 import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import EditorialVisuals from '@/components/EditorialVisuals.astro';
 import type { Locale } from '@/i18n/routes';
 import { usesCategories } from '@/data/usesAndNow';
 
@@ -15,20 +16,25 @@ const isNl = locale === 'nl';
   locale={locale}
   title={`/uses — Quinten Desmyter`}
   description={isNl
-    ? 'Overzicht van Quinten’s hardware, audio (Blue Yeti & boom arm), Honda CB750 Hornet rig, DJI camera-setup, laser-cutting en Hokema B17 kalimba.'
-    : 'Overview of Quinten’s desk audio (Blue Yeti + boom arm), Honda CB750 Hornet rig, DJI camera gear, laser-cutting, and Hokema B17 kalimba.'}
+    ? 'Overzicht van mijn dagelijkse uitrusting: Blue Yeti microfoon op boom arm, Honda CB750 Hornet, DJI camera-opstelling, laser-cutting en Hokema B17 kalimba.'
+    : 'My everyday setup: Blue Yeti microphone on boom arm, Honda CB750 Hornet, DJI camera kit, laser-cutting tools, and Hokema B17 kalimba.'}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
-    <header class="space-y-4 border-b border-border-subtle pb-10">
-      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">/USES · HARDWARE & TOOLKIT</p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-        {isNl ? 'Wat ik dagelijks gebruik.' : 'What I use every day.'}
-      </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl">
-        {isNl
-          ? 'Betrouwbare apparatuur op het bureau, onderweg op de motor en in het maker-lab — steeds gekozen op duurzaamheid en precisie.'
-          : 'Dependable gear across the desk studio, backroad rides, and the maker workbench — chosen for reliability and craft.'}
-      </p>
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-border-subtle pb-10">
+      <div class="lg:col-span-7 space-y-4">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">/USES · {isNl ? 'UITRUSTING' : 'GEAR & TOOLS'}</p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+          {isNl ? 'Wat ik dagelijks gebruik.' : 'What I use every day.'}
+        </h1>
+        <p class="text-lg text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Ik krijg vaak vragen over mijn microfoon tijdens lessen, mijn camera’s op de motor of het materiaal op mijn werktafel. Dit is het vaste materiaal waar ik graag mee werk.'
+            : 'People often ask about my desk microphone, my motorcycle camera rig, or the tools on my craft table. Here is the dependable kit I reach for every week.'}
+        </p>
+      </div>
+      <div class="lg:col-span-5 aspect-[16/10] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+        <EditorialVisuals kind="cloud" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 420px" />
+      </div>
     </header>
 
     <div class="space-y-12">

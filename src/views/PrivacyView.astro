@@ -12,65 +12,65 @@ const isNl = locale === 'nl';
 
 <EditorialLayout
   locale={locale}
-  title={isNl ? 'Privacyverklaring (GDPR) — Quinten Desmyter' : 'Privacy Policy (GDPR) — Quinten Desmyter'}
+  title={isNl ? 'Privacyverklaring — Quinten Desmyter' : 'Privacy Policy — Quinten Desmyter'}
   description={isNl
-    ? 'Transparante Belgische GDPR/AVG-privacyverklaring: 100% statische site, geen cookies, geen tracking, lokale fonts en privacyvriendelijke embeds.'
-    : 'Transparent Belgian GDPR privacy notice: 100% static website, zero cookies, zero behavioral tracking, self-hosted fonts, and privacy-first embeds.'}
+    ? 'Eenvoudige privacyverklaring voor de persoonlijke website van Quinten Desmyter: geen trackingcookies, geen advertenties en lokale lettertypes.'
+    : 'Simple privacy notice for Quinten Desmyter’s personal website: no tracking cookies, no ads, and locally hosted fonts.'}
 >
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8">
     <header class="space-y-3 border-b border-border-subtle pb-6">
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-status">PRIVACY & GDPR / AVG</p>
       <h1 class="font-display text-3xl sm:text-4xl font-bold text-ink-primary">
-        {isNl ? 'Privacy zonder cookiebanner' : 'Privacy without a cookie banner'}
+        {isNl ? 'Gewoon lezen, zonder cookies of trackers.' : 'Just reading, without cookies or trackers.'}
       </h1>
-      <p class="text-base text-ink-secondary">
+      <p class="text-base text-ink-secondary leading-relaxed">
         {isNl
-          ? 'Deze website is 100% statisch ontworpen en verzamelt standaard geen persoonsgegevens of advertentieprofielen.'
-          : 'This site is architected as a pure static build and collects zero personal tracking data by default.'}
+          ? 'Deze persoonlijke website plaatst geen trackingcookies, toont geen advertenties en verzamelt geen bezoekersprofielen.'
+          : 'This personal website sets no tracking cookies, runs no ads, and builds no visitor profiles.'}
       </p>
     </header>
 
     <div class="editorial-prose">
       {isNl ? (
         <>
-          <h2>1. Nul trackingcookies & lokale typografie</h2>
+          <h2>1. Geen trackingcookies & lokale lettertypes</h2>
           <p>
-            Er worden geen marketing-, tracking- of sessiecookies geplaatst. Lettertypes (<code>Space Grotesk</code>, <code>Inter</code> en <code>JetBrains Mono</code>) worden volledig lokaal vanuit dezelfde domeinnaam geserveerd zonder runtime-verzoeken naar Google Fonts.
+            Er worden geen marketing-, analyse- of sessiecookies gebruikt. De lettertypes op deze website worden rechtstreeks vanaf dit domein geladen, zonder verbinding te maken met externe lettertypeservers.
           </p>
-          <h2>2. Voorkeursthema (<code>localStorage</code>)</h2>
+          <h2>2. Donkere of lichte weergave</h2>
           <p>
-            Wanneer je wisselt tussen Dark Mode en Light Mode, bewaart jouw browser uitsluitend de waarde <code>"dark"</code> of <code>"light"</code> lokaal in <code>localStorage</code>. Deze voorkeur bevat geen persoonsgegevens en wordt nooit naar een server verzonden.
+            Als je rechtsboven wisselt tussen de donkere en lichte weergave, onthoudt je browser alleen die kleurvoorkeur lokaal via <code>localStorage</code>. Daar zitten geen persoonsgegevens in en die voorkeur verlaat je toestel niet.
           </p>
-          <h2>3. Contactformulier & ingebedde video’s</h2>
+          <h2>3. Externe links, kaarten & video’s</h2>
           <p>
-            Berichten via het contactformulier worden pas verstuurd wanneer je expliciet op verzenden klikt en worden enkel gebruikt om je vraag te beantwoorden. YouTube-video’s laden via een privacyvriendelijke <code>youtube-nocookie.com</code>-facade pas ná jouw eigen klik.
+            Externe kanalen zoals GitHub, YouTube of Bol.com openen pas wanneer je zelf op een link klikt. Ook de stratenkaart-achtergrond op de motorpagina wordt pas geladen als je daar expliciet voor kiest.
           </p>
-          <h2>4. Geautomatiseerde beeld-, video- & GPX-privacy</h2>
+          <h2>4. Beeldmateriaal & niet-commercieel karakter</h2>
           <p>
-            Elke foto doorloopt een build-controle die GPS- en hardware-EXIF verwijdert, en alle GPX-motorroutes worden aan start en finish met minstens 5 km ingekort. Bij publieke motor- en reisbeelden worden herkenbare nummerplaten en voorbijgangers onherkenbaar gemaakt conform de GDPR.
+            Deze site is strikt persoonlijk en informatief (geen webshop of commerciële aanbiedingen). Gepubliceerde foto’s en routebestanden worden zorgvuldig nagekeken zodat persoonlijke gegevens en herkenbare derden buiten beeld blijven.
           </p>
-          <h2>5. Niet-commercieel karakter & rechten onder de GDPR / AVG</h2>
+          <h2>5. Jouw rechten onder de GDPR / AVG</h2>
           <p>
-            Deze portfoliowebsite is strikt persoonlijk en informatief van aard (geen webshop of commerciële aanbiedingen onder Boek XII WER). Je hebt recht op inzage, verbetering of verwijdering van eventuele via het contactformulier gedeelde correspondentie. Gebruik het contactformulier om een verzoek in te dienen. Voor klachten kan je in België terecht bij de Gegevensbeschermingsautoriteit (GBA).
+            Neem je contact op via een van de kanalen op de contactpagina, dan gebruik ik jouw bericht uitsluitend om te antwoorden. Je hebt steeds het recht om inzage of verwijdering van eventuele correspondentie te vragen. Voor klachten in België kan je terecht bij de Gegevensbeschermingsautoriteit (GBA).
           </p>
         </>
       ) : (
         <>
-          <h2>1. Zero Tracking Cookies & Local Fonts</h2>
+          <h2>1. No Tracking Cookies & Local Fonts</h2>
           <p>
-            No advertising, analytics, or session cookies are set. All typography (<code>Space Grotesk</code>, <code>Inter</code>, and <code>JetBrains Mono</code>) is bundled locally with zero runtime calls to external font servers.
+            This website sets no marketing, analytics, or session cookies. All fonts are served directly from this domain without contacting external font providers.
           </p>
-          <h2>2. Theme Preference (<code>localStorage</code>)</h2>
+          <h2>2. Dark & Light Mode Preference</h2>
           <p>
-            Switching between Dark and Light Mode stores only <code>"dark"</code> or <code>"light"</code> locally inside browser <code>localStorage</code>. No personal identifiers are stored or transmitted.
+            When you switch between dark and light mode, your browser stores only that theme choice locally in <code>localStorage</code>. It contains no personal data and never leaves your device.
           </p>
-          <h2>3. Contact Form & Embedded Media</h2>
+          <h2>3. External Links, Maps & Media</h2>
           <p>
-            Contact submissions are only sent when you actively submit the form and are used solely to reply to your message. YouTube facades use <code>youtube-nocookie.com</code> and remain dormant until clicked.
+            External services like GitHub, YouTube, or Bol.com are only contacted when you actively click a link. Optional street-map tiles on the motorcycle page load only if you switch them on.
           </p>
           <h2>4. Your GDPR Rights</h2>
           <p>
-            Under European GDPR law, you may request access, correction, or deletion of any correspondence shared via the contact form.
+            This is a strictly personal, non-commercial site. If you reach out, your message is used solely to reply, and you may request access to or deletion of any correspondence at any time under EU GDPR rules.
           </p>
         </>
       )}

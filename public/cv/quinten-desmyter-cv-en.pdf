@@ -6,44 +6,70 @@ endobj
 << /Type /Pages /Kids [3 0 R] /Count 1 >>
 endobj
 3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
 endobj
 4 0 obj
-<< /Length 630 >>
-stream
-BT
-/F1 16 Tf
-50 760 Td
-(Quinten Desmyter - Resume (Placeholder)) Tj
-/F1 11 Tf
-0 -26 Td
-(Systems, Precision & Freedom | Lier / Campine Region, Belgium) Tj
-0 -18 Td
-(Role: Senior Lecturer Cloud, Networking & Cybersecurity \(Thomas More IT Factory, Geel\)) Tj
-0 -18 Td
-(Teaching: AWS, Docker, Kubernetes, Linux, Windows SysAdmin, Cisco CCNA 1 & 2, IoT) Tj
-0 -18 Td
-(Workshops: Cisco lab workshops & Train-the-Trainer \(RTC Antwerp\)) Tj
-0 -18 Td
-(Coach at student organization SIN | Author: 2x ISBN handbooks \(Cybersecurity & Python\)) Tj
-0 -18 Td
-(Note: Replace this placeholder file with your full PDF resume in public/cv/.) Tj
-ET
-endstream
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 4224 >>
+stream
+0.075 0.094 0.133 rg 0 742 595 100 re f
+0.961 0.620 0.043 rg 0 738 595 4 re f
+BT /F2 22 Tf 0.929 0.949 0.969 rg 48 800 Td (Quinten Desmyter) Tj ET
+BT /F1 11 Tf 0.961 0.620 0.043 rg 48 778 Td (Senior Lecturer in Cloud, Networking & Cybersecurity | Author) Tj ET
+BT /F1 9.5 Tf 0.604 0.659 0.745 rg 48 758 Td (Lier / Campine Region, Belgium  |  GitHub: github.com/Slober3  |  YouTube: @QuintenMoto) Tj ET
+BT /F2 11 Tf 0.012 0.412 0.631 rg 48 710 Td (PROFILE) Tj ET
+0.835 0.863 0.902 RG 0.8 w 48 705 m 547 705 l S
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 688 Td (Senior Lecturer at Thomas More University of Applied Sciences \(IT Factory, Geel Campus\), teaching Cloud,) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 674.5 Td (Networking, Windows SysAdmin, Cybersecurity, and IoT/Electronics. Focused on Flipped Classroom didactics,) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 661 Td (reproducible labs, and translating complex infrastructure into clear hands-on practice.) Tj ET
+BT /F2 11 Tf 0.012 0.412 0.631 rg 48 635.5 Td (EXPERIENCE & TEACHING) Tj ET
+0.835 0.863 0.902 RG 0.8 w 48 630.5 m 547 630.5 l S
+BT /F2 10 Tf 0.059 0.090 0.165 rg 48 613.5 Td (Senior Lecturer IT Factory - Thomas More, Geel Campus \(2020 - present\)) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 599.5 Td (- Teaching in both Dutch \(1ITF\) and English \(1ACS\): AWS, Docker, Kubernetes, Linux, Cisco CCNA 1 & 2, IoT.) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 586 Td (- Windows SysAdmin: Active Directory, Registry, PowerShell automation, and Systems as Code \(Pester\).) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 572.5 Td (- Involved as a coach at student organization SIN.) Tj ET
+BT /F2 10 Tf 0.059 0.090 0.165 rg 48 559 Td (Cisco Workshop Instructor & Train-the-Trainer - RTC Antwerp \(Ongoing\)) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 545 Td (- Delivering hands-on Cisco networking labs and teacher training across the Antwerp province.) Tj ET
+BT /F2 11 Tf 0.012 0.412 0.631 rg 48 519.5 Td (PUBLICATIONS) Tj ET
+0.835 0.863 0.902 RG 0.8 w 48 514.5 m 547 514.5 l S
+BT /F2 10 Tf 0.059 0.090 0.165 rg 48 497.5 Td (Thoughts on cyber security \(2020\) - ISBN 9798651810475) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 483.5 Td (Practical perspectives on modern cybersecurity threats, defense hygiene, and human awareness.) Tj ET
+BT /F2 10 Tf 0.059 0.090 0.165 rg 48 470 Td (Informatica: Programmeren met Python \(2020\) - ISBN 9798654331892) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 456 Td (Approachable handbook guiding beginners from structured logic to clean Python code.) Tj ET
+BT /F2 11 Tf 0.012 0.412 0.631 rg 48 430.5 Td (OPEN SOURCE, HARDWARE & CERTIFICATIONS) Tj ET
+0.835 0.863 0.902 RG 0.8 w 48 425.5 m 547 425.5 l S
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 408.5 Td (- GitHub \(@Slober3\): PotHead \(PHP honeypot\), ESP32-Public-Honeypot, BeeHive IoT, Pester-Test-Examples.) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 395 Td (- Hardware: Home+ Domotica Svejr Station \(custom PCB design shared on PCBWay\).) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 381.5 Td (- TryHackMe: CompTIA Pentest+ Path, Web Fundamentals, Cyber Defense Path.) Tj ET
+BT /F2 11 Tf 0.012 0.412 0.631 rg 48 356 Td (EDUCATION & GOVERNANCE) Tj ET
+0.835 0.863 0.902 RG 0.8 w 48 351 m 547 351 l S
+BT /F2 10 Tf 0.059 0.090 0.165 rg 48 334 Td (B.Sc. Electronics-ICT & Pedagogical Teaching Certificate) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 320 Td (Engineering foundation in electronics and networking combined with formal teaching practice and) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 306.5 Td (Flemish higher-education curriculum quality contributions via VVS / VLOR.) Tj ET
+BT /F2 11 Tf 0.012 0.412 0.631 rg 48 281 Td (LANGUAGES & INTERESTS) Tj ET
+0.835 0.863 0.902 RG 0.8 w 48 276 m 547 276 l S
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 259 Td (Languages: Dutch \(native\), English \(fluent, teaching language in 1ACS\).) Tj ET
+BT /F1 9.5 Tf 0.278 0.333 0.412 rg 48 245.5 Td (Interests: Motorcycling \(Honda CB750 Hornet\), photography, tabletop game design \(Weavers Fate\), laser-cutting.) Tj ET
+0.835 0.863 0.902 RG 0.5 w 48 44 m 547 44 l S
+BT /F1 8.5 Tf 0.45 0.50 0.58 rg 48 28 Td (Quinten Desmyter - Regio Lier / Kempen, Belgie - github.com/Slober3) Tj ET
+endstream
 endobj
 xref
-0 6
+0 7
 0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
 0000000115 00000 n 
-0000000241 00000 n 
-0000000922 00000 n 
+0000000251 00000 n 
+0000000348 00000 n 
+0000000450 00000 n 
 trailer
-<< /Size 6 /Root 1 0 R >>
+<< /Size 7 /Root 1 0 R >>
 startxref
-992
+4726
 %%EOF

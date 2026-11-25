@@ -1,0 +1,32 @@
+---
+locale: en
+slug: cisco-ccna-network-troubleshooting
+translationSlug: cisco-ccna-netwerk-troubleshooting
+title: "Cisco CCNA in Practice: The 5 Networking Mistakes I See in Almost Every Lab"
+description: "Why a ping fails even when 'everything looks right' — a grounded checklist from my CCNA and RTC lab sessions."
+publishedAt: "2026-11-04"
+category: "Networking & Labs"
+tags: ["Cisco CCNA", "Routing", "Switching", "Troubleshooting"]
+readingMinutes: 4
+---
+
+## The Moment Every Ping Times Out
+
+Every networking lecturer knows the sentence: *"I literally typed every single command correctly and it still won't ping."* Nine times out of ten, the culprit is not a mysterious hardware glitch, but one of five recurring habits.
+
+## The Five-Point Lab Checklist
+
+1. **Missing `no shutdown` on router interfaces:** Switch ports come up automatically; Cisco router interfaces stay administratively down until enabled. One glance at `show ip interface brief` catches it instantly.
+2. **Trunk links missing the VLAN:** Access ports are assigned properly, yet the uplink between switches is still an access port or omits the VLAN from the trunk allowlist.
+3. **Wrong or missing default gateway:** Traffic reaches the destination subnet, then gets dropped on the return path because the endpoint has no route back.
+4. **The implicit `deny any` at the bottom of an ACL:** One missing `permit` rule quietly blocks all remaining traffic.
+5. **Swapped NAT `inside` and `outside` roles:** Everything reads fine until `show ip nat translations` comes back completely empty.
+
+```text
+R1# show ip interface brief
+R1# show ip route
+R1# show vlan brief
+R1# show interfaces trunk
+```
+
+Turning those four `show` commands into muscle memory builds calm troubleshooting habits long after the lab ends.

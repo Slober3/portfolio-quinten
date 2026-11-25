@@ -1,0 +1,32 @@
+---
+locale: nl
+slug: cisco-ccna-netwerk-troubleshooting
+translationSlug: cisco-ccna-network-troubleshooting
+title: "Cisco CCNA in de praktijk: de 5 netwerkfouten die ik in bijna elk lab zie"
+description: "Waarom een ping faalt terwijl 'alles toch juist staat' — een nuchtere checklist uit mijn CCNA- en RTC-workshops."
+publishedAt: "2026-11-04"
+category: "Netwerken & Labs"
+tags: ["Cisco CCNA", "Routing", "Switching", "Troubleshooting"]
+readingMinutes: 4
+---
+
+## Het moment waarop niemand nog kan pingen
+
+Elke docent netwerken kent het zinnetje: *"Meneer, ik heb letterlijk elke regel overgetypt en toch werkt het niet."* In negen van de tien gevallen zit het probleem niet in een geheimzinnige bug van Packet Tracer of de fysieke switch, maar in één van vijf klassieke valkuilen.
+
+## De korte checklist die 90% van de labtijd bespaart
+
+1. **Vergeten `no shutdown` op een routerinterface:** Op een switch staan poorten standaard open, op een Cisco-router standaard administratief uit (`administratively down`). Eén blik op `show ip interface brief` bespaart een kwartier zoeken.
+2. **Trunk-poorten zonder toegestane VLAN's:** De VLAN bestaat op switch A, het access-poortje staat juist, maar tussen switch A en B blijft de link op `access` staan of ontbreekt de VLAN in `switchport trunk allowed vlan`.
+3. **Verkeerde of ontbrekende default gateway op de eindhost:** Het pakketje raakt probleemloos tot aan de server op subnet B, maar de server weet niet langs welke router het antwoord terug moet.
+4. **De onzichtbare `deny any` onderaan een ACL:** Eén vergeten `permit ip any any` onderaan een extended access-list sluit ongemerkt het hele subnet af.
+5. **NAT `inside` en `outside` omgewisseld:** Alles ziet er netjes uit in de config tot je met `show ip nat translations` merkt dat de vertaaltabel volledig leeg blijft.
+
+```text
+R1# show ip interface brief
+R1# show ip route
+R1# show vlan brief
+R1# show interfaces trunk
+```
+
+Wie deze vier `show`-commando's als automatisme in de vingers krijgt, lost niet alleen examenvragen sneller op, maar blijft ook rustig zodra een echt bedrijfsnetwerk hapert.

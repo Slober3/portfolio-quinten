@@ -1,74 +1,74 @@
 export const usesCategories = [
   {
     id: 'desk-audio',
-    title: { nl: 'Desk, Audio & Lesvoorbereiding', en: 'Desk, Audio & Teaching Studio' },
+    title: { nl: 'Bureau, audio & lesvoorbereiding', en: 'Desk, audio & teaching setup' },
     items: [
       {
-        name: 'Blue Yeti microfoon + zwarte Blue Yeti boom arm',
+        name: 'Blue Yeti microfoon op zwarte Blue Yeti boom arm',
         detail: {
-          nl: 'Vaste stemopname-setup voor screencasts, Flip-the-Classroom lesvideo’s en overleg zonder bureautrillingen.',
-          en: 'Primary desktop vocal chain for Flipped Classroom screencasts and crystal-clear voiceovers.',
+          nl: 'Mijn vaste microfoon voor screencasts, lesvideo’s en overleg. De boom arm houdt het bureau vrij en vangt trillingen op.',
+          en: 'My go-to microphone for screencasts, short teaching videos, and calls. The black boom arm keeps desk vibrations out of the recording.',
         },
       },
       {
-        name: 'Linux & Windows werkstations',
+        name: 'Linux & Windows ontwikkelomgeving',
         detail: {
-          nl: 'Dual-omgeving voor Docker/Kubernetes-labs, PowerShell/Pester-automatisering en Cisco Packet Tracer / GNS3.',
-          en: 'Dual workflow spanning Docker/Kubernetes labs, PowerShell/Pester automation, and Cisco networking.',
+          nl: 'Een combinatie van Linux-containers (Docker, Kubernetes), Windows Server-labs met PowerShell/Pester en Cisco-netwerksimulaties.',
+          en: 'A daily mix of Linux containers (Docker, Kubernetes), Windows Server labs with PowerShell/Pester, and Cisco networking environments.',
         },
       },
     ],
   },
   {
     id: 'moto-camera',
-    title: { nl: 'Moto & Video/Foto-uitrusting', en: 'Moto & Photo/Video Rig' },
+    title: { nl: 'Op de motor & onderweg filmen', en: 'Motorcycle & camera gear' },
     items: [
       {
         name: 'Honda CB750 Hornet (~35.000 km)',
         detail: {
-          nl: 'Dagelijkse gezel voor bochtenwerk buiten de snelweg; routes gepland in Kurviger, Calimoto en Waze.',
-          en: 'Primary bike for winding backroads outside highways; routes crafted in Kurviger, Calimoto, and Waze.',
+          nl: 'Wendbaar, speels en precies gemaakt voor bochtige binnendoorwegen. Ritten stippel ik meestal uit met Kurviger, Calimoto of Waze.',
+          en: 'Nimble, lively, and right at home on winding backroads. Most routes are planned in Kurviger, Calimoto, or Waze.',
         },
       },
       {
         name: 'DJI Osmo Action + DJI ND-filters + magnetische mounts',
         detail: {
-          nl: 'Helm- en stuurmontage voor vloeiende 4K60 beelden met gecontroleerde sluitertijd.',
-          en: 'Magnetic helmet & bar mounts delivering smooth 4K60 footage with calibrated ND motion blur.',
+          nl: 'Dankzij de magnetische helm- en stuurmounts wissel ik onderweg snel van hoek, terwijl de ND-filters het felle zonlicht en de beweging natuurlijk houden.',
+          en: 'Magnetic helmet and handlebar mounts make angle swaps effortless, while the official DJI ND filters keep daylight motion looking smooth.',
         },
       },
       {
         name: 'DJI Mic Mini (1 TX + 1 RX)',
         detail: {
-          nl: 'Compacte draadloze audio-opname onder de helm of bij uitlaatplaatsing.',
-          en: 'Compact wireless transmitter/receiver capturing crisp voice or exhaust audio.',
+          nl: 'Compacte draadloze microfoon voor heldere stemopnames in de helm of om het motorgeluid proper op te vangen.',
+          en: 'Compact wireless mic capturing crisp voice commentary inside the helmet or balanced exhaust audio.',
         },
       },
     ],
   },
   {
     id: 'maker-craft',
-    title: { nl: 'Maker Lab, Muziek & Ontwerp', en: 'Maker Lab, Music & Design' },
+    title: { nl: 'Werkplaats, muziek & ontspanning', en: 'Workshop, music & craft' },
     items: [
       {
         name: 'Laser-cutting ontwerp (SVG / DXF)',
         detail: {
-          nl: 'Precisie-vectortekenen voor fysieke onderdelen, behuizingen en spelcomponenten.',
-          en: 'Precision vector drafting for physical enclosures, organizers, and tabletop components.',
+          nl: 'Strakke vectorontwerpen tekenen voor fysieke onderdelen, houders en eigen spelcomponenten.',
+          en: 'Drafting clean vector parts for physical organizers, enclosures, and tabletop game components.',
         },
       },
       {
         name: 'Hokema B17 17-key kalimba (C-majeur)',
         detail: {
-          nl: 'Analoog tegengewicht voor schermuren: stap voor stap melodieën en akkoorden instuderen.',
-          en: 'Analog counterbalance to screen time: learning melodies and chord voicings on a 17-key kalimba.',
+          nl: 'Een heerlijk rustig, analoog instrument om na een dag vol schermen stukje bij beetje nieuwe melodieën op te leren spelen.',
+          en: 'A calm, analog counterbalance after long days in front of screens—learning melodies and chords step by step.',
         },
       },
       {
-        name: '3D-printing & PCB-prototyping',
+        name: '3D-printing & eigen elektronica',
         detail: {
-          nl: 'Eigen prototypes voor Weavers Fate, D&D-terreinen en IoT-behuizingen.',
-          en: 'Custom prototyping for Weavers Fate pieces, D&D terrain, and IoT sensor enclosures.',
+          nl: 'Van prototypes voor Weavers Fate en D&D-terreinen tot eigen behuizingen en printplaten voor sensorprojecten.',
+          en: 'Everything from Weavers Fate pieces and D&D terrain to custom enclosures and PCBs for small sensor builds.',
         },
       },
     ],
@@ -76,34 +76,34 @@ export const usesCategories = [
 ];
 
 export const nowSection = {
-  updatedLabel: { nl: 'Laatst bijgewerkt: najaar 2026 · Regio Lier', en: 'Last updated: Autumn 2026 · Lier Region' },
+  updatedLabel: { nl: 'Najaar 2026 · Regio Lier', en: 'Autumn 2026 · Lier Region' },
   items: [
     {
-      label: { nl: 'Voor de klas (Thomas More IT Factory)', en: 'In the classroom (Thomas More IT Factory)' },
+      label: { nl: 'Op de campus (Thomas More, Geel)', en: 'On campus (Thomas More, Geel)' },
       value: {
-        nl: 'Begeleiden van 1ITF- en 1ACS-studenten rond Cloud, Linux, Netwerken en Cybersecurity via Flip the Classroom.',
-        en: 'Coaching 1ITF and 1ACS students across Cloud, Linux, Networking, and Cybersecurity through Flipped Classroom labs.',
+        nl: 'Volop bezig met de nieuwe lichting 1ITF- en 1ACS-studenten begeleiden in Cloud, Linux, Netwerken en Cybersecurity.',
+        en: 'Coaching a new semester of 1ITF and 1ACS students across Cloud, Linux, Networking, and Cybersecurity labs.',
       },
     },
     {
-      label: { nl: 'Op twee wielen & creatief', en: 'Two wheels & creative craft' },
+      label: { nl: 'Op twee wielen & in de werkplaats', en: 'On two wheels & at the workbench' },
       value: {
-        nl: 'Verdere kilometers op de Honda CB750 Hornet, monteren van @QuintenMoto-beelden, lasercut-vectorwerk (SVG/DXF) en oefenen op de Hokema B17 kalimba.',
-        en: 'Adding twisty miles on the Honda CB750 Hornet, editing @QuintenMoto rides, laser-cut SVG/DXF drafting, and practicing the Hokema B17 kalimba.',
+        nl: 'Extra kilometers sprokkelen op de CB750 Hornet zodra het droog is, video’s monteren voor @QuintenMoto, SVG/DXF-snijwerk tekenen en oefenen op mijn Hokema B17 kalimba.',
+        en: 'Squeezing in dry-road miles on the CB750 Hornet, editing @QuintenMoto clips, drafting SVG/DXF laser-cut pieces, and practicing the Hokema B17 kalimba.',
       },
     },
     {
-      label: { nl: 'Onderzoek & Spelontwerp', en: 'R&D & Game Design' },
+      label: { nl: 'Eigen projecten', en: 'Personal projects' },
       value: {
-        nl: 'Fijnslijpen van Weavers Fate-regels en verkennen van Computer Vision doelkaart-analyse op basis van eigen schietstatistieken.',
-        en: 'Refining Weavers Fate rule balance and exploring Computer Vision target-scoring R&D from personal range logs.',
+        nl: 'Verder sleutelen aan de balans en spelregels van Weavers Fate en experimenteren met beeldherkenning voor papieren schietkaarten.',
+        en: 'Fine-tuning Weavers Fate rules and playtest balance while exploring computer vision experiments for paper precision targets.',
       },
     },
     {
-      label: { nl: 'Boeken, Series & Gezelschap', en: 'Stories, Food & Company' },
+      label: { nl: 'Verhalen, eten & gezelschap', en: 'Stories, food & good company' },
       value: {
-        nl: 'Ontspannen met sci-fi en LitRPG (Stargate SG-1, Dungeon Crawler Carl), anime, Japanse ramen en wandelingen met teckel Stitch.',
-        en: 'Unwinding with sci-fi & LitRPG (Stargate SG-1, Dungeon Crawler Carl), anime, Japanese ramen, and walks with dachshund Stitch.',
+        nl: 'Genieten van sci-fi en LitRPG (Stargate SG-1 blijft een favoriet, net als Dungeon Crawler Carl), anime, een dampende kom Japanse ramen en wandelingen met teckel Stitch.',
+        en: 'Enjoying sci-fi and LitRPG (Stargate SG-1 and Dungeon Crawler Carl), anime, a steaming bowl of Japanese ramen, and walks with my dachshund Stitch.',
       },
     },
   ],

@@ -13,16 +13,16 @@ const isNl = locale === 'nl';
 const categories = [
   { id: 'all', label: isNl ? `Alles (${photoEntries.length})` : `All (${photoEntries.length})` },
   { id: 'macro', label: isNl ? 'Natuur & Macro' : 'Nature & Macro' },
-  { id: 'road', label: isNl ? 'On the Road & Motorsport' : 'On the Road & Motorsport' },
-  { id: 'travel', label: isNl ? 'Reizen & Sfeer' : 'Travel & Atmosphere' },
-  { id: 'maker', label: 'Maker & Lab Life' },
+  { id: 'road', label: isNl ? 'Onderweg & Motor' : 'On the Road' },
+  { id: 'travel', label: isNl ? 'Reizen' : 'Travel' },
+  { id: 'maker', label: isNl ? 'Werkplaats & Maker' : 'Workshop & Maker' },
 ];
 ---
 
 <section class="space-y-6" aria-labelledby="gallery-filter-heading">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border-subtle pb-4">
     <h2 id="gallery-filter-heading" class="font-mono text-xs uppercase tracking-wider text-telemetry">
-      {isNl ? '4 Collecties · PhotoSwipe 5 Lightbox (Toetsenbord & Knoppen)' : '4 Collections · PhotoSwipe 5 Lightbox (Keyboard & Buttons)'}
+      {isNl ? 'Collecties · Klik op een foto voor groot formaat' : 'Collections · Click any photo to view full size'}
     </h2>
 
     <div class="flex flex-wrap gap-2" role="group" aria-label={isNl ? 'Filter fotografiecategorieën' : 'Filter photography categories'}>
@@ -40,7 +40,7 @@ const categories = [
     </div>
   </div>
 
-  <!-- Gallery Grid: Sharp AVIF/WebP + PhotoSwipe 5 lightbox links -->
+  <!-- Gallery Grid -->
   <div id="pswp-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {photoEntries.map((item) => (
       <figure
@@ -61,10 +61,10 @@ const categories = [
             formats={['avif', 'webp']}
             widths={[480, 960, 1600]}
             sizes="(max-width: 640px) 96vw, (max-width: 1024px) 48vw, 31vw"
-            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
           <span class="sr-only">
-            {isNl ? `Open ${item.title.nl} in lightbox` : `Open ${item.title.en} in lightbox`}
+            {isNl ? `Bekijk ${item.title.nl} in groot formaat` : `View ${item.title.en} full size`}
           </span>
         </a>
         <figcaption class="p-4 space-y-1.5 flex-1 flex flex-col justify-between">

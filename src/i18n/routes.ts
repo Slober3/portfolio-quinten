@@ -56,8 +56,8 @@ export const TRANSLATION_PAIRS: Array<{ nl: string; en: string }> = [
     en: '/en/blog/systems-as-code-powershell-pester/',
   },
   {
-    nl: '/nl/blog/opsec-voor-makers-gpx-en-exif/',
-    en: '/en/blog/opsec-for-creators-gpx-and-exif/',
+    nl: '/nl/blog/cisco-ccna-netwerk-troubleshooting/',
+    en: '/en/blog/cisco-ccna-network-troubleshooting/',
   },
   {
     nl: '/nl/blog/esp32-rtos-sensoren-in-de-praktijk/',

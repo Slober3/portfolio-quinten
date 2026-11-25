@@ -1,64 +1,23 @@
-# CONTENT-TODO — Overdrachtschecklist voor Definitieve Media & Links
+# Eigen content aanpassen (optioneel)
 
-Alle pagina’s van je portfolio werken nu foutloos met op maat gemaakte placeholders, demo-GPX en veilige voorbeeld-PDF’s. Gebruik onderstaande checklist om jouw echte bestanden en definitieve instellingen toe te voegen.
+De website is direct volledig bruikbaar en publiceerbaar zoals hij nu is. Wil je later eigen foto's, specifieke YouTube-embeds, een contactformulier-sleutel of je eigen domeinnaam koppelen, dan kan dat eenvoudig in de bestanden hieronder.
 
----
+## 1. Eigen foto's (optioneel)
+Alle foto's in `src/assets/photos/` worden tijdens elke build automatisch naar AVIF & WebP geoptimaliseerd met automatische EXIF-stripping (oriëntatie en kleurprofiel blijven behouden). Vervang gewoon een bestaand `.jpg`-bestand onder dezelfde naam:
+- `hero-workspace.jpg` (werkplek / hero)
+- `about-stitch-cozy.jpg` (persoonlijk / Stitch)
+- `hornet-apex-dusk.jpg` & `spa-raidillon-mist.jpg` (motorritten)
+- `project-weavers-fate.jpg` & `project-precision-sport.jpg` (projecten)
+- `macro-dew-optics.jpg`, `forest-canopy-light.jpg`, `adriatic-stone-dubrovnik.jpg`, `atlantic-cliffs-portugal.jpg`, `pcb-bench-craft.jpg`, `lasercut-kalimba-lab.jpg` (fotogalerij)
 
-## 1. Definitief Productiedomein & Contactformulier (`.env`)
-Kopieer `.env.example` naar `.env` (lokaal) en stel eventueel dezelfde waarden in onder **GitHub → Settings → Secrets and variables → Actions**:
+## 2. Specifieke YouTube-embeds op `/nl/moto/` & `/en/moto/`
+Standaard linken de videokaarten netjes naar `https://www.youtube.com/@QuintenMoto/videos`. Wil je een specifieke video rechtstreeks op de pagina afspelen, vul dan het 11-teken `youtubeId` in bij `src/data/moto.ts`.
 
-| Variabele | Waarvoor | Voorbeeldwaarde |
-| :--- | :--- | :--- |
-| `PUBLIC_SITE_URL` | Canonical-URL’s, `sitemap-index.xml`, JSON-LD | `https://quintendesmyter.be` of `https://7ol.eu` |
-| `PUBLIC_WEB3FORMS_ACCESS_KEY` | Gratis statisch contactformulier via Web3Forms | Jouw Web3Forms key |
-| `PUBLIC_CONTACT_ENDPOINT` | Alternatief voor Web3Forms (bv. Formspree) | `https://formspree.io/f/...` |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Optionele Cloudflare Turnstile anti-bot check | Turnstile site key |
-| `PUBLIC_SHOWREEL_URL` | Optionele Bunny Stream / CDN MP4 showreel-URL | `https://...mp4` |
+## 3. Contactformulier activeren (optioneel)
+Standaard toont `/nl/contact/` je geverifieerde directe kanalen (GitHub, YouTube, Thomas More) zonder een ruw e-mailadres in de HTML. Kopieer `.env.example` naar `.env` en vul `PUBLIC_WEB3FORMS_ACCESS_KEY` of `PUBLIC_CONTACT_ENDPOINT` in om automatisch het directe contactformulier in te schakelen.
 
-> **OpSec-regel:** Zet nooit een ruw `mailto:`-e-mailadres in de publieke HTML; laat het contactformulier via Web3Forms of Formspree lopen.
-
----
-
-## 2. Echte Foto’s & Portret Toevoegen (`src/assets/photos/`)
-Vervang de 8 voorbeeld-JPEGs in `src/assets/photos/` door jouw eigen hoogwaardige foto’s (ideaal **1600×1067 px** of minstens **1600 px** langste zijde, landschap `3:2`, JPEG of PNG zonder zichtbare nummerplaten):
-
-- `src/assets/photos/macro-dew-optics.jpg` *(Natuur & Macro)*
-- `src/assets/photos/forest-canopy-light.jpg` *(Natuur & Macro)*
-- `src/assets/photos/hornet-apex-dusk.jpg` *(On the Road & Motorsport — let op: geen leesbare nummerplaat)*
-- `src/assets/photos/spa-raidillon-mist.jpg` *(On the Road & Motorsport)*
-- `src/assets/photos/adriatic-stone-dubrovnik.jpg` *(Reizen & Sfeer)*
-- `src/assets/photos/atlantic-cliffs-portugal.jpg` *(Reizen & Sfeer)*
-- `src/assets/photos/pcb-bench-craft.jpg` *(Maker & Lab Life)*
-- `src/assets/photos/lasercut-kalimba-lab.jpg` *(Maker & Lab Life)*
-
-*(Optioneel voor `/over-mij`: vervang het `QD`-monogram in `src/views/AboutView.astro` door een eigen portretfoto in `src/assets/photos/`.)*
-
-Werk vervolgens eventueel titels, omschrijvingen en veilige belichtingsmetadata (`mm · f/ · 1/s · ISO`) bij in `src/data/photos.ts`. De Sharp-pijplijn (`src/lib/safeSharpService.ts`) genereert automatisch AVIF + WebP en stript GPS- en serienummer-EXIF.
-
----
-
-## 3. Echte Motorroutes (`src/data/gpx-raw/` → automatisch ±5 km getrimd)
-1. Plaats je onbewerkte Kurviger / Calimoto / GPS `.gpx`-export in `src/data/gpx-raw/` (minimaal 12 km lang zodat een ±5 km trim aan begin en einde veilig blijft).
-2. `npm run build` en `npm run build:zip` draaien automatisch `scripts/sanitize-gpx.mjs`, dat de eerste en laatste **5 km** en alle `<time>`-tags verwijdert en het resultaat opslaat in `public/gpx/<slug>.gpx`.
-3. Pas desgewenst `gpxSlug` aan in `src/views/MotoView.astro` (of breid `MotoRouteMap.astro` uit met een keuzelijst).
-
----
-
-## 4. `@QuintenMoto` YouTube Video ID’s (`src/data/moto.ts`)
-Open `src/data/moto.ts` en vervang in `featuredVideos` de `youtubeId` waarden (11 karakters uit je echte `@QuintenMoto` video-URL's) en zet `isPlaceholder: false`:
-- `Trier → Nürburg (UNCUT)`
-- `Spa-Francorchamps Bikers’Festival (16 aug 2025)`
-
----
-
-## 5. CV-PDF’s & Externe Profiel-URL’s
-1. Vervang de voorlopige samenvattings-PDF’s door jouw definitieve CV (let op OpSec: vermijd eventueel exact huisadres/GSM als de PDF publiek op internet staat):
-   - `public/cv/quinten-desmyter-cv-nl.pdf`
-   - `public/cv/quinten-desmyter-cv-en.pdf`
-2. Vul in `src/data/profile.ts` (`externalLinks`) jouw publieke profiel-URL’s aan (`linkedin`, `instagram`, `shutterstock`) zodra je die wilt tonen in de footer en pagina’s.
-
----
-
-## 6. Projecten & Blogartikelen Uitbreiden
-- Nieuwe tweetalige projecten: voeg `.mdx`-bestanden toe in `src/content/projects/nl/` en `src/content/projects/en/` en registreer het vertaalpaar in `src/i18n/routes.ts` (`TRANSLATION_PAIRS`).
-- Nieuwe blogartikelen: voeg `.mdx`-bestanden toe in `src/content/blog/nl/` en `src/content/blog/en/` en registreer het vertaalpaar in `src/i18n/routes.ts`.
+## 4. Eigen domeinnaam & optionele profiellinks
+- **Domeinnaam:** Stel `PUBLIC_SITE_URL=https://jouwdomein.be` in via `.env` (standaard `https://quintendesmyter.be`).
+- **Extra sociale profielen:** Vul eventueel `linkedin`, `instagram` of `shutterstock` aan in `src/data/profile.ts` (lege velden blijven verborgen).
+- **Eigen GPX-routes:** Plaats ruwe `.gpx`-bestanden in `src/data/gpx-raw/`; `npm run build:zip` knipt automatisch de eerste en laatste 5 km weg voordat het bestand in `public/gpx/` terechtkomt.
+- **Eigen CV-PDF's:** De meegeleverde `public/cv/quinten-desmyter-cv-nl.pdf` en `public/cv/quinten-desmyter-cv-en.pdf` zijn direct bruikbaar, of je vervangt ze door je eigen export.

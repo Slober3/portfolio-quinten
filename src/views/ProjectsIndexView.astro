@@ -17,23 +17,23 @@ const entries = (await getCollection('projects', (e) => e.data.locale === locale
 
 <EditorialLayout
   locale={locale}
-  title={isNl ? 'Projectdossiers — Quinten Desmyter' : 'Projects — Quinten Desmyter'}
+  title={isNl ? 'Projecten — Quinten Desmyter' : 'Projects — Quinten Desmyter'}
   description={isNl
-    ? 'Diepgaande projectdossiers: Weavers Fate, Schietsport & Computer Vision R&D, IoT Honeypots en eigen PCB-ontwerp.'
-    : 'In-depth project dossiers: Weavers Fate, Sport Shooting & Computer Vision R&D, IoT Honeypots, and custom PCB engineering.'}
+    ? 'Eigen projecten van Quinten Desmyter: bordspel Weavers Fate, schietsport & beeldherkenning, IoT-honeypots en eigen printplaatontwerp.'
+    : 'Personal projects by Quinten Desmyter: Weavers Fate dice game, sport shooting & computer vision, IoT honeypots, and custom PCB design.'}
 >
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
     <header class="space-y-4 border-b border-border-subtle pb-10">
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
-        {isNl ? 'PROJECTDOSSIERS' : 'PROJECT DOSSIERS'}
+        {isNl ? 'EIGEN PROJECTEN' : 'PERSONAL PROJECTS'}
       </p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-        {isNl ? 'Speltheorie, Security Deceptie & Hardware' : 'Game Math, Security Deception & Hardware'}
+        {isNl ? 'Spelontwerp, software en eigen hardware.' : 'Game design, software, and custom hardware.'}
       </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl">
+      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
-          ? 'Projecten waarin analytisch systeemdenken samensmelt met tastbaar ontwerp — van dobbelsteen-economie en OpenCV-onderzoek tot microcontrollers.'
-          : 'Projects where analytical systems engineering meets physical design — from dice economies and OpenCV R&D to microcontrollers.'}
+          ? 'Een selectie van projecten waar ik in mijn vrije tijd en voor mijn lessen aan werk — van een strategisch blufspel met dobbelstenen tot beeldherkenning op schietschijven en kleine elektronicaborden.'
+          : 'A selection of projects I build across teaching and spare time — from a strategic tabletop dice game to target-scoring vision experiments and custom circuit boards.'}
       </p>
     </header>
 
@@ -42,8 +42,13 @@ const entries = (await getCollection('projects', (e) => e.data.locale === locale
         const href = `${STATIC_ROUTES.projects[locale]}${proj.data.slug}/`;
         return (
           <article class="editorial-card rounded-2xl overflow-hidden flex flex-col">
-            <a href={href} class="block aspect-[21/10] border-b border-border-subtle bg-surface-2">
-              <EditorialVisuals kind={proj.data.visualKind} />
+            <a href={href} class="group block aspect-[16/10] overflow-hidden border-b border-border-subtle bg-surface-2">
+              <EditorialVisuals
+                kind={proj.data.visualKind}
+                locale={locale}
+                sizes="(max-width: 768px) 96vw, 540px"
+                class="transition-transform duration-500 group-hover:scale-[1.03]"
+              />
             </a>
             <div class="p-6 flex-1 flex flex-col justify-between gap-4">
               <div class="space-y-2.5">
@@ -65,7 +70,7 @@ const entries = (await getCollection('projects', (e) => e.data.locale === locale
                   ))}
                 </div>
                 <a href={href} class="font-mono text-xs font-semibold text-telemetry hover:underline">
-                  {isNl ? 'Open dossier →' : 'Open dossier →'}
+                  {isNl ? 'Lees meer →' : 'Read more →'}
                 </a>
               </div>
             </div>

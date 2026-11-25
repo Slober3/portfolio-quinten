@@ -1,5 +1,6 @@
 export const motoProfile = {
   handle: '@QuintenMoto',
+  channelUrl: 'https://www.youtube.com/@QuintenMoto/videos',
   bike: 'Honda CB750 Hornet (~35.000 km)',
   navigationApps: ['Kurviger', 'Calimoto', 'Waze'],
   regions: {
@@ -9,51 +10,63 @@ export const motoProfile = {
   cameraRig: [
     {
       name: 'DJI Osmo Action',
-      role: { nl: 'Primaire 4K60 actiecamera', en: 'Primary 4K60 action camera' },
+      role: { nl: 'Hoofdcamera in 4K60 voor helm- en stuurshots', en: 'Primary 4K60 camera for helmet and bar angles' },
     },
     {
       name: 'Officiële DJI ND-filterset',
-      role: { nl: 'Natuurlijke motion blur bij fel zonlicht', en: 'Natural shutter motion blur in bright sun' },
+      role: { nl: 'Rustige bewegingsonscherpte op zonnige ritten', en: 'Natural motion blur on bright sunny rides' },
     },
     {
       name: 'Magnetische helm- & stuurmounts',
-      role: { nl: 'Snel wisselen tussen POV en chassis-hoek', en: 'Quick swap between helmet POV and bar angles' },
+      role: { nl: 'Snel wisselen tussen POV en chassis-perspectief', en: 'Quick swap between helmet POV and chassis angles' },
     },
     {
       name: 'DJI Mic Mini (1 TX + 1 RX)',
-      role: { nl: 'Heldere stemopname en gecontroleerd motorgeluid in helm/bagage', en: 'Clean voice commentary & balanced exhaust audio' },
+      role: { nl: 'Heldere stem in de helm en gebalanceerd motorgeluid', en: 'Clear helmet commentary and balanced exhaust sound' },
     },
   ],
 };
 
-export const featuredVideos = [
+export interface FeaturedMotoVideo {
+  id: string;
+  /** Optioneel: vul een 11-teken YouTube video-ID in om direct op de pagina af te spelen. */
+  youtubeId?: string;
+  channelUrl: string;
+  photoKind: 'hornet' | 'spa';
+  title: { nl: string; en: string };
+  meta: string;
+  notes: { nl: string; en: string };
+}
+
+export const featuredVideos: FeaturedMotoVideo[] = [
   {
     id: 'trier-nurburg-uncut',
-    // Vervang in CONTENT-TODO.md door je exacte 11-teken YouTube video ID:
-    youtubeId: 'dQw4w9WgXcQ',
-    isPlaceholder: true,
+    youtubeId: '',
+    channelUrl: 'https://www.youtube.com/@QuintenMoto/videos',
+    photoKind: 'hornet',
     title: {
       nl: 'Trier → Nürburg (UNCUT) · Bochtenwerk in de Eifel',
       en: 'Trier → Nürburg (UNCUT) · Eifel Backroad Flow',
     },
-    meta: 'Honda CB750 Hornet · DJI Osmo Action + ND16 · DJI Mic Mini',
+    meta: 'Honda CB750 Hornet · DJI Osmo Action + ND-filter · DJI Mic Mini',
     notes: {
-      nl: 'Pure ritregistratie over technische Eifel-binnendoorwegen, gepland met Kurviger en opgenomen met gebalanceerde ND-sluitertijd.',
-      en: 'Uncut ride through technical Eifel twisties planned with Kurviger and captured with calibrated ND motion blur.',
+      nl: 'Een onversneden rit langs technische binnendoorwegen door de Eifel, uitgezet met Kurviger en vastgelegd met natuurlijk motorgeluid.',
+      en: 'An uncut ride along technical Eifel backroads planned with Kurviger and captured with clean engine audio.',
     },
   },
   {
     id: 'spa-bikers-festival-2025',
-    youtubeId: 'M7lc1UVf-VE',
-    isPlaceholder: true,
+    youtubeId: '',
+    channelUrl: 'https://www.youtube.com/@QuintenMoto/videos',
+    photoKind: 'spa',
     title: {
       nl: 'Spa-Francorchamps Bikers’Festival · 6 Testritten op 1 Dag',
       en: 'Spa-Francorchamps Bikers’Festival · 6 Test Rides in One Day',
     },
-    meta: '16 augustus 2025 · Circuit-regio Spa · Vergelijkende indrukken',
+    meta: '16 augustus 2025 · Regio Spa-Francorchamps · Eerste indrukken',
     notes: {
-      nl: 'Van dikke adventure-twins tot wendbare allrounders: zes opeenvolgende proefritten vergeleken rond mijn eigen CB750 Hornet als referentie.',
-      en: 'Comparing six completely different chassis and engine characters back-to-back with the CB750 Hornet as baseline.',
+      nl: 'Van koppelrijke adventure-twins tot wendbare allrounders: zes proefritten na elkaar vergeleken met mijn eigen CB750 Hornet als referentie.',
+      en: 'From torquey adventure twins to nimble all-rounders: six back-to-back test rides benchmarked against my own CB750 Hornet.',
     },
   },
 ];
@@ -63,7 +76,7 @@ export const spaTestRides = [
     bike: 'Honda CRF1100L Africa Twin',
     category: 'Adventure Twin',
     impression: {
-      nl: 'Imposant koppel en ontspannen rechtop-ergonomie; moeiteloos over slecht asfalt.',
+      nl: 'Imposant koppel en ontspannen rechtop-ergonomie; rolt moeiteloos over minder goed asfalt.',
       en: 'Commanding low-end torque and upright poise over rough tarmac.',
     },
   },
@@ -71,7 +84,7 @@ export const spaTestRides = [
     bike: 'Honda XL750 Transalp',
     category: 'Midweight Adventure',
     impression: {
-      nl: 'Dezelfde 755cc-familiegenen als mijn Hornet, verpakt in een lichte, speelse reismachine.',
+      nl: 'Dezelfde 755cc-familiegenen als mijn Hornet, maar dan in een lichte, speelse reismachine.',
       en: 'Familiar 755cc parallel-twin punch translated into an agile travel chassis.',
     },
   },
@@ -79,7 +92,7 @@ export const spaTestRides = [
     bike: 'Yamaha Tracer 9 GT',
     category: 'Sport Tourer',
     impression: {
-      nl: 'Scherp driecilinderkarakter met sterke windbescherming voor lange Eifel-dagtrips.',
+      nl: 'Scherp driecilinderkarakter met sterke windbescherming voor lange dagtrips richting Eifel.',
       en: 'Crisp triple-cylinder delivery paired with long-distance touring wind protection.',
     },
   },
@@ -87,23 +100,23 @@ export const spaTestRides = [
     bike: 'CF MOTO 800MT Explore',
     category: 'Tech Adventure',
     impression: {
-      nl: 'Rijk uitgerust dashboard en stabiel bochtengedrag voor dit prijssegment.',
-      en: 'Feature-dense instrumentation and composed corner stability.',
+      nl: 'Rijk uitgerust dashboard en vertrouwenwekkend bochtengedrag voor dit segment.',
+      en: 'Feature-dense instrumentation and composed corner stability for its class.',
     },
   },
   {
     bike: 'Honda NC750X DCT',
     category: 'DCT Commuter / Tour',
     impression: {
-      nl: 'Verbazend vloeiende dubbele koppeling en laag zwaartepunt; ideaal als rationele kilometervreter.',
-      en: 'Remarkably smooth dual-clutch shifts and ultra-low center of gravity.',
+      nl: 'Verbazend vloeiende dubbele koppeling en laag zwaartepunt; een erg rationele kilometervreter.',
+      en: 'Remarkably smooth dual-clutch shifts and a low center of gravity for effortless miles.',
     },
   },
   {
     bike: 'Benelli Imperiale 400',
     category: 'Classic Single',
     impression: {
-      nl: 'Pure nostalgie en onthaasten: bewijst dat rijplezier niet alleen in pk’s zit.',
+      nl: 'Pure nostalgie en onthaasten: het bewijs dat rijplezier echt niet alleen in pk’s zit.',
       en: 'Unfiltered mechanical simplicity proving that riding joy is never just about horsepower.',
     },
   },

@@ -19,23 +19,23 @@ const categories = Array.from(new Set(posts.map((p) => p.data.category)));
 
 <EditorialLayout
   locale={locale}
-  title={isNl ? 'Kennisbank & Blog — Quinten Desmyter' : 'Blog & Knowledge Base — Quinten Desmyter'}
+  title={isNl ? 'Notities & artikelen — Quinten Desmyter' : 'Notes & Articles — Quinten Desmyter'}
   description={isNl
-    ? 'Artikelen over Flip the Classroom, PowerShell & Pester Systems as Code, ESP32/RTOS en praktische OpSec voor makers.'
-    : 'Technical notes on Flipped Classroom labs, PowerShell & Pester Systems as Code, ESP32/RTOS, and automated OpSec for creators.'}
+    ? 'Praktische artikelen en ervaringen over Flip the Classroom, Cisco CCNA netwerk-troubleshooting, PowerShell & Pester en ESP32-hardware.'
+    : 'Practical articles and notes on Flipped Classroom teaching, Cisco CCNA troubleshooting, PowerShell & Pester, and ESP32 hardware.'}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
     <header class="space-y-4 border-b border-border-subtle pb-8">
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
-        {isNl ? 'KENNISBANK · MDX ARTIKELEN' : 'KNOWLEDGE BASE · MDX NOTES'}
+        {isNl ? 'NOTITIES & ARTIKELEN' : 'NOTES & ARTICLES'}
       </p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-        {isNl ? 'Didactiek, Automatisering, IoT & OpSec.' : 'Teaching Craft, Automation, IoT & OpSec.'}
+        {isNl ? 'Onderwijs, netwerken, automatisering & hardware.' : 'Teaching, networking, automation & hardware.'}
       </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl">
+      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
-          ? 'Technische nota’s en ervaringen uit IT-labs, embedded hardware (ESP32), infrastructuurautomatisering en privacyvriendelijk media-beheer.'
-          : 'Field notes from IT engineering labs, embedded ESP32 hardware, infrastructure automation, and privacy-respecting media workflows.'}
+          ? 'Korte, bruikbare stukken recht uit de lespraktijk: van netwerken debuggen en PowerShell-tests tot werken met microcontrollers.'
+          : 'Practical notes straight from the lab and classroom: from network troubleshooting and PowerShell testing to microcontroller builds.'}
       </p>
 
       <!-- Interactive Category Filter -->

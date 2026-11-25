@@ -16,209 +16,261 @@ const isConfigured = Boolean(contactEndpoint || web3FormsKey);
 const effectiveAction = contactEndpoint || (web3FormsKey ? 'https://api.web3forms.com/submit' : '');
 ---
 
-<div class="editorial-card rounded-2xl p-6 sm:p-8 space-y-6">
-  {!isConfigured && (
-    <div
-      role="status"
-      class="rounded-xl border border-kinetic/40 bg-kinetic/10 p-4 text-sm text-ink-primary space-y-1.5"
+{isConfigured ? (
+  <div class="editorial-card rounded-2xl p-6 sm:p-8 space-y-6">
+    <form
+      id="static-contact-form"
+      data-endpoint={effectiveAction}
+      data-configured="true"
+      class="space-y-5"
+      novalidate
     >
-      <p class="font-mono text-xs uppercase tracking-wider text-kinetic font-semibold">
-        {isNl ? 'Statische Formulierstatus · .env Endpoint Nog Niet Ingesteld' : 'Static Form Status · .env Endpoint Not Configured Yet'}
+      {web3FormsKey && <input type="hidden" name="access_key" value={web3FormsKey} />}
+
+      <!-- Anti-spam honeypot -->
+      <div class="sr-only" aria-hidden="true">
+        <label for="company_website">Website (leave empty)</label>
+        <input id="company_website" type="text" name="botcheck" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="contact-name" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+            {isNl ? 'Naam' : 'Name'} *
+          </label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder={isNl ? 'Jouw naam of organisatie' : 'Your name or organization'}
+            class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
+          />
+        </div>
+
+        <div>
+          <label for="contact-replyto" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+            {isNl ? 'Antwoordadres' : 'Reply email'} *
+          </label>
+          <input
+            id="contact-replyto"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="naam@organisatie.be"
+            class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="contact-topic" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+          {isNl ? 'Onderwerp' : 'Topic'}
+        </label>
+        <select
+          id="contact-topic"
+          name="topic"
+          class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary"
+        >
+          <option value="teaching-cloud">{isNl ? 'Onderwijs, workshops & IT' : 'Teaching, workshops & IT'}</option>
+          <option value="projects">{isNl ? 'Projecten (Weavers Fate / Open Source)' : 'Projects (Weavers Fate / Open Source)'}</option>
+          <option value="moto-media">{isNl ? 'Motorritten & fotografie' : 'Motorcycles & photography'}</option>
+          <option value="other">{isNl ? 'Andere vraag' : 'General question'}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="contact-message" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+          {isNl ? 'Bericht' : 'Message'} *
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows="5"
+          required
+          placeholder={isNl ? 'Waarmee kan ik helpen?' : 'How can I help?'}
+          class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
+        ></textarea>
+      </div>
+
+      {turnstileSiteKey && (
+        <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="auto"></div>
+      )}
+
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center rounded-xl bg-kinetic px-6 py-3 text-sm font-semibold text-canvas hover:bg-kinetic-hover transition-colors cursor-pointer min-h-[44px]"
+        >
+          {isNl ? 'Bericht versturen' : 'Send message'}
+        </button>
+
+        <div class="flex flex-wrap gap-3 font-mono text-xs text-ink-secondary">
+          <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="hover:text-telemetry">
+            GitHub (@Slober3)
+          </a>
+          <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="hover:text-kinetic">
+            YouTube (@QuintenMoto)
+          </a>
+        </div>
+      </div>
+
+      <p id="contact-feedback" class="hidden rounded-xl border p-3.5 text-sm" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+) : (
+  <div class="editorial-card rounded-2xl p-6 sm:p-8 space-y-6">
+    <div class="space-y-2">
+      <p class="font-mono text-xs uppercase tracking-wider text-telemetry">
+        {isNl ? 'Directe kanalen' : 'Direct channels'}
       </p>
-      <p class="text-ink-secondary">
+      <h2 class="font-display text-2xl font-bold text-ink-primary">
+        {isNl ? 'Waar je mij het snelst bereikt' : 'The fastest ways to reach me'}
+      </h2>
+      <p class="text-sm text-ink-secondary leading-relaxed">
         {isNl
-          ? 'Dit formulier werkt volledig zonder backend via Web3Forms of Formspree zodra PUBLIC_CONTACT_ENDPOINT of PUBLIC_WEB3FORMS_ACCESS_KEY in .env wordt ingevuld. Er wordt om OpSec-redenen bewust geen ruw e-mailadres in de publieke HTML getoond.'
-          : 'This form submits cleanly without a backend via Web3Forms or Formspree once PUBLIC_CONTACT_ENDPOINT or PUBLIC_WEB3FORMS_ACCESS_KEY is configured in .env. No raw email address is ever exposed in public HTML.'}
+          ? 'Om spam tegen te gaan zet ik bewust geen los e-mailadres op deze website. Stuur mij gerust een bericht of reactie via een van onderstaande kanalen — ik lees alles persoonlijk na.'
+          : 'To keep automated spam out, I prefer not to publish a raw email address on this site. Feel free to reach out through any of the channels below — I read everything personally.'}
       </p>
-    </div>
-  )}
-
-  <form
-    id="static-contact-form"
-    data-endpoint={effectiveAction}
-    data-configured={isConfigured ? 'true' : 'false'}
-    class="space-y-5"
-    novalidate
-  >
-    {web3FormsKey && <input type="hidden" name="access_key" value={web3FormsKey} />}
-
-    <!-- Anti-spam honeypot -->
-    <div class="sr-only" aria-hidden="true">
-      <label for="company_website">Website (leave empty)</label>
-      <input id="company_website" type="text" name="botcheck" tabindex="-1" autocomplete="off" />
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div>
-        <label for="contact-name" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
-          {isNl ? 'Naam' : 'Name'} *
-        </label>
-        <input
-          id="contact-name"
-          name="name"
-          type="text"
-          required
-          autocomplete="name"
-          placeholder={isNl ? 'Jouw naam of organisatie' : 'Your name or organization'}
-          class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
-        />
-      </div>
-
-      <div>
-        <label for="contact-replyto" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
-          {isNl ? 'Antwoordadres' : 'Reply email'} *
-        </label>
-        <input
-          id="contact-replyto"
-          name="email"
-          type="email"
-          required
-          autocomplete="email"
-          placeholder="naam@organisatie.be"
-          class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
-        />
-      </div>
-    </div>
-
-    <div>
-      <label for="contact-topic" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
-        {isNl ? 'Onderwerp' : 'Topic'}
-      </label>
-      <select
-        id="contact-topic"
-        name="topic"
-        class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary"
+      <a
+        href={externalLinks.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-xl border border-border-subtle bg-surface-2/60 p-5 space-y-2 hover:border-telemetry transition-colors block"
       >
-        <option value="teaching-cloud">{isNl ? 'Onderwijs, Workshops & Cloud / Netwerken' : 'Teaching, Workshops & Cloud / Networking'}</option>
-        <option value="projects">{isNl ? 'Projectdossiers (Weavers Fate / Open Source)' : 'Projects (Weavers Fate / Open Source)'}</option>
-        <option value="moto-media">{isNl ? 'MotoAdventures & Fotografie' : 'MotoAdventures & Photography'}</option>
-        <option value="other">{isNl ? 'Overig bericht' : 'General inquiry'}</option>
-      </select>
-    </div>
+        <p class="font-mono text-xs uppercase tracking-wider text-telemetry">GitHub · @Slober3</p>
+        <h3 class="font-display text-base font-bold text-ink-primary">
+          {isNl ? 'Code, projecten & onderwijs' : 'Code, projects & teaching'}
+        </h3>
+        <p class="text-xs text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Voor vragen over mijn open-source repositories, PowerShell/Cisco-labs, hardware of Weavers Fate.'
+            : 'For questions about my open-source repositories, PowerShell/Cisco labs, hardware, or Weavers Fate.'}
+        </p>
+        <span class="inline-block pt-1 text-xs font-semibold text-telemetry">
+          {isNl ? 'Open GitHub-profiel →' : 'Visit GitHub profile →'}
+        </span>
+      </a>
 
-    <div>
-      <label for="contact-message" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
-        {isNl ? 'Bericht' : 'Message'} *
-      </label>
-      <textarea
-        id="contact-message"
-        name="message"
-        rows="5"
-        required
-        placeholder={isNl ? 'Waarmee kan ik helpen?' : 'How can I help?'}
-        class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
-      ></textarea>
-    </div>
-
-    {turnstileSiteKey && (
-      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="auto"></div>
-    )}
-
-    <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
-      <button
-        type="submit"
-        class="inline-flex items-center justify-center rounded-xl bg-kinetic px-6 py-3 text-sm font-semibold text-canvas hover:bg-kinetic-hover transition-colors cursor-pointer min-h-[44px]"
+      <a
+        href={externalLinks.youtubeMoto}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-xl border border-border-subtle bg-surface-2/60 p-5 space-y-2 hover:border-kinetic transition-colors block"
       >
-        {isNl ? 'Bericht versturen' : 'Send message'}
-      </button>
+        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">YouTube · @QuintenMoto</p>
+        <h3 class="font-display text-base font-bold text-ink-primary">
+          {isNl ? 'Motorritten, routes & video' : 'Motorcycles, routes & video'}
+        </h3>
+        <p class="text-xs text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Voor tips over Eifel- en Ardense routes, de CB750 Hornet of mijn camera-opstelling onderweg.'
+            : 'For notes on Eifel and Ardennes routes, the CB750 Hornet, or my onboard camera setup.'}
+        </p>
+        <span class="inline-block pt-1 text-xs font-semibold text-kinetic">
+          {isNl ? 'Open YouTube-kanaal →' : 'Visit YouTube channel →'}
+        </span>
+      </a>
 
-      <div class="flex flex-wrap gap-3 font-mono text-xs text-ink-secondary">
-        <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="hover:text-telemetry">
-          GitHub (@Slober3)
-        </a>
-        <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="hover:text-kinetic">
-          YouTube (@QuintenMoto)
-        </a>
-      </div>
+      <a
+        href={externalLinks.thomasMore}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-xl border border-border-subtle bg-surface-2/60 p-5 space-y-2 hover:border-status transition-colors block sm:col-span-2"
+      >
+        <p class="font-mono text-xs uppercase tracking-wider text-status">Thomas More · Campus Geel</p>
+        <h3 class="font-display text-base font-bold text-ink-primary">
+          {isNl ? 'Gastlessen, workshops & samenwerking met IT Factory' : 'Guest lectures, workshops & IT Factory collaboration'}
+        </h3>
+        <p class="text-xs text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Voor onderwijsgerelateerde vragen, RTC-workshops of samenwerking rond cloud, netwerken en cybersecurity binnen de opleiding.'
+            : 'For education inquiries, RTC workshops, or collaborations around cloud, networking, and cybersecurity.'}
+        </p>
+        <span class="inline-block pt-1 text-xs font-semibold text-status">
+          {isNl ? 'Naar Thomas More IT Factory →' : 'Visit Thomas More IT Factory →'}
+        </span>
+      </a>
     </div>
+  </div>
+)}
 
-    <p id="contact-feedback" class="hidden rounded-xl border p-3.5 text-sm" role="status" aria-live="polite"></p>
-  </form>
-</div>
-
-{turnstileSiteKey && (
+{isConfigured && turnstileSiteKey && (
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 )}
 
-<script is:inline define:vars={{ isNl }}>
-  (() => {
-    const bindContactForm = () => {
-      const form = document.getElementById('static-contact-form');
-      const feedback = document.getElementById('contact-feedback');
-      if (!form || !feedback || form.dataset.bound === '1') return;
-      form.dataset.bound = '1';
+{isConfigured && (
+  <script is:inline define:vars={{ isNl }}>
+    (() => {
+      const bindContactForm = () => {
+        const form = document.getElementById('static-contact-form');
+        const feedback = document.getElementById('contact-feedback');
+        if (!form || !feedback || form.dataset.bound === '1') return;
+        form.dataset.bound = '1';
 
-      function showFeedback(text, ok) {
-        feedback.textContent = text;
-        feedback.classList.remove('hidden', 'border-status/40', 'bg-status/10', 'border-kinetic/40', 'bg-kinetic/10');
-        if (ok) {
-          feedback.classList.add('border-status/40', 'bg-status/10', 'text-ink-primary');
-        } else {
-          feedback.classList.add('border-kinetic/40', 'bg-kinetic/10', 'text-ink-primary');
-        }
-      }
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const configured = form.getAttribute('data-configured') === 'true';
-        const endpoint = form.getAttribute('data-endpoint') || '';
-
-        const formData = new FormData(form);
-        if (formData.get('botcheck')) {
-          return;
-        }
-
-        const name = String(formData.get('name') || '').trim();
-        const email = String(formData.get('email') || '').trim();
-        const message = String(formData.get('message') || '').trim();
-
-        if (!name || !email.includes('@') || message.length < 5) {
-          showFeedback(
-            isNl
-              ? 'Vul minstens je naam, een geldig antwoordadres en een kort bericht in.'
-              : 'Please enter your name, a valid email address, and a short message.',
-            false
-          );
-          return;
-        }
-
-        if (!configured || !endpoint) {
-          showFeedback(
-            isNl
-              ? 'Het formulier wacht op een endpoint-sleutel in .env (Web3Forms / Formspree). Zie CONTENT-TODO.md om dit in één minuut te activeren.'
-              : 'This static form is awaiting an endpoint key in .env (Web3Forms / Formspree). See CONTENT-TODO.md to enable submissions.',
-            false
-          );
-          return;
-        }
-
-        try {
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            body: formData,
-            headers: { Accept: 'application/json' },
-          });
-          if (res.ok) {
-            form.reset();
-            showFeedback(
-              isNl ? 'Bedankt! Je bericht is succesvol verzonden.' : 'Thank you! Your message has been sent.',
-              true
-            );
+        function showFeedback(text, ok) {
+          feedback.textContent = text;
+          feedback.classList.remove('hidden', 'border-status/40', 'bg-status/10', 'border-kinetic/40', 'bg-kinetic/10');
+          if (ok) {
+            feedback.classList.add('border-status/40', 'bg-status/10', 'text-ink-primary');
           } else {
+            feedback.classList.add('border-kinetic/40', 'bg-kinetic/10', 'text-ink-primary');
+          }
+        }
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const endpoint = form.getAttribute('data-endpoint') || '';
+          const formData = new FormData(form);
+          if (formData.get('botcheck')) return;
+
+          const name = String(formData.get('name') || '').trim();
+          const email = String(formData.get('email') || '').trim();
+          const message = String(formData.get('message') || '').trim();
+
+          if (!name || !email.includes('@') || message.length < 5) {
             showFeedback(
-              isNl ? 'Verzenden mislukt bij het externe endpoint. Probeer later opnieuw.' : 'Submission failed at the form endpoint. Please try again later.',
+              isNl
+                ? 'Vul minstens je naam, een geldig antwoordadres en een kort bericht in.'
+                : 'Please enter your name, a valid email address, and a short message.',
+              false
+            );
+            return;
+          }
+
+          try {
+            const res = await fetch(endpoint, {
+              method: 'POST',
+              body: formData,
+              headers: { Accept: 'application/json' },
+            });
+            if (res.ok) {
+              form.reset();
+              showFeedback(
+                isNl ? 'Bedankt! Je bericht is goed aangekomen.' : 'Thank you! Your message has been sent.',
+                true
+              );
+            } else {
+              showFeedback(
+                isNl ? 'Verzenden lukte even niet. Probeer het later opnieuw.' : 'Could not send right now. Please try again later.',
+                false
+              );
+            }
+          } catch {
+            showFeedback(
+              isNl ? 'Netwerkfout tijdens het verzenden.' : 'Network error while submitting the form.',
               false
             );
           }
-        } catch {
-          showFeedback(
-            isNl ? 'Netwerkfout tijdens het verzenden.' : 'Network error while submitting the form.',
-            false
-          );
-        }
-      });
-    };
+        });
+      };
 
-    document.addEventListener('astro:page-load', bindContactForm);
-  })();
-</script>
+      document.addEventListener('astro:page-load', bindContactForm);
+    })();
+  </script>
+)}

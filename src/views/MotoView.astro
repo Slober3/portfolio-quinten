@@ -15,26 +15,36 @@ const { locale } = Astro.props;
 const isNl = locale === 'nl';
 const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': featuredVideos.map((v) => ({
-    '@type': 'VideoObject',
-    name: v.title[locale],
-    description: v.notes[locale],
-    thumbnailUrl: `${siteBase}/favicon.svg`,
-    uploadDate: '2025-08-18T12:00:00+02:00',
-    embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
-    author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
-  })),
-};
+const embeddedVideos = featuredVideos.filter((v) => v.youtubeId && v.youtubeId.trim().length >= 8);
+
+const jsonLd = embeddedVideos.length > 0
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': embeddedVideos.map((v) => ({
+        '@type': 'VideoObject',
+        name: v.title[locale],
+        description: v.notes[locale],
+        thumbnailUrl: `${siteBase}/favicon.svg`,
+        uploadDate: '2025-08-18T12:00:00+02:00',
+        embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
+        author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
+      })),
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: isNl ? 'MotoAdventures (@QuintenMoto)' : 'MotoAdventures (@QuintenMoto)',
+      url: `${siteBase}/${locale}/moto/`,
+      author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
+    };
 ---
 
 <EditorialLayout
   locale={locale}
   title={isNl ? 'MotoAdventures (@QuintenMoto) — Quinten Desmyter' : 'MotoAdventures (@QuintenMoto) — Quinten Desmyter'}
   description={isNl
-    ? 'Honda CB750 Hornet (~35.000 km), bochtige binnendoorwegen via Kurviger/Calimoto, Spa-Francorchamps Bikers’Festival 2025, DJI-rig en ±5 km OpSec GPX-kaart.'
-    : 'Honda CB750 Hornet (~35,000 km), twisty backroads via Kurviger/Calimoto, Spa-Francorchamps Bikers’Festival 2025, DJI rig, and ±5 km OpSec GPX map.'}
+    ? 'Motorritten op mijn Honda CB750 Hornet (~35.000 km) door de Ardennen en Eifel, Spa-Francorchamps Bikers’Festival 2025, DJI-cameraopstelling en GPX-route.'
+    : 'Backroad rides on my Honda CB750 Hornet (~35,000 km) across the Ardennes and Eifel, Spa-Francorchamps Bikers’Festival 2025, DJI rig, and GPX route.'}
   jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
@@ -50,13 +60,13 @@ const jsonLd = {
 
       <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
         {isNl
-          ? 'Honda CB750 Hornet (~35.000 km): bochtenwerk buiten de snelweg.'
-          : 'Honda CB750 Hornet (~35,000 km): chasing twisties off the highway.'}
+          ? 'Honda CB750 Hornet (~35.000 km): het liefst ver weg van de snelweg.'
+          : 'Honda CB750 Hornet (~35,000 km): happiest far off the highway.'}
       </h1>
       <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
-          ? 'Elke rit draait om bochtige binnendoorwegen uitgestippeld met Kurviger, Calimoto en Waze — van de Belgische Ardennen tot de Duitse Eifel (zoals Trier – Nürburg) — en zes testritten op één dag tijdens het Spa-Francorchamps Bikers’Festival.'
-          : 'Every ride prioritizes winding backroads curated via Kurviger, Calimoto, and Waze — from the Belgian Ardennes to the German Eifel (including Trier – Nürburg) — plus six back-to-back test rides at Spa-Francorchamps Bikers’Festival.'}
+          ? 'Motorrijden is voor mij de beste manier om mijn hoofd leeg te maken. Met Kurviger, Calimoto en Waze zoek ik bochtige binnendoorwegen op door de Belgische Ardennen en de Duitse Eifel — zoals de prachtige lijn tussen Trier en Nürburg — en leg ik onderweg stukjes vast voor @QuintenMoto.'
+          : 'Riding is my favorite way to clear my head. With Kurviger, Calimoto, and Waze I seek out twisty backroads through the Belgian Ardennes and German Eifel — like the stretch from Trier to Nürburg — filming rides along the way for @QuintenMoto.'}
       </p>
 
       <div class="flex flex-wrap gap-2 pt-1">
@@ -73,19 +83,19 @@ const jsonLd = {
       </div>
     </header>
 
-    <div class="aspect-[21/8] overflow-hidden rounded-2xl border border-border-subtle">
-      <EditorialVisuals kind="hornet" />
+    <div class="aspect-[21/9] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+      <EditorialVisuals kind="hornet" locale={locale} eager={true} sizes="(max-width: 1152px) 96vw, 1120px" />
     </div>
 
-    <!-- Video Facades (youtube-nocookie, zero preload) -->
+    <!-- Video Stories (@QuintenMoto) -->
     <section class="space-y-6">
       <div class="flex flex-wrap items-baseline justify-between gap-2">
         <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          {isNl ? 'Videoreportages (@QuintenMoto)' : 'Ride Videos (@QuintenMoto)'}
+          {isNl ? 'Ritten op video (@QuintenMoto)' : 'Ride videos (@QuintenMoto)'}
         </h2>
-        <span class="font-mono text-xs text-status">
-          {isNl ? 'Privacy-first facade · Nul YouTube-cookies vóór Play' : 'Privacy-first facade · Zero YouTube requests before Play'}
-        </span>
+        <a href={motoProfile.channelUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
+          {isNl ? 'Alle video’s op YouTube ↗' : 'All videos on YouTube ↗'}
+        </a>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -93,9 +103,10 @@ const jsonLd = {
           <YoutubeFacade
             locale={locale}
             videoId={v.youtubeId}
+            channelUrl={v.channelUrl}
+            photoKind={v.photoKind}
             title={v.title[locale]}
-            playLabel={isNl ? `Speel video: ${v.title.nl}` : `Play video: ${v.title.en}`}
-            isPlaceholder={v.isPlaceholder}
+            playLabel={isNl ? `Bekijk video: ${v.title.nl}` : `Watch video: ${v.title.en}`}
             meta={v.meta}
             notes={v.notes[locale]}
           />
@@ -105,11 +116,13 @@ const jsonLd = {
 
     <!-- Spa-Francorchamps 2025 Test Rides -->
     <section class="space-y-6">
-      <div>
-        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">16 AUGUSTUS 2025 · CIRCUIT-REGIO SPA</p>
-        <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          {isNl ? 'Spa-Francorchamps Bikers’Festival: 6 Testritten' : 'Spa-Francorchamps Bikers’Festival: 6 Test Rides'}
-        </h2>
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-wider text-kinetic">16 AUGUSTUS 2025 · SPA-FRANCORCHAMPS</p>
+          <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+            {isNl ? 'Bikers’Festival: zes motoren op één dag getest' : 'Bikers’Festival: six bikes tested in one day'}
+          </h2>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -126,19 +139,19 @@ const jsonLd = {
     <!-- DJI Camera & Audio Rig -->
     <section class="space-y-6">
       <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-        {isNl ? 'Moto Camera- & Audiorig' : 'Moto Camera & Audio Rig'}
+        {isNl ? 'Camera & geluid op de motor' : 'Onboard camera & audio setup'}
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {motoProfile.cameraRig.map((gear) => (
           <div class="editorial-card rounded-2xl p-5 space-y-1.5">
             <h3 class="font-display text-base font-bold text-ink-primary">{gear.name}</h3>
-            <p class="text-sm text-ink-secondary">{gear.role[locale]}</p>
+            <p class="text-sm text-ink-secondary leading-relaxed">{gear.role[locale]}</p>
           </div>
         ))}
       </div>
     </section>
 
-    <!-- Interactive Lazy-Loaded MapLibre GPX Viewer -->
+    <!-- Interactive Route Map -->
     <MotoRouteMap locale={locale} />
   </div>
 </EditorialLayout>

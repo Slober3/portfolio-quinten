@@ -1,9 +1,10 @@
 export const externalLinks = {
   github: 'https://github.com/Slober3',
   youtubeMoto: 'https://www.youtube.com/@QuintenMoto',
+  thomasMore: 'https://thomasmore.be/nl/opleidingen/professionele-bachelor/toegepaste-informatica',
   thomasMoreRtc: 'https://thomasmore.be/nl/vormingen/datacommunicatie-en-netwerken',
   pcbWaySvejr: 'https://www.pcbway.com/project/share/Home__Domotica_Svejr_Station.html',
-  // Vul deze optionele URL's aan in CONTENT-TODO.md zodra je je publieke profielen wilt koppelen:
+  // Optionele publieke profielen — worden automatisch getoond zodra een URL wordt ingevuld:
   linkedin: '',
   instagram: '',
   shutterstock: '',
@@ -19,8 +20,8 @@ export const books = [
     inLanguage: 'nl',
     buyUrl: 'https://www.bol.com/be/nl/p/thoughts-on-cyber-security/9300000004610620/',
     description: {
-      nl: 'Praktische en fundamentele inzichten over moderne cybersecurity-dreigingen, preventie en menselijk bewustzijn.',
-      en: 'Practical and foundational insights on modern cybersecurity threats, defense hygiene, and human awareness.',
+      nl: 'Praktische inzichten over hedendaagse cybersecurity-dreigingen, preventie en de menselijke factor achter veilige systemen.',
+      en: 'Practical perspectives on modern cybersecurity threats, everyday defense hygiene, and the human factor behind secure systems.',
     },
   },
   {
@@ -32,8 +33,8 @@ export const books = [
     inLanguage: 'nl',
     buyUrl: 'https://www.bol.com/be/nl/p/informatica/9300000008283801/',
     description: {
-      nl: 'Compact, toegankelijk handboek dat beginnende programmeurs stap voor stap begeleidt van logica naar leesbare Python-code.',
-      en: 'Compact handbook guiding beginners step-by-step from algorithmic thinking to clean, readable Python code.',
+      nl: 'Een compact en toegankelijk handboek dat beginners stap voor stap meeneemt van logisch denken naar heldere Python-code.',
+      en: 'A compact, approachable handbook guiding beginners step-by-step from structured thinking to clean Python code.',
     },
   },
 ];
@@ -48,8 +49,8 @@ export const timeline = [
     },
     org: 'Thomas More Hogeschool · IT Factory (Campus Geel)',
     details: {
-      nl: 'Docent in de Nederlandstalige (1ITF) en Engelstalige (1ACS) opleidingen Toegepaste Informatica: Cloud & Infrastructure (AWS, Docker, Kubernetes, Linux), Windows SysAdmin (Active Directory, Systems as Code, PowerShell), Cisco CCNA 1 & 2 en IoT/Electronics. Daarnaast ben ik ook actief als coach bij studentenorganisatie SIN.',
-      en: 'Teaching in both Dutch (1ITF) and English (1ACS) Applied Computer Science tracks: Cloud & Infrastructure (AWS, Docker, Kubernetes, Linux), Windows SysAdmin (Active Directory, Systems as Code, PowerShell), Cisco CCNA 1 & 2, and IoT/Electronics. I am also involved as a coach at student organization SIN.',
+      nl: 'Ik geef les in zowel de Nederlandstalige (1ITF) als Engelstalige (1ACS) opleidingen Toegepaste Informatica: Cloud & Infrastructure (AWS, Docker, Kubernetes, Linux), Windows SysAdmin (Active Directory, Systems as Code, PowerShell), Cisco CCNA 1 & 2 en IoT/Electronics. Daarnaast ben ik ook betrokken als coach bij studentenorganisatie SIN.',
+      en: 'Teaching across both Dutch (1ITF) and English (1ACS) Applied Computer Science tracks: Cloud & Infrastructure (AWS, Docker, Kubernetes, Linux), Windows SysAdmin (Active Directory, Systems as Code, PowerShell), Cisco CCNA 1 & 2, and IoT/Electronics. Alongside teaching, I am also involved as a coach at student organization SIN.',
     },
   },
   {
@@ -61,34 +62,34 @@ export const timeline = [
     },
     org: 'RTC Antwerpen · Datacommunicatie & Netwerken',
     details: {
-      nl: 'Begeleiden van praktijkgerichte Cisco-netwerkworkshops en kennisoverdracht naar collega-leerkrachten in de provincie Antwerpen.',
-      en: 'Delivering hands-on Cisco networking labs and Train-the-Trainer sessions for STEM teachers across the Antwerp province.',
+      nl: 'Begeleiden van praktijkgerichte Cisco-netwerkworkshops en kennisdeling met collega-leerkrachten uit het secundair onderwijs in de provincie Antwerpen.',
+      en: 'Leading hands-on Cisco networking workshops and Train-the-Trainer sessions for STEM teachers across the Antwerp province.',
     },
   },
   {
     period: '2020',
     periodEn: '2020',
     role: {
-      nl: 'Auteur van twee educatieve IT-handboeken',
-      en: 'Author of two educational IT handbooks',
+      nl: 'Auteur van twee IT-handboeken',
+      en: 'Author of two IT handbooks',
     },
-    org: 'Zelfstandige publicaties (ISBN 9798651810475 & 9798654331892)',
+    org: 'Eigen uitgave · ISBN 9798651810475 & 9798654331892',
     details: {
-      nl: 'Publicatie van Thoughts on cyber security en Informatica: Programmeren met Python als toegankelijke brug naar het werkveld.',
-      en: 'Published Thoughts on cyber security and Informatica: Programmeren met Python to bridge theory and real-world engineering.',
+      nl: 'Publicatie van Thoughts on cyber security en Informatica: Programmeren met Python — geschreven om de drempel richting het echte werkveld te verlagen.',
+      en: 'Published Thoughts on cyber security and Informatica: Programmeren met Python to bridge classroom theory and practical engineering.',
     },
   },
   {
-    period: 'Opleiding & Studentenvertegenwoordiging',
+    period: 'Opleiding & onderwijsbeleid',
     periodEn: 'Education & Governance',
     role: {
-      nl: 'Prof. Bachelor Elektronica-ICT & Pedagogisch Getuigschrift Informatica/Techniek',
+      nl: 'Prof. Bachelor Elektronica-ICT & Pedagogisch Getuigschrift',
       en: 'B.Sc. Electronics-ICT & Pedagogical Teaching Certificate',
     },
-    org: 'VTI · VVS / VLOR curriculumkwaliteit',
+    org: 'Elektronica-ICT · VTI-praktijkervaring · VVS / VLOR',
     details: {
-      nl: 'Gecombineerde technische basis in Elektronica-ICT met onderwijservaring (o.a. VTI Lier-praktijkervaring) en beleidsmatige inbreng namens de Vlaamse Vereniging van Studenten (VVS) in VLOR-publicaties rond hogeronderwijscurricula.',
-      en: 'Combined Electronics-ICT engineering degree with formal teaching pedagogy and Flemish higher-education quality assurance participation via VVS & VLOR.',
+      nl: 'Een technische basis in Elektronica-ICT gecombineerd met pedagogische scholing, leservaring (o.a. VTI Lier) en beleidsmatige betrokkenheid via de Vlaamse Vereniging van Studenten (VVS) in VLOR-publicaties rond curriculumkwaliteit.',
+      en: 'Combining an Electronics-ICT engineering background with formal teaching pedagogy, secondary-school practice, and student representation via VVS and VLOR.',
     },
   },
 ];
@@ -96,11 +97,11 @@ export const timeline = [
 export const githubHighlights = [
   {
     name: 'PotHead',
-    stack: 'PHP · Security Deception',
+    stack: 'PHP · Security',
     url: 'https://github.com/Slober3/PotHead',
     description: {
-      nl: 'Modulaire PHP web-honeypot die geautomatiseerde probes en credential-stuffing registreert voor analyse in het onderwijs.',
-      en: 'Modular PHP web honeypot capturing automated probes and credential-stuffing payloads for classroom threat analysis.',
+      nl: 'Een modulaire PHP web-honeypot die geautomatiseerde aanvalspogingen registreert zodat studenten echte aanvalspatronen kunnen analyseren.',
+      en: 'A modular PHP web honeypot that logs automated probing and credential-stuffing attempts for hands-on classroom analysis.',
     },
   },
   {
@@ -108,35 +109,35 @@ export const githubHighlights = [
     stack: 'C++ · ESP32 · IoT',
     url: 'https://github.com/Slober3/ESP32-Public-Honeypot',
     description: {
-      nl: 'Lichtgewicht microcontroller-honeypot die ongeoorloofde scanpogingen op IoT-poorten zichtbaar maakt.',
-      en: 'Lightweight microcontroller honeypot exposing automated port scanning against simulated IoT endpoints.',
+      nl: 'Lichtgewicht honeypot op een ESP32-microcontroller die zichtbaar maakt hoe snel IoT-poorten op het internet gescand worden.',
+      en: 'Lightweight microcontroller honeypot demonstrating how quickly exposed IoT ports attract automated scanning.',
     },
   },
   {
     name: 'BeeHive',
-    stack: 'IoT · Embedded Telemetry',
+    stack: 'IoT · Sensoren',
     url: 'https://github.com/Slober3/BeeHive',
     description: {
-      nl: 'Open-source IoT-opstelling voor continue omgevingsmeting en telemetrie in een slimme bijenkast.',
-      en: 'Open-source IoT telemetry node built for continuous environmental monitoring inside a beehive.',
+      nl: 'Open-source sensoropstelling om temperatuur, luchtvochtigheid en activiteit in een slimme bijenkast op te volgen.',
+      en: 'Open-source sensor setup for tracking temperature, humidity, and activity inside a connected beehive.',
     },
   },
   {
     name: 'Pester-Test-Examples',
-    stack: 'PowerShell · Pester · IaC',
+    stack: 'PowerShell · Pester',
     url: 'https://github.com/Slober3/Pester-Test-Examples',
     description: {
-      nl: 'Praktijkvoorbeelden om Windows Server-configuraties, Active Directory en DNS automatisch te verifiëren met Pester.',
-      en: 'Hands-on Pester test suites verifying Windows Server roles, Active Directory state, and DNS determinism.',
+      nl: 'Praktische Pester-tests waarmee Windows Server, Active Directory en DNS automatisch op correcte configuratie worden nagekeken.',
+      en: 'Practical Pester test suites verifying Windows Server roles, Active Directory state, and DNS automatically.',
     },
   },
   {
     name: 'ScraperAfspraakCheckerGemeente',
-    stack: 'Python · Selenium · Automation',
+    stack: 'Python · Selenium',
     url: 'https://github.com/Slober3/ScraperAfspraakCheckerGemeente',
     description: {
-      nl: 'Pragmatisch Python/Selenium-script dat automatisch beschikbare gemeentelijke afspraakslots opvolgt — techniek inzetten tegen dagelijkse frictie.',
-      en: 'Pragmatic Python/Selenium automation monitoring municipal appointment availability — applying code to everyday friction.',
+      nl: 'Een nuchter Python-script dat automatisch beschikbare gemeentelijke afspraakslots opvolgt — code inzetten tegen alledaagse frustratie.',
+      en: 'A pragmatic Python script that monitors municipal appointment slots — using code to remove everyday friction.',
     },
   },
   {
@@ -144,8 +145,8 @@ export const githubHighlights = [
     stack: 'Custom PCB · PCBWay',
     url: 'https://www.pcbway.com/project/share/Home__Domotica_Svejr_Station.html',
     description: {
-      nl: 'Zelf ontworpen en geproduceerd printplaat-project voor modulaire thuisautomatisering en sensormetingen.',
-      en: 'Custom-designed and fabricated PCB node built for modular home telemetry and sensing.',
+      nl: 'Een zelf ontworpen en geproduceerde printplaat voor modulaire thuisautomatisering en omgevingsmetingen.',
+      en: 'A custom-designed and fabricated PCB built for modular home sensing and automation.',
     },
   },
 ];
