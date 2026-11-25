@@ -22,27 +22,27 @@ const entries = (await getCollection('projects', (e) => e.data.locale === locale
     ? 'Eigen projecten van Quinten Desmyter: bordspel Weavers Fate, schietsport & beeldherkenning, IoT-honeypots en eigen printplaatontwerp.'
     : 'Personal projects by Quinten Desmyter: Weavers Fate dice game, sport shooting & computer vision, IoT honeypots, and custom PCB design.'}
 >
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
-    <header class="space-y-4 border-b border-border-subtle pb-10">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+    <header class="space-y-3 border-b border-border-subtle pb-8">
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
         {isNl ? 'EIGEN PROJECTEN' : 'PERSONAL PROJECTS'}
       </p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+      <h1 class="font-display text-3xl sm:text-5xl font-bold leading-[1.08] text-ink-primary">
         {isNl ? 'Spelontwerp, software en eigen hardware.' : 'Game design, software, and custom hardware.'}
       </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+      <p class="text-base sm:text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
-          ? 'Een selectie van projecten waar ik in mijn vrije tijd en voor mijn lessen aan werk — van een strategisch blufspel met dobbelstenen tot beeldherkenning op schietschijven en kleine elektronicaborden.'
+          ? 'Een selectie van projecten waar ik in mijn vrije tijd en voor mijn lessen aan werk — van een strategisch blufspel met dobbelstenen tot beeldherkenning op schietschijven en zelf ontworpen printplaten.'
           : 'A selection of projects I build across teaching and spare time — from a strategic tabletop dice game to target-scoring vision experiments and custom circuit boards.'}
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {entries.map((proj) => {
         const href = `${STATIC_ROUTES.projects[locale]}${proj.data.slug}/`;
         return (
           <article class="editorial-card rounded-2xl overflow-hidden flex flex-col">
-            <a href={href} class="group block aspect-[16/10] overflow-hidden border-b border-border-subtle bg-surface-2">
+            <a href={href} class="group block aspect-[16/9] overflow-hidden border-b border-border-subtle bg-surface-2">
               <EditorialVisuals
                 kind={proj.data.visualKind}
                 locale={locale}
@@ -51,7 +51,7 @@ const entries = (await getCollection('projects', (e) => e.data.locale === locale
               />
             </a>
             <div class="p-6 flex-1 flex flex-col justify-between gap-4">
-              <div class="space-y-2.5">
+              <div class="space-y-2">
                 <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px]">
                   <span class="uppercase tracking-wider text-kinetic">{proj.data.category}</span>
                   <span class="text-status">{proj.data.status}</span>

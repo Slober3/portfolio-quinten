@@ -19,33 +19,34 @@ const isNl = locale === 'nl';
     ? 'Waar Quinten Desmyter momenteel mee bezig is: lesgeven aan Thomas More, motorritten, Hokema B17 kalimba, laser-cutting en goede sci-fi verhalen.'
     : 'What Quinten Desmyter is focused on right now: teaching at Thomas More, motorcycle trips, Hokema B17 kalimba, laser-cutting, and sci-fi fiction.'}
 >
-  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
-    <header class="space-y-4 border-b border-border-subtle pb-8">
-      <p class="font-mono text-xs uppercase tracking-[0.16em] text-kinetic">{nowSection.updatedLabel[locale]}</p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-        {isNl ? 'Waar ik nu mee bezig ben' : 'What I’m doing now'}
-      </h1>
-      <p class="text-lg text-ink-secondary leading-relaxed">
-        {isNl
-          ? 'Een korte momentopname van wat mij de voorbije maanden bezighoudt — voor de klas, in mijn vrije tijd en op mijn werktafel.'
-          : 'A short snapshot of where my attention goes these days — in the classroom, out on the road, and at the craft desk.'}
-      </p>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div class="lg:col-span-7 editorial-card rounded-2xl p-6 sm:p-8 flex flex-col justify-center space-y-3">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-kinetic">{nowSection.updatedLabel[locale]}</p>
+        <h1 class="font-display text-3xl sm:text-5xl font-bold leading-[1.08] text-ink-primary">
+          {isNl ? 'Waar ik nu mee bezig ben' : 'What I’m doing now'}
+        </h1>
+        <p class="text-base text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Een korte momentopname van wat mij de voorbije maanden bezighoudt — voor de klas, in mijn vrije tijd, op de motor en thuis met Stitch.'
+            : 'A short snapshot of where my attention goes these days — in the classroom, out on the Hornet, at the craft desk, and home with Stitch.'}
+        </p>
+      </div>
+      <div class="lg:col-span-5 aspect-[16/10] lg:aspect-auto overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+        <EditorialVisuals kind="hornetSquare" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 460px" />
+      </div>
     </header>
 
-    <div class="aspect-[21/9] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-      <EditorialVisuals kind="craft" locale={locale} eager={true} sizes="(max-width: 900px) 96vw, 840px" />
-    </div>
-
-    <dl class="divide-y divide-border-subtle border-y border-border-subtle">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
       {nowSection.items.map((item) => (
-        <div class="py-6 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-3 md:gap-8">
-          <dt class="font-mono text-xs uppercase tracking-wider text-telemetry font-semibold">
+        <article class="editorial-card rounded-2xl p-6 space-y-2">
+          <p class="font-mono text-xs uppercase tracking-wider text-telemetry font-semibold">
             {item.label[locale]}
-          </dt>
-          <dd class="text-base text-ink-primary leading-relaxed">{item.value[locale]}</dd>
-        </div>
+          </p>
+          <p class="text-base text-ink-primary leading-relaxed">{item.value[locale]}</p>
+        </article>
       ))}
-    </dl>
+    </div>
 
     <p class="font-mono text-xs text-ink-secondary">
       {isNl ? 'Benieuwd naar mijn vaste uitrusting?' : 'Curious about my everyday gear?'}{' '}

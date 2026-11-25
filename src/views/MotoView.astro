@@ -15,98 +15,105 @@ const { locale } = Astro.props;
 const isNl = locale === 'nl';
 const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
 
-const embeddedVideos = featuredVideos.filter((v) => v.youtubeId && v.youtubeId.trim().length >= 8);
-
-const jsonLd = embeddedVideos.length > 0
-  ? {
-      '@context': 'https://schema.org',
-      '@graph': embeddedVideos.map((v) => ({
-        '@type': 'VideoObject',
-        name: v.title[locale],
-        description: v.notes[locale],
-        thumbnailUrl: `${siteBase}/favicon.svg`,
-        uploadDate: '2025-08-18T12:00:00+02:00',
-        embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
-        author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
-      })),
-    }
-  : {
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: isNl ? 'MotoAdventures (@QuintenMoto)' : 'MotoAdventures (@QuintenMoto)',
-      url: `${siteBase}/${locale}/moto/`,
-      author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
-    };
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': featuredVideos.map((v) => ({
+    '@type': 'VideoObject',
+    name: v.title[locale],
+    description: v.notes[locale],
+    thumbnailUrl: `https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg`,
+    uploadDate: '2025-08-18T12:00:00+02:00',
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
+    contentUrl: `https://www.youtube.com/watch?v=${v.youtubeId}`,
+    author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
+  })),
+};
 ---
 
 <EditorialLayout
   locale={locale}
   title={isNl ? 'MotoAdventures (@QuintenMoto) — Quinten Desmyter' : 'MotoAdventures (@QuintenMoto) — Quinten Desmyter'}
   description={isNl
-    ? 'Motorritten op mijn Honda CB750 Hornet (~35.000 km) door de Ardennen en Eifel, Spa-Francorchamps Bikers’Festival 2025, DJI-cameraopstelling en GPX-route.'
-    : 'Backroad rides on my Honda CB750 Hornet (~35,000 km) across the Ardennes and Eifel, Spa-Francorchamps Bikers’Festival 2025, DJI rig, and GPX route.'}
+    ? 'Motorritten op mijn gele Honda CB750 Hornet (~35.000 km) door de Ardennen en Eifel, directe YouTube-video’s van @QuintenMoto, Spa-Francorchamps Bikers’Festival 2025 en GPX-route.'
+    : 'Backroad rides on my yellow Honda CB750 Hornet (~35,000 km) across the Ardennes and Eifel, direct @QuintenMoto YouTube videos, Spa-Francorchamps Bikers’Festival 2025, and GPX route.'}
   jsonLd={jsonLd}
 >
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
-    <header class="space-y-5 border-b border-border-subtle pb-10">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <p class="font-mono text-xs uppercase tracking-[0.16em] text-kinetic">
-          MOTOADVENTURES · {motoProfile.handle}
-        </p>
-        <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
-          YouTube {motoProfile.handle} ↗
-        </a>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+    <!-- Hero + Real Yellow Hornet Action Photo -->
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div class="lg:col-span-6 editorial-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-5">
+        <div class="space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-kinetic">
+              MOTOADVENTURES · {motoProfile.handle}
+            </p>
+            <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
+              YouTube {motoProfile.handle} ↗
+            </a>
+          </div>
+
+          <h1 class="font-display text-3xl sm:text-4xl font-bold leading-[1.08] text-ink-primary">
+            {isNl
+              ? 'Honda CB750 Hornet (~35.000 km): het liefst ver weg van de snelweg.'
+              : 'Honda CB750 Hornet (~35,000 km): happiest far off the highway.'}
+          </h1>
+          <p class="text-base text-ink-secondary leading-relaxed">
+            {isNl
+              ? 'Motorrijden is voor mij de beste manier om mijn hoofd leeg te maken. Met Kurviger, Calimoto en Waze zoek ik bochtige binnendoorwegen op door de Ardennen en de Duitse Eifel — zoals Trier naar Nürburg — en deel ik mijn ritten en testritten rechtstreeks op @QuintenMoto.'
+              : 'Riding is my favorite way to clear my head. With Kurviger, Calimoto, and Waze I seek out twisty backroads across the Ardennes and German Eifel — like Trier to Nürburg — sharing rides and test rides directly on @QuintenMoto.'}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-3 border-t border-border-subtle">
+          {motoProfile.navigationApps.map((app) => (
+            <span class="rounded-full border border-border-subtle bg-surface-2 px-3 py-1 font-mono text-xs text-ink-primary">
+              {app}
+            </span>
+          ))}
+          {motoProfile.regions[locale].map((reg) => (
+            <span class="rounded-full border border-kinetic/30 bg-kinetic/10 px-3 py-1 font-mono text-xs text-kinetic">
+              {reg}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
-        {isNl
-          ? 'Honda CB750 Hornet (~35.000 km): het liefst ver weg van de snelweg.'
-          : 'Honda CB750 Hornet (~35,000 km): happiest far off the highway.'}
-      </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
-        {isNl
-          ? 'Motorrijden is voor mij de beste manier om mijn hoofd leeg te maken. Met Kurviger, Calimoto en Waze zoek ik bochtige binnendoorwegen op door de Belgische Ardennen en de Duitse Eifel — zoals de prachtige lijn tussen Trier en Nürburg — en leg ik onderweg stukjes vast voor @QuintenMoto.'
-          : 'Riding is my favorite way to clear my head. With Kurviger, Calimoto, and Waze I seek out twisty backroads through the Belgian Ardennes and German Eifel — like the stretch from Trier to Nürburg — filming rides along the way for @QuintenMoto.'}
-      </p>
-
-      <div class="flex flex-wrap gap-2 pt-1">
-        {motoProfile.navigationApps.map((app) => (
-          <span class="rounded-full border border-border-subtle bg-surface-1 px-3.5 py-1 font-mono text-xs text-ink-primary">
-            {app}
-          </span>
-        ))}
-        {motoProfile.regions[locale].map((reg) => (
-          <span class="rounded-full border border-kinetic/30 bg-kinetic/10 px-3.5 py-1 font-mono text-xs text-kinetic">
-            {reg}
-          </span>
-        ))}
+      <div class="lg:col-span-6 grid grid-cols-12 gap-4">
+        <div class="col-span-12 sm:col-span-7 aspect-[3/2] sm:aspect-auto overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+          <EditorialVisuals kind="hornet" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 420px" />
+        </div>
+        <div class="col-span-12 sm:col-span-5 grid grid-cols-2 sm:grid-cols-1 sm:grid-rows-2 gap-4">
+          <div class="aspect-[4/3] sm:aspect-auto overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+            <EditorialVisuals kind="hornetSquare" locale={locale} eager={true} sizes="(max-width: 1024px) 48vw, 260px" />
+          </div>
+          <div class="aspect-[4/3] sm:aspect-auto overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+            <EditorialVisuals kind="motoSunset" locale={locale} eager={true} sizes="(max-width: 1024px) 48vw, 260px" />
+          </div>
+        </div>
       </div>
     </header>
 
-    <div class="aspect-[21/9] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-      <EditorialVisuals kind="hornet" locale={locale} eager={true} sizes="(max-width: 1152px) 96vw, 1120px" />
-    </div>
-
-    <!-- Video Stories (@QuintenMoto) -->
-    <section class="space-y-6">
-      <div class="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          {isNl ? 'Ritten op video (@QuintenMoto)' : 'Ride videos (@QuintenMoto)'}
-        </h2>
-        <a href={motoProfile.channelUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
-          {isNl ? 'Alle video’s op YouTube ↗' : 'All videos on YouTube ↗'}
+    <!-- All 4 Direct Embedded @QuintenMoto YouTube Videos -->
+    <section class="space-y-5">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-border-subtle pb-3">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-wider text-kinetic">YOUTUBE · @QUINTENMOTO</p>
+          <h2 class="mt-0.5 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+            {isNl ? 'Mijn video’s — direct af te spelen' : 'My videos — watch right here'}
+          </h2>
+        </div>
+        <a href={motoProfile.channelUrl} target="_blank" rel="noopener noreferrer" class="font-mono text-xs font-semibold text-telemetry hover:underline">
+          {isNl ? 'Abonneer op @QuintenMoto ↗' : 'Subscribe to @QuintenMoto ↗'}
         </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {featuredVideos.map((v) => (
           <YoutubeFacade
             locale={locale}
             videoId={v.youtubeId}
-            channelUrl={v.channelUrl}
-            photoKind={v.photoKind}
+            duration={v.duration}
             title={v.title[locale]}
-            playLabel={isNl ? `Bekijk video: ${v.title.nl}` : `Watch video: ${v.title.en}`}
             meta={v.meta}
             notes={v.notes[locale]}
           />
@@ -115,14 +122,12 @@ const jsonLd = embeddedVideos.length > 0
     </section>
 
     <!-- Spa-Francorchamps 2025 Test Rides -->
-    <section class="space-y-6">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="font-mono text-xs uppercase tracking-wider text-kinetic">16 AUGUSTUS 2025 · SPA-FRANCORCHAMPS</p>
-          <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-            {isNl ? 'Bikers’Festival: zes motoren op één dag getest' : 'Bikers’Festival: six bikes tested in one day'}
-          </h2>
-        </div>
+    <section class="space-y-5">
+      <div class="border-b border-border-subtle pb-3">
+        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">16 AUGUSTUS 2025 · SPA-FRANCORCHAMPS</p>
+        <h2 class="mt-0.5 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Bikers’ Festival: zes motoren op één dag getest' : 'Bikers’ Festival: six bikes tested in one day'}
+        </h2>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -137,8 +142,8 @@ const jsonLd = embeddedVideos.length > 0
     </section>
 
     <!-- DJI Camera & Audio Rig -->
-    <section class="space-y-6">
-      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+    <section class="space-y-5">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary border-b border-border-subtle pb-3">
         {isNl ? 'Camera & geluid op de motor' : 'Onboard camera & audio setup'}
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

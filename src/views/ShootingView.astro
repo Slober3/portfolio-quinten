@@ -1,6 +1,5 @@
 ---
 import EditorialLayout from '@/layouts/EditorialLayout.astro';
-import EditorialVisuals from '@/components/EditorialVisuals.astro';
 import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
 
 interface Props {
@@ -56,53 +55,65 @@ const legalSteps = [
     ? 'VSK-sportschutter bij LEDO Lier: de gids "From Zero to Item" over de Belgische wapenwetgeving, persoonlijke trainingsstatistieken en beeldherkenning op schietschijven.'
     : 'VSK sport shooter at LEDO Lier: the "From Zero to Item" guide to Belgian regulation, personal training logs, and target-scoring vision experiments.'}
 >
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
-    <header class="space-y-5 border-b border-border-subtle pb-10">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+    <header class="editorial-card rounded-2xl p-6 sm:p-8 space-y-4">
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-status">
         VSK / LEDO LIER · {isNl ? 'VEILIGHEID & PRECISIE' : 'SAFETY & PRECISION'}
       </p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+      <h1 class="font-display text-3xl sm:text-5xl font-bold leading-[1.08] text-ink-primary">
         {isNl
           ? 'Schietsport, Belgische wetgeving & trainingsdata.'
           : 'Sport shooting, Belgian regulation & training data.'}
       </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+      <p class="text-base sm:text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
           ? 'Als gelicentieerd VSK-sportschutter bij LEDO Lier trek ik naar de schietstand voor rust, ademhaling en herhaalbare precisie. Omdat startende schutters vaak door de bomen het wettelijke bos niet meer zien, schreef ik een helder stappenplan — en kijk ik vanuit mijn IT-achtergrond naar geautomatiseerde doelkaart-analyse.'
           : 'As a licensed VSK sport shooter at LEDO Lier, I enjoy the sport for its calm focus, breathing discipline, and repeatable technique. Because newcomers often find Belgian regulations confusing, I put together a clear roadmap — alongside an IT side project exploring automated target scoring.'}
       </p>
     </header>
 
-    <div class="aspect-[21/9] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-      <EditorialVisuals kind="cvTarget" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 960px" />
-    </div>
-
     <!-- Web Guide: From Zero to Item -->
-    <section class="space-y-8">
-      <div class="space-y-2">
+    <section class="space-y-6">
+      <div class="border-b border-border-subtle pb-3 space-y-1">
         <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
           {isNl ? 'STAPPENPLAN · BELGISCHE WAPENWETGEVING' : 'ROADMAP · BELGIAN REGULATION'}
         </p>
         <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
           “From Zero to Item” — {isNl ? 'Van eerste proefbeurt tot sportschutterslicentie' : 'From first supervised visit to full sport license'}
         </h2>
-        <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
-          {isNl
-            ? 'Een nuchter overzicht van de vijf wettelijke stappen voor aspirant-sportschutters in Vlaanderen (VSK), met veiligheid steeds op plaats één.'
-            : 'A practical overview of the five statutory steps for aspiring sport shooters in Flanders (VSK), always putting safety first.'}
-        </p>
       </div>
 
-      <div class="divide-y divide-border-subtle border-y border-border-subtle">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {legalSteps.map((s) => (
-          <article class="py-6 grid grid-cols-1 md:grid-cols-[100px_1fr] gap-3 md:gap-8">
-            <span class="font-mono text-lg font-bold text-kinetic">{s.step}</span>
-            <div class="space-y-2">
-              <h3 class="font-display text-xl font-bold text-ink-primary">{s.title}</h3>
-              <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{s.body}</p>
-            </div>
+          <article class="editorial-card rounded-2xl p-6 space-y-2">
+            <span class="font-mono text-sm font-bold text-kinetic">{s.step}</span>
+            <h3 class="font-display text-lg font-bold text-ink-primary">{s.title}</h3>
+            <p class="text-sm text-ink-secondary leading-relaxed">{s.body}</p>
           </article>
         ))}
+
+        <!-- 6th Card fills the 2-col grid evenly with the Computer Vision link! -->
+        <article class="editorial-card rounded-2xl p-6 flex flex-col justify-between gap-4 border-telemetry/40">
+          <div class="space-y-2">
+            <span class="font-mono text-xs uppercase tracking-wider text-telemetry">
+              {isNl ? 'EIGEN TRAININGSDATA & OPENCV' : 'PERSONAL STATS & OPENCV'}
+            </span>
+            <h3 class="font-display text-lg font-bold text-ink-primary">
+              {isNl ? 'RangeBook, Shooting Companion & doelkaart-analyse' : 'RangeBook, Shooting Companion & target scoring'}
+            </h3>
+            <p class="text-sm text-ink-secondary leading-relaxed">
+              {isNl
+                ? 'Om mijn eigen vooruitgang op de baan bij te houden gebruik ik bestaande apps zoals RangeBook en Shooting Companion puur voor eigen gebruik. Vanuit die praktijk verken ik met OpenCV automatische scoreberekening op ISSF-doelkaarten.'
+                : 'To track my own range sessions privately, I use existing apps like RangeBook and Shooting Companion purely for personal stats, inspiring an OpenCV side project around ISSF target analysis.'}
+            </p>
+          </div>
+          <a
+            href={`${STATIC_ROUTES.projects[locale]}${isNl ? 'schietsport-computer-vision/' : 'shooting-computer-vision/'}`}
+            class="font-mono text-xs font-semibold text-telemetry hover:underline pt-2 border-t border-border-subtle"
+          >
+            {isNl ? 'Lees meer over het Computer Vision project →' : 'Read about the Computer Vision project →'}
+          </a>
+        </article>
       </div>
 
       <aside class="rounded-xl border border-border-subtle bg-surface-1 p-5 text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -113,31 +124,6 @@ const legalSteps = [
           ? 'Deze pagina is uitsluitend informatief en educatief bedoeld. Er worden op deze website nooit vuurwapens of munitie te koop aangeboden (conform Art. 19 Wapenwet). Raadpleeg steeds de actuele publicaties van de VSK en FOD Justitie voor bindende wetteksten.'
           : 'This page is strictly educational and informational. No firearms or ammunition are ever offered for sale here (per Art. 19 of the Belgian Weapons Act). Always consult official VSK and Federal Justice texts for binding legal obligations.'}
       </aside>
-    </section>
-
-    <!-- Honest Personal Stats & OpenCV Link -->
-    <section class="editorial-card rounded-2xl p-6 sm:p-8 space-y-4">
-      <p class="font-mono text-xs uppercase tracking-wider text-telemetry">
-        {isNl ? 'EIGEN TRAININGSDATA & BEELDHERKENNING' : 'PERSONAL TRAINING STATS & COMPUTER VISION'}
-      </p>
-      <h2 class="font-display text-2xl font-bold text-ink-primary">
-        {isNl
-          ? 'Persoonlijke statistieken en onderzoek rond doelkaarten'
-          : 'Personal training logs and automated target analysis'}
-      </h2>
-      <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
-        {isNl
-          ? 'Om mijn eigen vooruitgang op de baan netjes bij te houden gebruik ik bestaande apps zoals RangeBook en Shooting Companion puur voor persoonlijk gebruik. Vanuit die gewoonte onderzoek ik als technisch zijproject hoe Computer Vision (OpenCV) papieren 25m/50m ISSF-doelkaarten automatisch kan rechtzetten en uittellen.'
-          : 'To keep track of my own training progress privately, I use existing apps such as RangeBook and Shooting Companion purely for personal stats. That habit inspired a technical side project exploring how Computer Vision (OpenCV) can deskew and score 25m/50m paper ISSF targets automatically.'}
-      </p>
-      <div class="pt-1">
-        <a
-          href={`${STATIC_ROUTES.projects[locale]}${isNl ? 'schietsport-computer-vision/' : 'shooting-computer-vision/'}`}
-          class="font-mono text-xs font-semibold text-telemetry hover:underline"
-        >
-          {isNl ? 'Lees meer over het Computer Vision project →' : 'Read about the Computer Vision project →'}
-        </a>
-      </div>
     </section>
   </div>
 </EditorialLayout>

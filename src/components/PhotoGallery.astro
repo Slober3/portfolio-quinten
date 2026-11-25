@@ -19,7 +19,7 @@ const categories = [
 ];
 ---
 
-<section class="space-y-6" aria-labelledby="gallery-filter-heading">
+<section class="space-y-5" aria-labelledby="gallery-filter-heading">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border-subtle pb-4">
     <h2 id="gallery-filter-heading" class="font-mono text-xs uppercase tracking-wider text-telemetry">
       {isNl ? 'Collecties · Klik op een foto voor groot formaat' : 'Collections · Click any photo to view full size'}
@@ -41,7 +41,7 @@ const categories = [
   </div>
 
   <!-- Gallery Grid -->
-  <div id="pswp-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div id="pswp-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {photoEntries.map((item) => (
       <figure
         data-photo-card
@@ -52,7 +52,7 @@ const categories = [
           href={item.image.src}
           data-pswp-width={item.image.width}
           data-pswp-height={item.image.height}
-          data-pswp-caption={`${item.title[locale]} — ${item.exposure}`}
+          data-pswp-caption={`${item.title[locale]} — ${item.location[locale]}`}
           class="group relative block aspect-[3/2] overflow-hidden bg-surface-2 focus-visible:outline-offset-[-3px]"
         >
           <Picture
@@ -73,7 +73,7 @@ const categories = [
             <p class="mt-1 text-xs text-ink-secondary leading-relaxed">{item.caption[locale]}</p>
           </div>
           <p class="pt-2 font-mono text-[11px] text-kinetic border-t border-border-subtle/70">
-            {item.exposure}
+            {item.location[locale]}
           </p>
         </figcaption>
       </figure>

@@ -1,92 +1,130 @@
 ---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { Locale } from '@/i18n/routes';
-import EditorialVisuals from '@/components/EditorialVisuals.astro';
+
+const thumbModules = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/yt-*.jpg', {
+  eager: true,
+});
 
 interface Props {
   locale: Locale;
-  videoId?: string;
-  channelUrl?: string;
-  photoKind?: 'hornet' | 'spa';
+  videoId: string;
+  duration?: string;
   title: string;
-  playLabel: string;
   meta: string;
   notes: string;
 }
 
-const {
-  locale,
-  videoId = '',
-  channelUrl = 'https://www.youtube.com/@QuintenMoto/videos',
-  photoKind = 'hornet',
-  title,
-  playLabel,
-  meta,
-  notes,
-} = Astro.props;
-
+const { locale, videoId, duration = '', title, meta, notes } = Astro.props;
 const isNl = locale === 'nl';
-const hasVideoId = Boolean(videoId && videoId.trim().length >= 8);
+const thumb = thumbModules[`../assets/photos/yt-${videoId}.jpg`]?.default;
+const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
+const playAria = isNl ? `Speel video af: ${title}` : `Play video: ${title}`;
 ---
 
 <article class="editorial-card rounded-2xl overflow-hidden flex flex-col">
-  <div class="relative aspect-video bg-surface-2 border-b border-border-subtle overflow-hidden">
-    {hasVideoId ? (
-      <lite-youtube
-        videoid={videoId}
-        playlabel={playLabel}
-        params="rel=0&modestbranding=1"
-        class="!max-w-none w-full h-full block"
-      ></lite-youtube>
-    ) : (
-      <a
-        href={channelUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={playLabel}
-        class="group relative block w-full h-full focus-visible:outline-offset-[-3px]"
-      >
-        <EditorialVisuals
-          kind={photoKind}
-          locale={locale}
-          sizes="(max-width: 768px) 96vw, 560px"
-          class="transition-transform duration-500 group-hover:scale-[1.03]"
+  <div
+    class="relative aspect-video bg-surface-2 border-b border-border-subtle overflow-hidden"
+    data-yt-player
+    data-yt-id={videoId}
+    data-yt-title={title}
+  >
+    <button
+      type="button"
+      data-yt-trigger
+      aria-label={playAria}
+      class="group relative w-full h-full block text-left cursor-pointer focus-visible:outline-offset-[-3px]"
+    >
+      {thumb && (
+        <Picture
+          src={thumb}
+          alt={title}
+          formats={['avif', 'webp']}
+          widths={[480, 960, 1280]}
+          sizes="(max-width: 768px) 96vw, 620px"
+          class="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-[1.03]"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-canvas/80 via-canvas/20 to-transparent" aria-hidden="true"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <span class="inline-flex items-center gap-2.5 rounded-full bg-canvas/90 border border-kinetic/60 px-5 py-2.5 text-sm font-semibold text-ink-primary shadow-lg transition-transform duration-200 group-hover:scale-105 group-hover:border-kinetic">
-            <svg class="w-4 h-4 text-kinetic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            {isNl ? 'Bekijk op @QuintenMoto' : 'Watch on @QuintenMoto'}
-          </span>
-        </div>
-      </a>
-    )}
+      )}
+      <div class="absolute inset-0 bg-gradient-to-t from-canvas/75 via-canvas/15 to-transparent" aria-hidden="true"></div>
+
+      <!-- Center Play Button -->
+      <span class="absolute inset-0 flex items-center justify-center">
+        <span class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-kinetic text-canvas shadow-xl ring-4 ring-canvas/40 transition-transform duration-200 group-hover:scale-110 group-hover:bg-kinetic-hover">
+          <svg class="w-7 h-7 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </span>
+      </span>
+
+      <!-- Duration Badge -->
+      {duration && (
+        <span class="absolute bottom-3 right-3 rounded-md bg-canvas/90 border border-border-subtle px-2 py-0.5 font-mono text-xs font-semibold text-ink-primary">
+          {duration}
+        </span>
+      )}
+    </button>
   </div>
 
-  <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
-    <div>
+  <div class="p-5 flex-1 flex flex-col justify-between gap-3">
+    <div class="space-y-1.5">
       <p class="font-mono text-[11px] uppercase tracking-wider text-kinetic">{meta}</p>
-      <h3 class="mt-1.5 font-display text-lg font-bold text-ink-primary">{title}</h3>
-      <p class="mt-2 text-sm text-ink-secondary leading-relaxed">{notes}</p>
+      <h3 class="font-display text-lg font-bold text-ink-primary leading-snug">{title}</h3>
+      <p class="text-sm text-ink-secondary leading-relaxed">{notes}</p>
     </div>
 
     <div class="pt-3 border-t border-border-subtle/70 flex items-center justify-between gap-2 text-xs">
+      <button
+        type="button"
+        data-yt-play-link={videoId}
+        class="font-mono font-semibold text-kinetic hover:underline cursor-pointer min-h-[28px]"
+      >
+        {isNl ? '▶ Direct afspelen' : '▶ Play here'}
+      </button>
       <a
-        href={channelUrl}
+        href={watchUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="font-semibold text-telemetry hover:text-kinetic transition-colors inline-flex items-center gap-1 min-h-[28px]"
+        class="font-mono font-semibold text-telemetry hover:text-kinetic transition-colors inline-flex items-center gap-1 min-h-[28px]"
       >
-        {isNl ? 'Naar YouTube-kanaal @QuintenMoto →' : 'Open @QuintenMoto on YouTube →'}
+        {isNl ? 'Open op YouTube ↗' : 'Watch on YouTube ↗'}
       </a>
     </div>
   </div>
 </article>
 
-{hasVideoId && (
-  <script>
-    import 'lite-youtube-embed/src/lite-yt-embed.css';
-    import 'lite-youtube-embed/src/lite-yt-embed.js';
-  </script>
-)}
+<script is:inline>
+  (() => {
+    const mountVideoPlayers = () => {
+      document.querySelectorAll('[data-yt-player]').forEach((box) => {
+        if (box.dataset.bound === '1') return;
+        box.dataset.bound = '1';
+
+        const videoId = box.getAttribute('data-yt-id');
+        const title = box.getAttribute('data-yt-title') || 'YouTube video';
+        const trigger = box.querySelector('[data-yt-trigger]');
+        const card = box.closest('article');
+        const playLink = card?.querySelector('[data-yt-play-link]');
+
+        const activate = () => {
+          if (!videoId || box.querySelector('iframe')) return;
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+          iframe.title = title;
+          iframe.allow =
+            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          iframe.allowFullscreen = true;
+          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+          iframe.className = 'w-full h-full border-0 block';
+          box.innerHTML = '';
+          box.appendChild(iframe);
+        };
+
+        trigger?.addEventListener('click', activate);
+        playLink?.addEventListener('click', activate);
+      });
+    };
+
+    document.addEventListener('astro:page-load', mountVideoPlayers);
+  })();
+</script>

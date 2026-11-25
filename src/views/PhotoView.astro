@@ -17,14 +17,14 @@ const showreelUrl = import.meta.env.PUBLIC_SHOWREEL_URL || '';
   locale={locale}
   title={isNl ? 'Fotografie — Quinten Desmyter' : 'Photography — Quinten Desmyter'}
   description={isNl
-    ? 'Fotogalerij van Quinten Desmyter: natuur en macrofotografie in België, motorritten door de Ardennen en Eifel, reisbeelden en eigen werkplaatsprojecten.'
-    : 'Photography gallery by Quinten Desmyter: Belgian nature and macro studies, motorcycle roads in the Ardennes and Eifel, travel light, and workshop builds.'}
+    ? 'Eigen fotogalerij van Quinten Desmyter: natuur en macrofotografie in België, gele Honda CB750 Hornet onderweg, reizen naar Londen, Dubrovnik & Aken, en eigen elektronica.'
+    : 'Original photography by Quinten Desmyter: Belgian nature and macro studies, yellow Honda CB750 Hornet on the road, travels to London, Dubrovnik & Aachen, and custom electronics.'}
 >
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
-    <header class="space-y-5 border-b border-border-subtle pb-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+    <header class="space-y-4 border-b border-border-subtle pb-8">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
-          {isNl ? 'FOTOGRAFIE · DOOR DE LENS' : 'PHOTOGRAPHY · THROUGH THE LENS'}
+          {isNl ? 'FOTOGRAFIE · EIGEN BEELDEN' : 'PHOTOGRAPHY · ORIGINAL SHOTS'}
         </p>
         {externalLinks.shutterstock && (
           <a href={externalLinks.shutterstock} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline">
@@ -33,15 +33,15 @@ const showreelUrl = import.meta.env.PUBLIC_SHOWREEL_URL || '';
         )}
       </div>
 
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
+      <h1 class="font-display text-3xl sm:text-5xl font-bold leading-[1.08] text-ink-primary max-w-4xl">
         {isNl
-          ? 'Van stil macrolicht in het bos tot avondzon op de Eifel.'
-          : 'From quiet woodland macro light to golden hour in the Eifel.'}
+          ? 'Macro in het bos, onderweg op de Hornet en reizen door Europa.'
+          : 'Woodland macro, riding the Hornet, and travels across Europe.'}
       </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+      <p class="text-base sm:text-lg text-ink-secondary max-w-3xl leading-relaxed">
         {isNl
-          ? 'Een camera dwingt je om trager te kijken. Hier verzamel ik beelden uit vier werelden waar ik graag tijd doorbreng: kleine natuurdetails in de Kempen, onderweg met de motor, reizen langs Europese kusten en steden, en eigen werk in het lab.'
-          : 'Carrying a camera slows you down in the best way. Here is a selection from four places I love spending time: tiny nature details in Belgian woods, backroad rides, European coastal and city trips, and close-ups from the maker bench.'}
+          ? 'Een camera dwingt je om even stil te staan. Hier verzamel ik een selectie van mijn eigen foto’s uit vier werelden: macrodetails in de natuur, onderweg met de motor, reizen naar onder meer Londen, Dubrovnik en Aken, en eigen elektronicaprojecten op de werkbank.'
+          : 'Carrying a camera slows you down in the best way. Here is a curated selection of my own photographs across four worlds: nature macro, motorcycle rides, trips to London, Dubrovnik, and Aachen, and custom electronics on the bench.'}
       </p>
     </header>
 
@@ -50,9 +50,7 @@ const showreelUrl = import.meta.env.PUBLIC_SHOWREEL_URL || '';
     {showreelUrl && (
       <section class="editorial-card rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div class="space-y-2 max-w-xl">
-          <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
-            {isNl ? 'SHOWREEL' : 'SHOWREEL'}
-          </p>
+          <p class="font-mono text-xs uppercase tracking-wider text-kinetic">SHOWREEL</p>
           <h2 class="font-display text-2xl font-bold text-ink-primary">
             {isNl ? 'Korte impressie in beeld en geluid' : 'Short motion reel'}
           </h2>

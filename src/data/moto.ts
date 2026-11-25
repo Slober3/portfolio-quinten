@@ -14,11 +14,11 @@ export const motoProfile = {
     },
     {
       name: 'Officiële DJI ND-filterset',
-      role: { nl: 'Rustige bewegingsonscherpte op zonnige ritten', en: 'Natural motion blur on bright sunny rides' },
+      role: { nl: 'Natuurlijke bewegingsonscherpte bij zonnige ritten', en: 'Natural motion blur on bright sunny rides' },
     },
     {
       name: 'Magnetische helm- & stuurmounts',
-      role: { nl: 'Snel wisselen tussen POV en chassis-perspectief', en: 'Quick swap between helmet POV and chassis angles' },
+      role: { nl: 'Snel wisselen tussen POV en chassis-hoek', en: 'Quick swap between helmet POV and chassis angles' },
     },
     {
       name: 'DJI Mic Mini (1 TX + 1 RX)',
@@ -29,10 +29,8 @@ export const motoProfile = {
 
 export interface FeaturedMotoVideo {
   id: string;
-  /** Optioneel: vul een 11-teken YouTube video-ID in om direct op de pagina af te spelen. */
-  youtubeId?: string;
-  channelUrl: string;
-  photoKind: 'hornet' | 'spa';
+  youtubeId: string;
+  duration: string;
   title: { nl: string; en: string };
   meta: string;
   notes: { nl: string; en: string };
@@ -40,33 +38,59 @@ export interface FeaturedMotoVideo {
 
 export const featuredVideos: FeaturedMotoVideo[] = [
   {
-    id: 'trier-nurburg-uncut',
-    youtubeId: '',
-    channelUrl: 'https://www.youtube.com/@QuintenMoto/videos',
-    photoKind: 'hornet',
+    id: 'spa-bikers-festival-2025',
+    youtubeId: '3sscQbBoyQ0',
+    duration: '10:28',
     title: {
-      nl: 'Trier → Nürburg (UNCUT) · Bochtenwerk in de Eifel',
-      en: 'Trier → Nürburg (UNCUT) · Eifel Backroad Flow',
+      nl: 'Spa-Francorchamps on Two Wheels — Bikers’ Festival 2025',
+      en: 'Spa-Francorchamps on Two Wheels — Bikers’ Festival 2025',
     },
-    meta: 'Honda CB750 Hornet · DJI Osmo Action + ND-filter · DJI Mic Mini',
+    meta: '16 augustus 2025 · 10:28 · Spa-Francorchamps',
     notes: {
-      nl: 'Een onversneden rit langs technische binnendoorwegen door de Eifel, uitgezet met Kurviger en vastgelegd met natuurlijk motorgeluid.',
-      en: 'An uncut ride along technical Eifel backroads planned with Kurviger and captured with clean engine audio.',
+      nl: 'Sfeerverslag van het Bikers’ Festival op en rond het circuit van Spa-Francorchamps, met verschillende testritten op één dag.',
+      en: 'Highlights from the Bikers’ Festival at Spa-Francorchamps, packed with back-to-back test rides in a single day.',
     },
   },
   {
-    id: 'spa-bikers-festival-2025',
-    youtubeId: '',
-    channelUrl: 'https://www.youtube.com/@QuintenMoto/videos',
-    photoKind: 'spa',
+    id: 'trier-nurburg-uncut',
+    youtubeId: 'JhTIEqah9Qg',
+    duration: '4:05:57',
     title: {
-      nl: 'Spa-Francorchamps Bikers’Festival · 6 Testritten op 1 Dag',
-      en: 'Spa-Francorchamps Bikers’Festival · 6 Test Rides in One Day',
+      nl: 'Trier – Nürburg 2025 (UNCUT)',
+      en: 'Trier – Nürburg 2025 (UNCUT)',
     },
-    meta: '16 augustus 2025 · Regio Spa-Francorchamps · Eerste indrukken',
+    meta: 'Duitse Eifel · 4:05:57 · Volledige rit zonder knipwerk',
     notes: {
-      nl: 'Van koppelrijke adventure-twins tot wendbare allrounders: zes proefritten na elkaar vergeleken met mijn eigen CB750 Hornet als referentie.',
-      en: 'From torquey adventure twins to nimble all-rounders: six back-to-back test rides benchmarked against my own CB750 Hornet.',
+      nl: 'Ruim vier uur aan onversneden bochtenwerk dwars door de Eifel, van Trier tot aan de Nürburgring.',
+      en: 'Over four hours of uncut backroad riding through the German Eifel, from Trier all the way to the Nürburgring.',
+    },
+  },
+  {
+    id: 'honda-transalp-test-ride',
+    youtubeId: 'gXJP4K8nc58',
+    duration: '21:12',
+    title: {
+      nl: 'Honda XL750 Transalp Test Ride @ Spa-Francorchamps',
+      en: 'Honda XL750 Transalp Test Ride @ Spa-Francorchamps',
+    },
+    meta: 'Bikers’ Festival · 21:12 · Testrit',
+    notes: {
+      nl: 'Eerste indrukken van de XL750 Transalp met hetzelfde 755cc-blok als mijn eigen CB750 Hornet, maar in een lichte adventure-verpakking.',
+      en: 'First impressions of the XL750 Transalp sharing the same 755cc engine family as my CB750 Hornet in a nimble adventure package.',
+    },
+  },
+  {
+    id: 'africa-twin-1100-test-ride',
+    youtubeId: 'GbLCpFKj8Sg',
+    duration: '19:15',
+    title: {
+      nl: 'Honda Africa Twin 1100 Test Ride @ Spa-Francorchamps',
+      en: 'Honda Africa Twin 1100 Test Ride @ Spa-Francorchamps',
+    },
+    meta: 'Bikers’ Festival · 19:15 · Testrit',
+    notes: {
+      nl: 'Op pad met de CRF1100L Africa Twin rond Spa: indrukwekkend koppel, ontspannen zithouding en verrassend wendbaar.',
+      en: 'Taking the CRF1100L Africa Twin out around Spa: effortless torque, commanding posture, and surprising agility.',
     },
   },
 ];

@@ -3,19 +3,40 @@ import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Locale } from '@/i18n/routes';
 
-import heroWorkspace from '@/assets/photos/hero-workspace.jpg';
-import hornetApex from '@/assets/photos/hornet-apex-dusk.jpg';
-import spaCurves from '@/assets/photos/spa-raidillon-mist.jpg';
-import weaversFate from '@/assets/photos/project-weavers-fate.jpg';
-import macroDew from '@/assets/photos/macro-dew-optics.jpg';
-import precisionSport from '@/assets/photos/project-precision-sport.jpg';
-import pcbBench from '@/assets/photos/pcb-bench-craft.jpg';
-import stitchCozy from '@/assets/photos/about-stitch-cozy.jpg';
-import lasercutKalimba from '@/assets/photos/lasercut-kalimba-lab.jpg';
-import dubrovnikStone from '@/assets/photos/adriatic-stone-dubrovnik.jpg';
-import portugalCliffs from '@/assets/photos/atlantic-cliffs-portugal.jpg';
+import quintenPortrait from '@/assets/photos/quinten-portrait.jpg';
+import hornetAction from '@/assets/photos/hornet-action.jpg';
+import hornetCobblestones from '@/assets/photos/hornet-cobblestones.jpg';
+import motoGoldenHour from '@/assets/photos/moto-golden-hour.jpg';
+import stitchPortrait from '@/assets/photos/stitch-portrait.jpg';
+import stitchDuo from '@/assets/photos/stitch-duo.jpg';
+import macroHoverfly from '@/assets/photos/macro-hoverfly.jpg';
+import macroMushroomFly from '@/assets/photos/macro-mushroom-fly.jpg';
+import macroWoodland from '@/assets/photos/macro-woodland-cluster.jpg';
+import travelDubrovnik from '@/assets/photos/travel-dubrovnik.jpg';
+import travelLondon from '@/assets/photos/travel-london.jpg';
+import travelAachen from '@/assets/photos/travel-aachen.jpg';
+import makerPcb from '@/assets/photos/maker-pcb.jpg';
+import makerGearmotor from '@/assets/photos/maker-gearmotor.jpg';
 
-type EditorialPhotoKind = 'cloud' | 'hornet' | 'spa' | 'weavers' | 'macro' | 'cvTarget' | 'iot' | 'pcb' | 'stitch' | 'craft' | 'travel' | 'coast';
+type EditorialPhotoKind =
+  | 'portrait'
+  | 'cloud'
+  | 'hornet'
+  | 'hornetSquare'
+  | 'motoSunset'
+  | 'stitch'
+  | 'stitchDuo'
+  | 'macro'
+  | 'macroMushroom'
+  | 'macroCluster'
+  | 'travel'
+  | 'london'
+  | 'aachen'
+  | 'pcb'
+  | 'iot'
+  | 'gearmotor'
+  | 'weavers'
+  | 'cvTarget';
 
 interface Props {
   kind: EditorialPhotoKind;
@@ -35,95 +56,142 @@ const {
   class: extraClass = '',
 } = Astro.props;
 
-const mediaMap: Record<EditorialPhotoKind, { src: ImageMetadata; alt: { nl: string; en: string } }> = {
-  cloud: {
-    src: heroWorkspace,
+const mediaMap: Record<EditorialPhotoKind, { src: ImageMetadata; alt: { nl: string; en: string }; pos?: string }> = {
+  portrait: {
+    src: quintenPortrait,
+    pos: 'object-[50%_28%]',
     alt: {
-      nl: 'Werkplek met ultrawide-scherm, microfoon op boom arm en warm bureaulicht',
-      en: 'Desk workspace with ultrawide monitor, boom-arm studio microphone, and warm lamp light',
+      nl: 'Portret van Quinten Desmyter op de Millennium Bridge in Londen met St Paul’s Cathedral op de achtergrond',
+      en: 'Portrait of Quinten Desmyter on Millennium Bridge in London with St Paul’s Cathedral behind him',
+    },
+  },
+  cloud: {
+    src: makerPcb,
+    alt: {
+      nl: 'Zelf ontworpen matzwarte ESP32- en motordriver-printplaat van Quinten',
+      en: 'Custom matte-black ESP32 and motor-driver PCB designed by Quinten',
     },
   },
   hornet: {
-    src: hornetApex,
+    src: hornetAction,
+    pos: 'object-[50%_45%]',
     alt: {
-      nl: 'Matzwarte naked bike langs een bochtige bergweg bij zonsondergang',
-      en: 'Matte-black naked motorcycle parked beside a winding mountain road at golden hour',
+      nl: 'Quinten in beweging op zijn gele Honda CB750 Hornet',
+      en: 'Quinten riding his yellow Honda CB750 Hornet in motion',
     },
   },
-  spa: {
-    src: spaCurves,
+  hornetSquare: {
+    src: hornetCobblestones,
     alt: {
-      nl: 'Bochtige weg door mistige Ardense dennenbossen in de vroege ochtendzon',
-      en: 'Sweeping tarmac winding through misty Ardennes pine hills in early morning sun',
+      nl: 'Gele Honda CB750 Hornet naast een klassieke rode Honda op een kasseiplein bij avondlicht',
+      en: 'Yellow Honda CB750 Hornet parked beside a classic red Honda on cobblestones at blue hour',
     },
   },
-  weavers: {
-    src: weaversFate,
+  motoSunset: {
+    src: motoGoldenHour,
     alt: {
-      nl: 'Leren dobbelbekers, doorzichtige amberkleurige en donkere dobbelstenen en kaarten van Weavers Fate op leisteen',
-      en: 'Leather dice cups, amber and obsidian dice, and tabletop cards for Weavers Fate on slate',
-    },
-  },
-  macro: {
-    src: macroDew,
-    alt: {
-      nl: 'Macrofoto van een wilde bospaddenstoel op vochtig mos met fijne regendruppels',
-      en: 'Macro photograph of a wild woodland mushroom on damp forest moss with fine dew drops',
-    },
-  },
-  cvTarget: {
-    src: precisionSport,
-    alt: {
-      nl: 'Papieren schietschijf, optische spotting scope en leren trainingsnotitieboek op een houten tafel',
-      en: 'Concentric paper precision target, optical spotting scope, and leather training notebook on wood',
-    },
-  },
-  iot: {
-    src: pcbBench,
-    alt: {
-      nl: 'Eigen ontworpen matzwarte en goudkleurige printplaat op een elektronicawerkbank',
-      en: 'Custom matte-black and gold PCB circuit board on an electronics workbench',
-    },
-  },
-  pcb: {
-    src: pcbBench,
-    alt: {
-      nl: 'Close-up van een zelf ontworpen printplaat met microcontroller en precisiepincet',
-      en: 'Close-up of a custom-designed circuit board with microcontroller and precision tweezers',
+      nl: 'Avondstop langs de weg in motorkledij bij laag zonlicht',
+      en: 'Golden-hour roadside stop in riding gear beside the motorcycles',
     },
   },
   stitch: {
-    src: stitchCozy,
+    src: stitchPortrait,
+    pos: 'object-[50%_35%]',
     alt: {
-      nl: 'Teckel Stitch ontspannen op een kleed naast een boekenkast met warm avondlicht',
-      en: 'Dachshund Stitch resting peacefully on a rug beside a bookshelf in warm evening light',
+      nl: 'Close-up portret van teckel Stitch',
+      en: 'Close-up portrait of dachshund Stitch',
     },
   },
-  craft: {
-    src: lasercutKalimba,
+  stitchDuo: {
+    src: stitchDuo,
+    pos: 'object-[50%_35%]',
     alt: {
-      nl: 'Houten 17-toets kalimba naast gelaserde houten spelfiches en een 3D-geprinte miniatuurboog',
-      en: 'Wooden 17-key kalimba beside laser-cut wooden game tokens and a 3D-printed miniature archway',
+      nl: 'Teckel Stitch samen op de foto met een tweede teckel',
+      en: 'Dachshund Stitch photographed alongside his companion dachshund',
+    },
+  },
+  macro: {
+    src: macroHoverfly,
+    alt: {
+      nl: 'Macrofoto van een zweefvlieg recht van voren op een blauwe reling',
+      en: 'Head-on macro photograph of a hoverfly perched on a blue railing',
+    },
+  },
+  macroMushroom: {
+    src: macroMushroomFly,
+    alt: {
+      nl: 'Macrofoto van een vlieg op een bospaddenstoel tussen herfstbladeren',
+      en: 'Macro photograph of a fly resting on a woodland mushroom amid autumn leaves',
+    },
+  },
+  macroCluster: {
+    src: macroWoodland,
+    alt: {
+      nl: 'Tros wilde zwammen op een bemoste boomstam in het bos',
+      en: 'Wild cluster of woodland mushrooms growing on mossy tree bark',
     },
   },
   travel: {
-    src: dubrovnikStone,
+    src: travelDubrovnik,
     alt: {
-      nl: 'Oude stadsmuren en rode daken van Dubrovnik in warm avondlicht aan de Adriatische Zee',
-      en: 'Historic stone ramparts and terracotta roofs of Dubrovnik in warm late-afternoon light',
+      nl: 'Verlichte stadsmuren van Dubrovnik weerspiegeld in het water bij nacht',
+      en: 'Illuminated stone walls of Dubrovnik reflecting in the calm harbor at night',
     },
   },
-  coast: {
-    src: portugalCliffs,
+  london: {
+    src: travelLondon,
     alt: {
-      nl: 'Zandstenen kliffen aan de Atlantische kust in Portugal bij zonsondergang',
-      en: 'Golden sandstone sea cliffs along the Portuguese Atlantic coast at sunset',
+      nl: 'Old Billingsgate Market langs de Theems in Londen tijdens het blauwe uur',
+      en: 'Old Billingsgate Market along the Thames in London at blue hour',
+    },
+  },
+  aachen: {
+    src: travelAachen,
+    alt: {
+      nl: 'Gotische stenen gevel en toren van het stadhuis van Aken',
+      en: 'Gothic stone facade and tower of Aachen City Hall',
+    },
+  },
+  pcb: {
+    src: makerPcb,
+    alt: {
+      nl: 'Eigen ontworpen matzwarte ESP32- en L298N-printplaat in de verpakking',
+      en: 'Custom matte-black ESP32 and L298N circuit board straight from fabrication',
+    },
+  },
+  iot: {
+    src: makerPcb,
+    alt: {
+      nl: 'Eigen ontworpen ESP32-printplaat voor embedded- en IoT-experimenten',
+      en: 'Custom-designed ESP32 circuit board for embedded and IoT experiments',
+    },
+  },
+  gearmotor: {
+    src: makerGearmotor,
+    alt: {
+      nl: 'Tandwieloverbrenging en DC-motor op de elektronicawerkbank',
+      en: 'Geared DC motor assembly on the electronics workbench',
+    },
+  },
+  weavers: {
+    src: travelAachen,
+    alt: {
+      nl: 'Sfeervolle gotische architectuur in Aken als inspiratie voor spelwerelden en ontwerp',
+      en: 'Atmospheric Gothic architecture in Aachen inspiring tabletop worlds and design',
+    },
+  },
+  cvTarget: {
+    src: makerGearmotor,
+    alt: {
+      nl: 'Precisie-mechaniek en meetopstelling op de werkbank',
+      en: 'Precision mechanics and measurement hardware on the workbench',
     },
   },
 };
 
 const item = mediaMap[kind];
 const resolvedAlt = alt ?? item.alt[locale];
+const objectPos = item.pos ?? 'object-center';
 ---
 
 <Picture
@@ -134,5 +202,5 @@ const resolvedAlt = alt ?? item.alt[locale];
   sizes={sizes}
   loading={eager ? 'eager' : 'lazy'}
   fetchpriority={eager ? 'high' : 'auto'}
-  class={`w-full h-full object-cover block ${extraClass}`}
+  class={`w-full h-full object-cover block ${objectPos} ${extraClass}`}
 />

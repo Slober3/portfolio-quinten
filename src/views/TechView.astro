@@ -72,44 +72,76 @@ const teachingModules = [
     : 'Senior lecturer at Thomas More IT Factory (Geel Campus), RTC Antwerp workshops, two published IT handbooks, GitHub Slober3, and TryHackMe.'}
   jsonLd={jsonLd}
 >
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
-    <header class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center border-b border-border-subtle pb-12">
-      <div class="lg:col-span-7 space-y-5">
-        <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
-          {isNl ? 'ONDERWIJS & IT · THOMAS MORE CAMPUS GEEL' : 'TEACHING & IT · THOMAS MORE GEEL CAMPUS'}
-        </p>
-        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-          {isNl
-            ? 'Cloud, netwerken, cybersecurity en praktijkgericht onderwijs.'
-            : 'Cloud, networking, cybersecurity, and hands-on teaching.'}
-        </h1>
-        <p class="text-base sm:text-lg text-ink-secondary leading-relaxed">
-          {isNl
-            ? 'Binnen de IT Factory van Thomas More (Campus Geel) geef ik praktijkvakken aan eerstejaars en gevorderde studenten (1ITF & 1ACS) en begeleid ik workshops via RTC Antwerpen. Daarnaast ben ik ook betrokken als coach bij studentenorganisatie SIN.'
-            : 'At Thomas More IT Factory (Geel Campus), I teach practical infrastructure and security labs across 1ITF and 1ACS, and facilitate teacher workshops via RTC Antwerp. Alongside teaching, I am also involved as a coach at student organization SIN.'}
-        </p>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+    <header class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div class="lg:col-span-7 editorial-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-6">
+        <div class="space-y-4">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+            {isNl ? 'ONDERWIJS & IT · THOMAS MORE CAMPUS GEEL' : 'TEACHING & IT · THOMAS MORE GEEL CAMPUS'}
+          </p>
+          <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.08] text-ink-primary">
+            {isNl
+              ? 'Cloud, netwerken, cybersecurity en praktijkgericht onderwijs.'
+              : 'Cloud, networking, cybersecurity, and hands-on teaching.'}
+          </h1>
+          <p class="text-base text-ink-secondary leading-relaxed">
+            {isNl
+              ? 'Binnen de IT Factory van Thomas More (Campus Geel) geef ik praktijkvakken aan eerstejaars en gevorderde studenten (1ITF & 1ACS) en begeleid ik workshops via RTC Antwerpen. Daarnaast ben ik ook betrokken als coach bij studentenorganisatie SIN.'
+              : 'At Thomas More IT Factory (Geel Campus), I teach practical infrastructure and security labs across 1ITF and 1ACS, and facilitate teacher workshops via RTC Antwerp. Alongside teaching, I am also involved as a coach at student organization SIN.'}
+          </p>
+        </div>
+
+        <dl class="grid grid-cols-2 gap-4 border-t border-border-subtle pt-5">
+          <div>
+            <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-secondary">
+              {isNl ? 'Opleidingen' : 'Tracks'}
+            </dt>
+            <dd class="mt-0.5 font-display text-sm font-semibold text-ink-primary">1ITF (NL) & 1ACS (EN)</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-secondary">
+              {isNl ? 'Workshops' : 'Workshops'}
+            </dt>
+            <dd class="mt-0.5 font-display text-sm font-semibold text-ink-primary">RTC Antwerpen · Cisco</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-secondary">
+              {isNl ? 'Publicaties' : 'Publications'}
+            </dt>
+            <dd class="mt-0.5 font-display text-sm font-semibold text-ink-primary">2× ISBN · Security & Python</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-secondary">Open Source</dt>
+            <dd class="mt-0.5 font-display text-sm font-semibold text-ink-primary">GitHub @Slober3 · PCBWay</dd>
+          </div>
+        </dl>
       </div>
 
-      <div class="lg:col-span-5 aspect-[16/10] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-        <EditorialVisuals kind="cloud" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 460px" />
+      <div class="lg:col-span-5 grid grid-rows-2 gap-4">
+        <div class="aspect-[16/9] lg:aspect-auto overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+          <EditorialVisuals kind="pcb" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 460px" />
+        </div>
+        <div class="aspect-[16/9] lg:aspect-auto overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+          <EditorialVisuals kind="gearmotor" locale={locale} eager={true} sizes="(max-width: 1024px) 96vw, 460px" />
+        </div>
       </div>
     </header>
 
     <!-- Teaching Tracks -->
-    <section class="space-y-6">
-      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+    <section class="space-y-5">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary border-b border-border-subtle pb-3">
         {isNl ? 'Vakgebieden & labs' : 'Courses & lab focus'}
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {teachingModules.map((mod) => (
           <article class="editorial-card rounded-2xl p-6 flex flex-col justify-between gap-4">
-            <div class="space-y-2.5">
+            <div class="space-y-2">
               <p class="font-mono text-xs text-telemetry">{mod.code}</p>
               <h3 class="font-display text-xl font-bold text-ink-primary">{mod.title}</h3>
-              <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{mod.desc}</p>
+              <p class="text-sm text-ink-secondary leading-relaxed">{mod.desc}</p>
             </div>
             {mod.link && (
-              <a href={mod.link} target="_blank" rel="noopener noreferrer" class="font-mono text-xs font-semibold text-kinetic hover:underline pt-2">
+              <a href={mod.link} target="_blank" rel="noopener noreferrer" class="font-mono text-xs font-semibold text-kinetic hover:underline pt-1">
                 {mod.linkLabel}
               </a>
             )}
@@ -119,17 +151,17 @@ const teachingModules = [
     </section>
 
     <!-- Published Books -->
-    <section class="space-y-6">
-      <div>
+    <section class="space-y-5">
+      <div class="border-b border-border-subtle pb-3">
         <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
           {isNl ? 'BOEKENKAST' : 'BOOKSHELF'}
         </p>
-        <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+        <h2 class="mt-0.5 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
           {isNl ? 'Twee handboeken voor starters en studenten' : 'Two handbooks for students and starters'}
         </h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {books.map((book) => (
           <article class="editorial-card rounded-2xl p-6 flex flex-col justify-between gap-4">
             <div class="space-y-2">
@@ -138,7 +170,7 @@ const teachingModules = [
                 <span class="text-ink-secondary">{book.pages} p. · {book.year}</span>
               </div>
               <h3 class="font-display text-2xl font-bold text-ink-primary">{book.title}</h3>
-              <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{book.description[locale]}</p>
+              <p class="text-sm text-ink-secondary leading-relaxed">{book.description[locale]}</p>
             </div>
             <div class="border-t border-border-subtle pt-3 flex items-center justify-between font-mono text-xs">
               <span class="text-ink-secondary">{book.datePublished}</span>
@@ -151,38 +183,30 @@ const teachingModules = [
       </div>
     </section>
 
-    <!-- GitHub Slober3, Hardware & TryHackMe -->
-    <section class="space-y-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div class="lg:col-span-7 space-y-3">
+    <!-- GitHub Slober3 & TryHackMe -->
+    <section class="space-y-5">
+      <div class="flex flex-wrap items-end justify-between gap-3 border-b border-border-subtle pb-3">
+        <div>
           <p class="font-mono text-xs uppercase tracking-wider text-status">GITHUB · @SLOBER3</p>
-          <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          <h2 class="mt-0.5 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
             {isNl ? 'Open source, scripts & eigen hardware' : 'Open source, scripts & custom hardware'}
           </h2>
-          <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
-            {isNl
-              ? 'Naast het lesgeven bouw ik graag kleine hulpmiddelen, security-experimenten en eigen elektronica. Hieronder staan enkele projecten die publiek op GitHub of PCBWay staan.'
-              : 'Outside the classroom, I like building small utilities, security experiments, and custom electronics. Here are a few highlights published on GitHub and PCBWay.'}
-          </p>
-          <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="inline-block font-mono text-xs font-semibold text-telemetry hover:underline pt-1">
-            github.com/Slober3 ↗
-          </a>
         </div>
-        <div class="lg:col-span-5 aspect-[16/10] overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-          <EditorialVisuals kind="pcb" locale={locale} sizes="(max-width: 1024px) 96vw, 440px" />
-        </div>
+        <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="font-mono text-xs font-semibold text-telemetry hover:underline">
+          github.com/Slober3 ↗
+        </a>
       </div>
 
-      <div class="divide-y divide-border-subtle border-y border-border-subtle">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {githubHighlights.map((repo) => (
-          <article class="py-5 grid grid-cols-1 md:grid-cols-[260px_1fr_auto] gap-3 md:gap-6 items-baseline">
-            <div>
+          <article class="editorial-card rounded-2xl p-5 flex flex-col justify-between gap-4">
+            <div class="space-y-2">
+              <p class="font-mono text-[11px] text-telemetry">{repo.stack}</p>
               <h3 class="font-display text-lg font-bold text-ink-primary">{repo.name}</h3>
-              <p class="font-mono text-xs text-telemetry">{repo.stack}</p>
+              <p class="text-sm text-ink-secondary leading-relaxed">{repo.description[locale]}</p>
             </div>
-            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{repo.description[locale]}</p>
-            <a href={repo.url} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline whitespace-nowrap">
-              {repo.url.includes('pcbway') ? 'PCBWay ↗' : 'GitHub ↗'}
+            <a href={repo.url} target="_blank" rel="noopener noreferrer" class="font-mono text-xs font-semibold text-kinetic hover:underline pt-2 border-t border-border-subtle">
+              {repo.url.includes('pcbway') ? 'Bekijk op PCBWay ↗' : 'Bekijk op GitHub ↗'}
             </a>
           </article>
         ))}

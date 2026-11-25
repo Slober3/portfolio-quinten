@@ -210,7 +210,7 @@ async function main() {
   }
 
   // Verify key expected schemas exist
-  for (const requiredType of ['ProfilePage', 'Person', 'Book', 'BlogPosting', 'CreativeWork', 'BreadcrumbList']) {
+  for (const requiredType of ['ProfilePage', 'Person', 'Book', 'VideoObject', 'BlogPosting', 'CreativeWork', 'BreadcrumbList']) {
     if (!jsonLdTypes.has(requiredType)) {
       warnings.push(`Expected JSON-LD schema "@type": "${requiredType}" not found across site`);
     }
