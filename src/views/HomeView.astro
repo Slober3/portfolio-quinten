@@ -23,19 +23,24 @@ const latestPosts = (await getCollection('blog', (e) => e.data.locale === locale
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Quinten Desmyter',
+  '@type': 'ProfilePage',
   url: `${siteBase}${STATIC_ROUTES.home[locale]}`,
-  jobTitle: isNl ? 'Praktijklector Cloud, Netwerken & Cybersecurity' : 'Senior Lecturer Cloud, Networking & Cybersecurity',
-  worksFor: {
-    '@type': 'CollegeOrUniversity',
-    name: 'Thomas More Hogeschool (IT Factory, Campus Geel)',
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${siteBase}/#person`,
+    name: 'Quinten Desmyter',
+    url: `${siteBase}${STATIC_ROUTES.home[locale]}`,
+    jobTitle: isNl ? 'Praktijklector Cloud, Netwerken & Cybersecurity' : 'Senior Lecturer Cloud, Networking & Cybersecurity',
+    worksFor: {
+      '@type': 'CollegeOrUniversity',
+      name: 'Thomas More Hogeschool (IT Factory, Campus Geel)',
+    },
+    homeLocation: {
+      '@type': 'Place',
+      name: isNl ? 'Regio Lier / Kempen, België' : 'Lier / Campine Region, Belgium',
+    },
+    sameAs: ['https://github.com/Slober3', 'https://www.youtube.com/@QuintenMoto'],
   },
-  homeLocation: {
-    '@type': 'Place',
-    name: isNl ? 'Regio Lier / Kempen, België' : 'Lier / Campine Region, Belgium',
-  },
-  sameAs: ['https://github.com/Slober3', 'https://www.youtube.com/@QuintenMoto'],
 };
 
 const techRows = [
@@ -161,16 +166,16 @@ const techRows = [
         <p class="font-mono text-[11px] uppercase tracking-widest text-ink-secondary mb-4">
           {isNl ? 'Hoofdstukken' : 'Chapters'}
         </p>
-        <a href="#ch-01" class="block py-1 text-sm font-medium text-ink-primary hover:text-telemetry">
+        <a href="#ch-01" data-chapter-link="ch-01" data-active="true" class="block py-1 text-sm transition-colors text-ink-secondary hover:text-telemetry data-[active=true]:text-ink-primary data-[active=true]:font-semibold">
           01 · {isNl ? 'Tech & Onderwijs' : 'Tech & Teaching'}
         </a>
-        <a href="#ch-02" class="block py-1 text-sm text-ink-secondary hover:text-telemetry">
+        <a href="#ch-02" data-chapter-link="ch-02" data-active="false" class="block py-1 text-sm transition-colors text-ink-secondary hover:text-telemetry data-[active=true]:text-ink-primary data-[active=true]:font-semibold">
           02 · {isNl ? 'Brugprojecten' : 'Bridge Projects'}
         </a>
-        <a href="#ch-03" class="block py-1 text-sm text-ink-secondary hover:text-kinetic">
+        <a href="#ch-03" data-chapter-link="ch-03" data-active="false" class="block py-1 text-sm transition-colors text-ink-secondary hover:text-kinetic data-[active=true]:text-kinetic data-[active=true]:font-semibold">
           03 · MotoAdventures
         </a>
-        <a href="#ch-04" class="block py-1 text-sm text-ink-secondary hover:text-status">
+        <a href="#ch-04" data-chapter-link="ch-04" data-active="false" class="block py-1 text-sm transition-colors text-ink-secondary hover:text-status data-[active=true]:text-status data-[active=true]:font-semibold">
           04 · {isNl ? 'Lens, Blog & /now' : 'Lens, Blog & /now'}
         </a>
       </aside>
@@ -348,4 +353,34 @@ const techRows = [
       </div>
     </div>
   </div>
+
+  <script is:inline>
+    (() => {
+      const bindChapterRail = () => {
+        const links = document.querySelectorAll('[data-chapter-link]');
+        if (!links.length || !('IntersectionObserver' in window)) return;
+        const sections = ['ch-01', 'ch-02', 'ch-03', 'ch-04']
+          .map((id) => document.getElementById(id))
+          .filter(Boolean);
+        if (!sections.length) return;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const activeId = entry.target.id;
+                links.forEach((l) => {
+                  l.setAttribute('data-active', String(l.getAttribute('data-chapter-link') === activeId));
+                });
+              }
+            });
+          },
+          { rootMargin: '-25% 0px -55% 0px' }
+        );
+        sections.forEach((sec) => observer.observe(sec));
+      };
+
+      document.addEventListener('astro:page-load', bindChapterRail);
+    })();
+  </script>
 </EditorialLayout>

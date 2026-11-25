@@ -10,6 +10,25 @@ interface Props {
 
 const { locale } = Astro.props;
 const isNl = locale === 'nl';
+const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': books.map((b) => ({
+    '@type': 'Book',
+    name: b.title,
+    isbn: b.isbn,
+    inLanguage: b.inLanguage,
+    numberOfPages: b.pages,
+    datePublished: b.datePublished,
+    url: b.buyUrl,
+    author: {
+      '@type': 'Person',
+      '@id': `${siteBase}/#person`,
+      name: 'Quinten Desmyter',
+    },
+  })),
+};
 
 const teachingModules = [
   {
@@ -32,6 +51,8 @@ const teachingModules = [
     desc: isNl
       ? 'Switching, routing, subnetting en praktische labworkshops, zowel in het hoger onderwijs als via RTC Train-the-Trainer.'
       : 'Switching, routing, subnetting, and hands-on Train-the-Trainer lab workshops with RTC Antwerp.',
+    link: externalLinks.thomasMoreRtc,
+    linkLabel: isNl ? 'RTC-vorming Datacommunicatie ↗' : 'RTC Networking Workshop ↗',
   },
   {
     code: 'IOT & SEC',
@@ -49,6 +70,7 @@ const teachingModules = [
   description={isNl
     ? 'Thomas More IT Factory, RTC Antwerpen, gepubliceerde ISBN-handboeken (Cybersecurity & Python), GitHub Slober3 en TryHackMe.'
     : 'Thomas More IT Factory, RTC Antwerp, published ISBN handbooks (Cybersecurity & Python), GitHub Slober3, and TryHackMe.'}
+  jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
     <header class="space-y-5 border-b border-border-subtle pb-10">
@@ -78,10 +100,17 @@ const teachingModules = [
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {teachingModules.map((mod) => (
-          <article class="editorial-card rounded-2xl p-6 space-y-2.5">
-            <p class="font-mono text-xs text-telemetry">{mod.code}</p>
-            <h3 class="font-display text-xl font-bold text-ink-primary">{mod.title}</h3>
-            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{mod.desc}</p>
+          <article class="editorial-card rounded-2xl p-6 flex flex-col justify-between gap-4">
+            <div class="space-y-2.5">
+              <p class="font-mono text-xs text-telemetry">{mod.code}</p>
+              <h3 class="font-display text-xl font-bold text-ink-primary">{mod.title}</h3>
+              <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{mod.desc}</p>
+            </div>
+            {mod.link && (
+              <a href={mod.link} target="_blank" rel="noopener noreferrer" class="font-mono text-xs font-semibold text-kinetic hover:underline pt-2">
+                {mod.linkLabel}
+              </a>
+            )}
           </article>
         ))}
       </div>
@@ -109,6 +138,12 @@ const teachingModules = [
               <h3 class="font-display text-2xl font-bold text-ink-primary">{book.title}</h3>
               <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{book.description[locale]}</p>
             </div>
+            <div class="border-t border-border-subtle pt-3 flex items-center justify-between font-mono text-xs">
+              <span class="text-ink-secondary">{book.datePublished}</span>
+              <a href={book.buyUrl} target="_blank" rel="noopener noreferrer" class="text-telemetry font-semibold hover:underline">
+                {isNl ? 'Bekijk op Bol.com ↗' : 'View on Bol.com ↗'}
+              </a>
+            </div>
           </article>
         ))}
       </div>
@@ -130,14 +165,14 @@ const teachingModules = [
 
       <div class="divide-y divide-border-subtle border-y border-border-subtle">
         {githubHighlights.map((repo) => (
-          <article class="py-5 grid grid-cols-1 md:grid-cols-[240px_1fr_auto] gap-3 md:gap-6 items-baseline">
+          <article class="py-5 grid grid-cols-1 md:grid-cols-[260px_1fr_auto] gap-3 md:gap-6 items-baseline">
             <div>
               <h3 class="font-display text-lg font-bold text-ink-primary">{repo.name}</h3>
               <p class="font-mono text-xs text-telemetry">{repo.stack}</p>
             </div>
             <p class="text-sm sm:text-base text-ink-secondary">{repo.description[locale]}</p>
-            <a href={repo.url} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline">
-              Repo ↗
+            <a href={repo.url} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline whitespace-nowrap">
+              {repo.url.includes('pcbway') ? 'PCBWay ↗' : 'GitHub ↗'}
             </a>
           </article>
         ))}

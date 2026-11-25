@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
 import { STATIC_ROUTES, getAlternateUrls, normalizePathname, type Locale } from '@/i18n/routes';
 import { UI_COPY } from '@/i18n/ui';
@@ -63,6 +64,7 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-sans" preload />
     <Font cssVariable="--font-mono" />
+    <ClientRouter />
 
     {jsonLd && (
       <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -70,13 +72,17 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
 
     <script is:inline>
       (() => {
-        try {
-          const saved = localStorage.getItem('qd-theme');
-          const theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        const applyStoredTheme = () => {
+          try {
+            const saved = localStorage.getItem('qd-theme');
+            const theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+          } catch {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        };
+        applyStoredTheme();
+        document.addEventListener('astro:after-swap', applyStoredTheme);
       })();
     </script>
   </head>
@@ -92,12 +98,12 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
 
     <!-- Editorial Masthead Navigation -->
     <header class="sticky top-0 z-50 border-b border-border-subtle bg-canvas/92 backdrop-blur-md">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-16 sm:h-[4.25rem] flex items-center justify-between gap-4">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 sm:h-[4.25rem] flex items-center justify-between gap-4">
         <a href={STATIC_ROUTES.home[locale]} class="flex items-baseline gap-3 group py-1.5 shrink-0">
           <span class="font-display text-base sm:text-lg font-bold tracking-tight text-ink-primary group-hover:text-kinetic transition-colors whitespace-nowrap">
             Quinten Desmyter
           </span>
-          <span class="hidden xl:inline font-mono text-[11px] text-ink-secondary whitespace-nowrap">
+          <span class="hidden 2xl:inline font-mono text-[11px] text-ink-secondary whitespace-nowrap">
             — {copy.motto}
           </span>
         </a>
@@ -153,7 +159,7 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
             aria-label={copy.themeToggleLabel}
             class="inline-flex items-center justify-center whitespace-nowrap rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-kinetic transition-colors cursor-pointer min-h-[40px]"
           >
-            <span data-theme-label>{copy.themeDark}</span>
+            <span data-theme-label>{copy.themeDark} ●</span>
           </button>
 
           <button
@@ -162,7 +168,7 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
             aria-label={copy.menuOpen}
             aria-expanded="false"
             aria-controls="mobile-nav-dialog"
-            class="lg:hidden inline-flex items-center justify-center rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]"
+            class="lg:hidden inline-flex items-center justify-center whitespace-nowrap rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]"
           >
             Menu
           </button>
@@ -186,7 +192,7 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
           ✕
         </button>
       </div>
-      <nav aria-label="Mobiele navigatie" class="flex flex-col gap-1.5">
+      <nav aria-label={locale === 'nl' ? 'Mobiele navigatie' : 'Mobile navigation'} class="flex flex-col gap-1.5">
         <a
           href={STATIC_ROUTES.home[locale]}
           class="rounded-xl px-3.5 py-3 text-base font-medium text-ink-primary hover:bg-surface-1"
@@ -265,43 +271,61 @@ const switchUrl = locale === 'nl' ? enPath : nlPath;
 
     <script is:inline>
       (() => {
-        const themeToggle = document.querySelector('[data-theme-toggle]');
-        const themeLabel = document.querySelector('[data-theme-label]');
+        const bindShell = () => {
+          const themeToggle = document.querySelector('[data-theme-toggle]');
+          const themeLabel = document.querySelector('[data-theme-label]');
 
-        const syncThemeLabel = () => {
-          const current = document.documentElement.getAttribute('data-theme') || 'dark';
-          if (themeLabel) {
-            themeLabel.textContent = current === 'dark' ? 'Dark ●' : 'Light ○';
+          const syncThemeLabel = () => {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            if (themeLabel) {
+              themeLabel.textContent = current === 'dark' ? 'Dark ●' : 'Light ○';
+            }
+          };
+          syncThemeLabel();
+
+          if (themeToggle && themeToggle.dataset.bound !== '1') {
+            themeToggle.dataset.bound = '1';
+            themeToggle.addEventListener('click', () => {
+              const current = document.documentElement.getAttribute('data-theme') || 'dark';
+              const next = current === 'dark' ? 'light' : 'dark';
+              document.documentElement.setAttribute('data-theme', next);
+              try {
+                localStorage.setItem('qd-theme', next);
+              } catch {}
+              syncThemeLabel();
+            });
+          }
+
+          const dialog = document.getElementById('mobile-nav-dialog');
+          const openBtn = document.querySelector('[data-mobile-menu-open]');
+          const closeBtn = document.querySelector('[data-mobile-menu-close]');
+
+          if (openBtn && openBtn.dataset.bound !== '1') {
+            openBtn.dataset.bound = '1';
+            openBtn.addEventListener('click', () => {
+              dialog?.showModal();
+              openBtn.setAttribute('aria-expanded', 'true');
+            });
+          }
+          if (closeBtn && closeBtn.dataset.bound !== '1') {
+            closeBtn.dataset.bound = '1';
+            closeBtn.addEventListener('click', () => {
+              dialog?.close();
+              openBtn?.setAttribute('aria-expanded', 'false');
+            });
+          }
+          if (dialog && dialog.dataset.bound !== '1') {
+            dialog.dataset.bound = '1';
+            dialog.addEventListener('close', () => {
+              openBtn?.setAttribute('aria-expanded', 'false');
+            });
+            dialog.querySelectorAll('a').forEach((link) => {
+              link.addEventListener('click', () => dialog.close());
+            });
           }
         };
-        syncThemeLabel();
 
-        themeToggle?.addEventListener('click', () => {
-          const current = document.documentElement.getAttribute('data-theme') || 'dark';
-          const next = current === 'dark' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', next);
-          try {
-            localStorage.setItem('qd-theme', next);
-          } catch {}
-          syncThemeLabel();
-        });
-
-        const dialog = document.getElementById('mobile-nav-dialog');
-        const openBtn = document.querySelector('[data-mobile-menu-open]');
-        const closeBtn = document.querySelector('[data-mobile-menu-close]');
-
-        openBtn?.addEventListener('click', () => {
-          dialog?.showModal();
-          openBtn.setAttribute('aria-expanded', 'true');
-        });
-        const closeMenu = () => {
-          dialog?.close();
-          openBtn?.setAttribute('aria-expanded', 'false');
-        };
-        closeBtn?.addEventListener('click', closeMenu);
-        dialog?.addEventListener('close', () => {
-          openBtn?.setAttribute('aria-expanded', 'false');
-        });
+        document.addEventListener('astro:page-load', bindShell);
       })();
     </script>
   </body>

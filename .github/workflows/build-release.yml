@@ -34,11 +34,18 @@ jobs:
           PUBLIC_SHOWREEL_URL: ${{ vars.PUBLIC_SHOWREEL_URL }}
         run: npm run build:zip
 
-      - name: Upload deployable ZIP artifact
+      - name: Upload webhosting deploy ZIP artifact
         uses: actions/upload-artifact@v4
         with:
           name: portfolio-deploy-zip
           path: release/portfolio-deploy.zip
+          retention-days: 30
+
+      - name: Upload standalone PC local preview ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-local-preview-zip
+          path: release/portfolio-local-preview.zip
           retention-days: 30
 
   # Optionele automatische SFTP/FTP-deploy (uitgeschakeld als voorbeeld).

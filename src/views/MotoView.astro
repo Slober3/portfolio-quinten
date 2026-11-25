@@ -13,6 +13,20 @@ interface Props {
 
 const { locale } = Astro.props;
 const isNl = locale === 'nl';
+const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': featuredVideos.map((v) => ({
+    '@type': 'VideoObject',
+    name: v.title[locale],
+    description: v.notes[locale],
+    thumbnailUrl: `${siteBase}/favicon.svg`,
+    uploadDate: '2025-08-18T12:00:00+02:00',
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
+    author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
+  })),
+};
 ---
 
 <EditorialLayout
@@ -21,6 +35,7 @@ const isNl = locale === 'nl';
   description={isNl
     ? 'Honda CB750 Hornet (~35.000 km), bochtige binnendoorwegen via Kurviger/Calimoto, Spa-Francorchamps Bikers’Festival 2025, DJI-rig en ±5 km OpSec GPX-kaart.'
     : 'Honda CB750 Hornet (~35,000 km), twisty backroads via Kurviger/Calimoto, Spa-Francorchamps Bikers’Festival 2025, DJI rig, and ±5 km OpSec GPX map.'}
+  jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
     <header class="space-y-5 border-b border-border-subtle pb-10">
@@ -76,6 +91,7 @@ const isNl = locale === 'nl';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {featuredVideos.map((v) => (
           <YoutubeFacade
+            locale={locale}
             videoId={v.youtubeId}
             title={v.title[locale]}
             playLabel={isNl ? `Speel video: ${v.title.nl}` : `Play video: ${v.title.en}`}

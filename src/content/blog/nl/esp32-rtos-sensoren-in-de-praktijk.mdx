@@ -1,0 +1,51 @@
+---
+locale: nl
+slug: esp32-rtos-sensoren-in-de-praktijk
+translationSlug: esp32-rtos-sensors-in-practice
+title: "ESP32 & FreeRTOS: Betrouwbare Sensortelemetrie Zonder Blocking Loops"
+description: "Waarom een simpele delay() vroeg of laat elke IoT-node breekt en hoe taken en queues in FreeRTOS op ESP32 rust en voorspelbaarheid brengen."
+publishedAt: "2026-10-26"
+category: "IoT & Embedded"
+tags: ["ESP32", "RTOS", "IoT", "C++", "Hardware"]
+readingMinutes: 5
+---
+
+## Het kantelpunt voorbij de klassieke Arduino `loop()`
+
+Bij een eerste microcontroller-prototype werkt een eenvoudige `delay(2000)` prima. Zodra een **ESP32** tegelijk sensoren moet uitlezen (zoals in een *BeeHive* of *Home+* opstelling), Wi-Fi-verbindingen moet onderhouden én reageert op externe events of capacitive touch-inputs, leidt één blokkerende netwerkcall al snel tot gemiste metingen of watchdog-resets.
+
+## Taken scheiden op de dual-core ESP32 met FreeRTOS
+
+Omdat de ESP32 standaard op **FreeRTOS** draait, kun je meet- en netwerktaken netjes ontkoppelen via een *thread-safe* queue:
+
+```cpp
+#include <Arduino.h>
+
+struct TelemetrySample {
+  float temperatureC;
+  float humidityPct;
+};
+
+QueueHandle_t sampleQueue;
+
+void sensorTask(void *pv) {
+  for (;;) {
+    TelemetrySample sample{ 21.4f, 54.0f };
+    xQueueOverwrite(sampleQueue, &sample);
+    vTaskDelay(pdMS_TO_TICKS(5000));
+  }
+}
+
+void setup() {
+  sampleQueue = xQueueCreate(1, sizeof(TelemetrySample));
+  xTaskCreatePinnedToCore(sensorTask, "SensorRead", 4096, nullptr, 1, nullptr, 1);
+}
+```
+
+## Drie vuistregels uit mijn EmDev- & IoT-labs
+
+1. **Gebruik `vTaskDelay()` in plaats van `delay()`** zodat de scheduler en Wi-Fi-stack ademruimte behouden.
+2. **Ontkoppel metingen van netwerk-I/O** via `xQueueSend` of `xQueueOverwrite`: als de broker even onbereikbaar is, blijft je sensorlus deterministisch doordraaien.
+3. **Reserveer voldoende stack per taak** en controleer tijdens debugging het laagwatermerk met `uxTaskGetStackHighWaterMark()`.
+
+Net zoals bij Kubernetes-microservices geldt ook op een chip van enkele euro’s: duidelijke scheiding van verantwoordelijkheden voorkomt onverklaarbare uitval.

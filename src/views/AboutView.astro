@@ -10,47 +10,101 @@ interface Props {
 const { locale } = Astro.props;
 const isNl = locale === 'nl';
 const cvHref = isNl ? '/cv/quinten-desmyter-cv-nl.pdf' : '/cv/quinten-desmyter-cv-en.pdf';
+const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: `${siteBase}${STATIC_ROUTES.about[locale]}`,
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${siteBase}/#person`,
+    name: 'Quinten Desmyter',
+    jobTitle: isNl ? 'Praktijklector Cloud, Netwerken & Cybersecurity' : 'Senior Lecturer Cloud, Networking & Cybersecurity',
+    worksFor: { '@type': 'CollegeOrUniversity', name: 'Thomas More Hogeschool (IT Factory, Campus Geel)' },
+    homeLocation: { '@type': 'Place', name: isNl ? 'Regio Lier / Kempen, België' : 'Lier / Campine Region, Belgium' },
+    sameAs: ['https://github.com/Slober3', 'https://www.youtube.com/@QuintenMoto'],
+  },
+};
+
+const personalHighlights = [
+  {
+    tag: 'JAPANSE CULTUUR & VERHALEN',
+    tagEn: 'JAPANESE CULTURE & FICTION',
+    title: isNl ? 'Anime, FACTS, Ramen & Sci-Fi / LitRPG' : 'Anime, FACTS, Ramen & Sci-Fi / LitRPG',
+    body: isNl
+      ? 'Voorliefde voor Japanse cultuur, anime en een goede kom ramen (zoals Takumi en studentenuitstappen zoals Thomas More gaat naar FACTS), naast sci-fi en post-apocalyptische/LitRPG-verhalen zoals Stargate SG-1 en Dungeon Crawler Carl.'
+      : 'Long-standing love for Japanese culture, anime, and ramen (from Takumi bowls to student outings like Thomas More visits FACTS), alongside sci-fi and post-apocalyptic/LitRPG favorites like Stargate SG-1 and Dungeon Crawler Carl.',
+  },
+  {
+    tag: 'ANALOOG VAKMANSCHAP',
+    tagEn: 'ANALOG CRAFT',
+    title: isNl ? 'Laser-cutting (SVG/DXF), Kalimba & Groepsreizen' : 'Laser-Cutting (SVG/DXF), Kalimba & Travel Planning',
+    body: isNl
+      ? 'Buiten de code-editor ontwerp ik graag strakke SVG/DXF lasercut-stukken, oefen ik nieuwe melodieën op een Hokema B17 17-key kalimba (C-majeur) en plan ik gestructureerde groepsreizen — met teckel Stitch als trouwe thuisbasis.'
+      : 'Away from terminals, I draft precision SVG/DXF laser-cut pieces, practice melodies on a Hokema B17 17-key kalimba (C major), organize structured group road trips, and unwind on walks with dachshund Stitch.',
+  },
+];
 ---
 
 <EditorialLayout
   locale={locale}
   title={isNl ? 'Over mij — Quinten Desmyter' : 'About — Quinten Desmyter'}
   description={isNl
-    ? 'Het verhaal, de didactische visie en de loopbaan van Quinten Desmyter: Thomas More IT Factory, RTC Antwerpen en vakmanschap buiten de uren.'
-    : 'Biography, teaching philosophy, and career timeline of Quinten Desmyter: Thomas More IT Factory, RTC Antwerp, and off-clock craft.'}
+    ? 'Het verhaal, de didactische visie en de loopbaan van Quinten Desmyter: Thomas More IT Factory, RTC Antwerpen en persoonlijke interesses.'
+    : 'Biography, teaching philosophy, and career timeline of Quinten Desmyter: Thomas More IT Factory, RTC Antwerp, and off-clock interests.'}
+  jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
-    <!-- Hero Bio -->
-    <header class="space-y-6 border-b border-border-subtle pb-12">
-      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
-        {isNl ? 'OVER MIJ · REGIO LIER / KEMPEN, BELGIË' : 'ABOUT · LIER / CAMPINE REGION, BELGIUM'}
-      </p>
-      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-        {isNl
-          ? 'Systemen bouwen, helder uitleggen en onderweg blijven leren.'
-          : 'Building reliable systems, teaching clearly, and staying curious off the clock.'}
-      </h1>
-      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
-        {isNl
-          ? 'Als praktijklector aan de IT Factory van Thomas More (Campus Geel) deel ik mijn dagelijkse passie voor cloud, netwerken en cybersecurity met studenten uit 1ITF en 1ACS. Naast mijn werk voor de klas begeleid ik als coach studentenorganisatie SIN, geef ik Cisco-workshops via RTC Antwerpen en trek ik er graag op uit met de Honda CB750 Hornet.'
-          : 'As a senior lecturer at Thomas More IT Factory (Geel Campus), I teach cloud, networking, and cybersecurity across the 1ITF and 1ACS programs. Beyond the classroom I also serve as a coach for student organization SIN, facilitate Cisco labs via RTC Antwerp, and spend weekends riding twisty roads on a Honda CB750 Hornet.'}
-      </p>
+    <!-- Hero Bio + Editorial Portrait Frame -->
+    <header class="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-8 lg:gap-12 items-start border-b border-border-subtle pb-12">
+      <div class="space-y-6">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+          {isNl ? 'OVER MIJ · REGIO LIER / KEMPEN, BELGIË' : 'ABOUT · LIER / CAMPINE REGION, BELGIUM'}
+        </p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+          {isNl
+            ? 'Systemen bouwen, helder uitleggen en onderweg blijven leren.'
+            : 'Building reliable systems, teaching clearly, and staying curious off the clock.'}
+        </h1>
+        <p class="text-lg text-ink-secondary leading-relaxed">
+          {isNl
+            ? 'Als praktijklector aan de IT Factory van Thomas More (Campus Geel) deel ik mijn dagelijkse passie voor cloud, netwerken en cybersecurity met studenten uit 1ITF en 1ACS. Naast mijn werk voor de klas ben ik als coach betrokken bij studentenorganisatie SIN, geef ik Cisco-workshops via RTC Antwerpen en trek ik er graag op uit met de Honda CB750 Hornet.'
+            : 'As a senior lecturer at Thomas More IT Factory (Geel Campus), I teach cloud, networking, and cybersecurity across the 1ITF and 1ACS programs. Beyond the classroom I am also involved as a coach at student organization SIN, facilitate Cisco labs via RTC Antwerp, and spend weekends riding twisty roads on a Honda CB750 Hornet.'}
+        </p>
 
-      <div class="flex flex-wrap items-center gap-4 pt-2">
-        <a
-          href={cvHref}
-          download
-          class="inline-flex items-center gap-2 rounded-full bg-kinetic px-6 py-3 text-sm font-semibold text-canvas hover:bg-kinetic-hover transition-colors min-h-[44px]"
-        >
-          {isNl ? 'Download CV (PDF)' : 'Download Resume (PDF)'}
-        </a>
-        <a
-          href={STATIC_ROUTES.contact[locale]}
-          class="inline-flex items-center rounded-full border border-border-subtle bg-surface-1 px-6 py-3 text-sm font-semibold text-ink-primary hover:border-telemetry transition-colors min-h-[44px]"
-        >
-          {isNl ? 'Neem contact op' : 'Get in touch'}
-        </a>
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <a
+            href={cvHref}
+            download
+            class="inline-flex items-center gap-2 rounded-full bg-kinetic px-6 py-3 text-sm font-semibold text-canvas hover:bg-kinetic-hover transition-colors min-h-[44px]"
+          >
+            {isNl ? 'Download CV (PDF)' : 'Download Resume (PDF)'}
+          </a>
+          <a
+            href={STATIC_ROUTES.contact[locale]}
+            class="inline-flex items-center rounded-full border border-border-subtle bg-surface-1 px-6 py-3 text-sm font-semibold text-ink-primary hover:border-telemetry transition-colors min-h-[44px]"
+          >
+            {isNl ? 'Neem contact op' : 'Get in touch'}
+          </a>
+        </div>
       </div>
+
+      <!-- Editorial Portrait Slot (ready for real headshot via CONTENT-TODO.md) -->
+      <figure class="editorial-card rounded-2xl p-5 flex flex-col justify-between gap-4">
+        <div class="aspect-[4/5] rounded-xl border border-border-subtle bg-surface-2 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
+          <div class="h-20 w-20 rounded-2xl border border-kinetic/40 bg-kinetic/10 flex items-center justify-center font-display text-3xl font-bold text-kinetic">
+            QD
+          </div>
+          <p class="mt-4 font-display text-sm font-bold text-ink-primary">Quinten Desmyter</p>
+          <p class="mt-1 font-mono text-[10px] uppercase tracking-wider text-ink-secondary">
+            {isNl ? 'Portret-slot klaar' : 'Portrait slot ready'}
+          </p>
+        </div>
+        <figcaption class="font-mono text-[11px] text-ink-secondary leading-relaxed">
+          {isNl ? 'Systemen, Precisie & Vrijheid · Kempen, BE' : 'Systems, Precision & Freedom · Campine, BE'}
+        </figcaption>
+      </figure>
     </header>
 
     <!-- Didactic Philosophy -->
@@ -62,12 +116,12 @@ const cvHref = isNl ? '/cv/quinten-desmyter-cv-nl.pdf' : '/cv/quinten-desmyter-c
         </h2>
         <p class="text-sm text-ink-secondary">
           {isNl
-            ? 'Basisstof wordt voorbereid vóór de les, zodat contacttijd gaat naar samen fouten opsporen en architectuur begrijpen.'
-            : 'Core theory happens before class so lab hours focus on diagnosing real failures together.'}
+            ? 'Basisstof wordt voorbereid vóór de les, zodat contacttijd gaat naar onderwijsleergesprekken en samen fouten opsporen.'
+            : 'Core theory happens before class so lab hours focus on interactive coaching and diagnosing real failures together.'}
         </p>
       </div>
       <div class="editorial-card rounded-2xl p-6 space-y-2">
-        <p class="font-mono text-xs text-kinetic">02 · HANDS-ON PRECIEZIE</p>
+        <p class="font-mono text-xs text-kinetic">02 · HANDS-ON PRECISIE</p>
         <h2 class="font-display text-lg font-bold text-ink-primary">
           {isNl ? 'Van tekstboek naar productielab' : 'From handbook to real lab'}
         </h2>
@@ -78,14 +132,14 @@ const cvHref = isNl ? '/cv/quinten-desmyter-cv-nl.pdf' : '/cv/quinten-desmyter-c
         </p>
       </div>
       <div class="editorial-card rounded-2xl p-6 space-y-2">
-        <p class="font-mono text-xs text-status">03 · BALANS & CREATIVITEIT</p>
+        <p class="font-mono text-xs text-status">03 · BREDE BLIK</p>
         <h2 class="font-display text-lg font-bold text-ink-primary">
-          {isNl ? 'Analoog buiten de schermuren' : 'Analog craft beyond screens'}
+          {isNl ? 'Pragmatisch & benaderbaar' : 'Pragmatic & approachable'}
         </h2>
         <p class="text-sm text-ink-secondary">
           {isNl
-            ? 'Kalimba (Hokema B17), SVG/DXF laser-cutting, Stargate SG-1 & Dungeon Crawler Carl, Japanse ramen en teckel Stitch houden alles scherp.'
-            : 'Learning the Hokema B17 kalimba, SVG/DXF laser-cutting, Stargate SG-1 & Dungeon Crawler Carl, ramen, and dachshund Stitch keep balance.'}
+            ? 'Techniek mag inhoudelijk scherp zijn zonder wollig jargon — en mag gerust wat droge humor bevatten.'
+            : 'Engineering should stay sharp without jargon — with room for grounded clarity and subtle humor.'}
         </p>
       </div>
     </section>
@@ -112,6 +166,30 @@ const cvHref = isNl ? '/cv/quinten-desmyter-cv-nl.pdf' : '/cv/quinten-desmyter-c
               <p class="font-mono text-xs text-telemetry">{step.org}</p>
               <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{step.details[locale]}</p>
             </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Personal Culture, Sci-Fi, Kalimba & Stitch -->
+    <section class="space-y-6">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
+          {isNl ? 'PERSOONLIJKE NOOT · BUITEN DE LESUREN' : 'PERSONAL NOTE · OFF THE CLOCK'}
+        </p>
+        <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Cultuur, creativiteit & teckel Stitch' : 'Culture, craft & dachshund Stitch'}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {personalHighlights.map((item) => (
+          <article class="editorial-card rounded-2xl p-6 space-y-2.5">
+            <p class="font-mono text-[11px] uppercase tracking-wider text-status">
+              {isNl ? item.tag : item.tagEn}
+            </p>
+            <h3 class="font-display text-xl font-bold text-ink-primary">{item.title}</h3>
+            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{item.body}</p>
           </article>
         ))}
       </div>

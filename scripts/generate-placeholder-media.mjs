@@ -102,6 +102,24 @@ const PHOTOS = [
     label: 'TRAVEL · PORTUGAL',
     title: 'Atlantic Cliffs · Horizon Study',
   },
+  {
+    file: 'pcb-bench-craft.jpg',
+    bgA: '#0F151D',
+    bgB: '#1B2A38',
+    accent: '#34D399',
+    accent2: '#38BDF8',
+    label: 'MAKER & LAB · HARDWARE',
+    title: 'Home+ Custom PCB & Soldering Bench',
+  },
+  {
+    file: 'lasercut-kalimba-lab.jpg',
+    bgA: '#191410',
+    bgB: '#33261A',
+    accent: '#F59E0B',
+    accent2: '#34D399',
+    label: 'MAKER & LAB · CRAFT',
+    title: 'SVG/DXF Laser-Cutting & 3D Prototypes',
+  },
 ];
 
 function escapeXml(str) {

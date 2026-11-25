@@ -11,17 +11,18 @@ const { locale } = Astro.props;
 const isNl = locale === 'nl';
 
 const categories = [
-  { id: 'all', label: isNl ? 'Alles (6)' : 'All (6)' },
+  { id: 'all', label: isNl ? `Alles (${photoEntries.length})` : `All (${photoEntries.length})` },
   { id: 'macro', label: isNl ? 'Natuur & Macro' : 'Nature & Macro' },
   { id: 'road', label: isNl ? 'On the Road & Motorsport' : 'On the Road & Motorsport' },
   { id: 'travel', label: isNl ? 'Reizen & Sfeer' : 'Travel & Atmosphere' },
+  { id: 'maker', label: 'Maker & Lab Life' },
 ];
 ---
 
 <section class="space-y-6" aria-labelledby="gallery-filter-heading">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border-subtle pb-4">
     <h2 id="gallery-filter-heading" class="font-mono text-xs uppercase tracking-wider text-telemetry">
-      {isNl ? 'Categoriefilters · PhotoSwipe 5 Lightbox' : 'Category Filters · PhotoSwipe 5 Lightbox'}
+      {isNl ? '4 Collecties · PhotoSwipe 5 Lightbox (Toetsenbord & Knoppen)' : '4 Collections · PhotoSwipe 5 Lightbox (Keyboard & Buttons)'}
     </h2>
 
     <div class="flex flex-wrap gap-2" role="group" aria-label={isNl ? 'Filter fotografiecategorieën' : 'Filter photography categories'}>
@@ -29,13 +30,9 @@ const categories = [
         <button
           type="button"
           data-photo-filter={cat.id}
+          data-active={idx === 0 ? 'true' : 'false'}
           aria-pressed={idx === 0 ? 'true' : 'false'}
-          class:list={[
-            'photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px]',
-            idx === 0
-              ? 'bg-telemetry text-canvas border-telemetry'
-              : 'bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary',
-          ]}
+          class="photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary data-[active=true]:bg-telemetry data-[active=true]:text-canvas data-[active=true]:border-telemetry"
         >
           {cat.label}
         </button>
@@ -88,56 +85,89 @@ const categories = [
   import PhotoSwipeLightbox from 'photoswipe/lightbox';
   import 'photoswipe/style.css';
 
-  const lightbox = new PhotoSwipeLightbox({
-    gallery: '#pswp-gallery',
-    children: 'a[data-pswp-width]',
-    pswpModule: () => import('photoswipe'),
-    zoom: true,
-    arrowPrev: true,
-    arrowNext: true,
-    close: true,
-    escKey: true,
-    arrowKeys: true,
-  });
+  let activeLightbox: PhotoSwipeLightbox | null = null;
+  let escListener: ((e: KeyboardEvent) => void) | null = null;
 
-  lightbox.on('uiRegister', () => {
-    lightbox.pswp?.ui?.registerElement({
-      name: 'custom-caption',
-      order: 9,
-      isButton: false,
-      appendTo: 'root',
-      html: '',
-      onInit: (el, pswp) => {
-        el.className = 'pswp__custom-caption';
-        el.style.cssText =
-          'position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(11,14,20,0.86);color:#EDF2F7;padding:8px 16px;border-radius:10px;border:1px solid #2A3446;font-size:12px;font-family:monospace;max-width:90vw;text-align:center;';
-        pswp.on('change', () => {
-          const currEl = pswp.currSlide?.data?.element as HTMLElement | undefined;
-          el.textContent = currEl?.dataset.pswpCaption || '';
+  function initPhotoGallery() {
+    const galleryEl = document.getElementById('pswp-gallery');
+    if (!galleryEl) return;
+
+    if (activeLightbox) {
+      activeLightbox.destroy();
+      activeLightbox = null;
+    }
+    if (escListener) {
+      window.removeEventListener('keydown', escListener);
+      escListener = null;
+    }
+
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '#pswp-gallery',
+      children: 'a[data-pswp-width]',
+      pswpModule: () => import('photoswipe'),
+      zoom: true,
+      arrowPrev: true,
+      arrowNext: true,
+      close: true,
+      escKey: true,
+      arrowKeys: true,
+      trapFocus: true,
+      returnFocus: true,
+    });
+
+    lightbox.on('uiRegister', () => {
+      lightbox.pswp?.ui?.registerElement({
+        name: 'custom-caption',
+        order: 9,
+        isButton: false,
+        appendTo: 'root',
+        html: '',
+        onInit: (el, pswp) => {
+          el.className = 'pswp__custom-caption';
+          el.style.cssText =
+            'position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(11,14,20,0.88);color:#EDF2F7;padding:8px 16px;border-radius:10px;border:1px solid #2A3446;font-size:12px;font-family:monospace;max-width:90vw;text-align:center;';
+          pswp.on('change', () => {
+            const currEl = pswp.currSlide?.data?.element as HTMLElement | undefined;
+            el.textContent = currEl?.dataset.pswpCaption || '';
+          });
+        },
+      });
+    });
+
+    lightbox.on('afterInit', () => {
+      lightbox.pswp?.element?.focus();
+    });
+
+    escListener = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && lightbox.pswp) {
+        lightbox.pswp.close();
+      }
+    };
+    window.addEventListener('keydown', escListener);
+
+    lightbox.init();
+    activeLightbox = lightbox;
+
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-photo-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-photo-card]');
+
+    filterButtons.forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.photoFilter || 'all';
+        cards.forEach((card) => {
+          const show = cat === 'all' || card.dataset.photoCategory === cat;
+          card.classList.toggle('hidden', !show);
         });
-      },
-    });
-  });
-
-  lightbox.init();
-
-  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-photo-filter]');
-  const cards = document.querySelectorAll<HTMLElement>('[data-photo-card]');
-
-  filterButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const cat = btn.dataset.photoFilter || 'all';
-      cards.forEach((card) => {
-        const show = cat === 'all' || card.dataset.photoCategory === cat;
-        card.classList.toggle('hidden', !show);
-      });
-      filterButtons.forEach((b) => {
-        const active = b === btn;
-        b.setAttribute('aria-pressed', String(active));
-        b.className = active
-          ? 'photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-telemetry text-canvas border-telemetry'
-          : 'photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary';
+        filterButtons.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-pressed', String(active));
+          b.setAttribute('data-active', String(active));
+        });
       });
     });
-  });
+  }
+
+  document.addEventListener('astro:page-load', initPhotoGallery);
 </script>

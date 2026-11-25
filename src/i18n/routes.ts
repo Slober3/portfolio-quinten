@@ -59,6 +59,10 @@ export const TRANSLATION_PAIRS: Array<{ nl: string; en: string }> = [
     nl: '/nl/blog/opsec-voor-makers-gpx-en-exif/',
     en: '/en/blog/opsec-for-creators-gpx-and-exif/',
   },
+  {
+    nl: '/nl/blog/esp32-rtos-sensoren-in-de-praktijk/',
+    en: '/en/blog/esp32-rtos-sensors-in-practice/',
+  },
 ];
 
 export function normalizePathname(pathname: string): string {

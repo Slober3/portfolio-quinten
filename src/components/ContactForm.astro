@@ -142,78 +142,83 @@ const effectiveAction = contactEndpoint || (web3FormsKey ? 'https://api.web3form
 
 <script is:inline define:vars={{ isNl }}>
   (() => {
-    const form = document.getElementById('static-contact-form');
-    const feedback = document.getElementById('contact-feedback');
-    if (!form || !feedback) return;
+    const bindContactForm = () => {
+      const form = document.getElementById('static-contact-form');
+      const feedback = document.getElementById('contact-feedback');
+      if (!form || !feedback || form.dataset.bound === '1') return;
+      form.dataset.bound = '1';
 
-    function showFeedback(text, ok) {
-      feedback.textContent = text;
-      feedback.classList.remove('hidden', 'border-status/40', 'bg-status/10', 'border-kinetic/40', 'bg-kinetic/10');
-      if (ok) {
-        feedback.classList.add('border-status/40', 'bg-status/10', 'text-ink-primary');
-      } else {
-        feedback.classList.add('border-kinetic/40', 'bg-kinetic/10', 'text-ink-primary');
-      }
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const configured = form.getAttribute('data-configured') === 'true';
-      const endpoint = form.getAttribute('data-endpoint') || '';
-
-      const formData = new FormData(form);
-      if (formData.get('botcheck')) {
-        return;
-      }
-
-      const name = String(formData.get('name') || '').trim();
-      const email = String(formData.get('email') || '').trim();
-      const message = String(formData.get('message') || '').trim();
-
-      if (!name || !email.includes('@') || message.length < 5) {
-        showFeedback(
-          isNl
-            ? 'Vul minstens je naam, een geldig antwoordadres en een kort bericht in.'
-            : 'Please enter your name, a valid email address, and a short message.',
-          false
-        );
-        return;
-      }
-
-      if (!configured || !endpoint) {
-        showFeedback(
-          isNl
-            ? 'Het formulier wacht op een endpoint-sleutel in .env (Web3Forms / Formspree). Zie CONTENT-TODO.md om dit in één minuut te activeren.'
-            : 'This static form is awaiting an endpoint key in .env (Web3Forms / Formspree). See CONTENT-TODO.md to enable submissions.',
-          false
-        );
-        return;
-      }
-
-      try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          body: formData,
-          headers: { Accept: 'application/json' },
-        });
-        if (res.ok) {
-          form.reset();
-          showFeedback(
-            isNl ? 'Bedankt! Je bericht is succesvol verzonden.' : 'Thank you! Your message has been sent.',
-            true
-          );
+      function showFeedback(text, ok) {
+        feedback.textContent = text;
+        feedback.classList.remove('hidden', 'border-status/40', 'bg-status/10', 'border-kinetic/40', 'bg-kinetic/10');
+        if (ok) {
+          feedback.classList.add('border-status/40', 'bg-status/10', 'text-ink-primary');
         } else {
+          feedback.classList.add('border-kinetic/40', 'bg-kinetic/10', 'text-ink-primary');
+        }
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const configured = form.getAttribute('data-configured') === 'true';
+        const endpoint = form.getAttribute('data-endpoint') || '';
+
+        const formData = new FormData(form);
+        if (formData.get('botcheck')) {
+          return;
+        }
+
+        const name = String(formData.get('name') || '').trim();
+        const email = String(formData.get('email') || '').trim();
+        const message = String(formData.get('message') || '').trim();
+
+        if (!name || !email.includes('@') || message.length < 5) {
           showFeedback(
-            isNl ? 'Verzenden mislukt bij het externe endpoint. Probeer later opnieuw.' : 'Submission failed at the form endpoint. Please try again later.',
+            isNl
+              ? 'Vul minstens je naam, een geldig antwoordadres en een kort bericht in.'
+              : 'Please enter your name, a valid email address, and a short message.',
+            false
+          );
+          return;
+        }
+
+        if (!configured || !endpoint) {
+          showFeedback(
+            isNl
+              ? 'Het formulier wacht op een endpoint-sleutel in .env (Web3Forms / Formspree). Zie CONTENT-TODO.md om dit in één minuut te activeren.'
+              : 'This static form is awaiting an endpoint key in .env (Web3Forms / Formspree). See CONTENT-TODO.md to enable submissions.',
+            false
+          );
+          return;
+        }
+
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' },
+          });
+          if (res.ok) {
+            form.reset();
+            showFeedback(
+              isNl ? 'Bedankt! Je bericht is succesvol verzonden.' : 'Thank you! Your message has been sent.',
+              true
+            );
+          } else {
+            showFeedback(
+              isNl ? 'Verzenden mislukt bij het externe endpoint. Probeer later opnieuw.' : 'Submission failed at the form endpoint. Please try again later.',
+              false
+            );
+          }
+        } catch {
+          showFeedback(
+            isNl ? 'Netwerkfout tijdens het verzenden.' : 'Network error while submitting the form.',
             false
           );
         }
-      } catch {
-        showFeedback(
-          isNl ? 'Netwerkfout tijdens het verzenden.' : 'Network error while submitting the form.',
-          false
-        );
-      }
-    });
+      });
+    };
+
+    document.addEventListener('astro:page-load', bindContactForm);
   })();
 </script>

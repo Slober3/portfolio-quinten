@@ -13,24 +13,38 @@ const isNl = locale === 'nl';
 const legalSteps = [
   {
     step: '01',
-    title: isNl ? 'Clublidmaatschap & Veiligheidsproef' : 'Club Membership & Safety Examination',
+    title: isNl ? 'Aansluiten bij een erkende schietclub & Veiligheidsbasis' : 'Join a Recognized Club & Safety Foundation',
     body: isNl
-      ? 'Start altijd bij een erkende club (zoals LEDO Lier binnen de Vlaamse Schietsportkoepel / VSK). Je begint met een voorlopige sportschutterslicentie (VSSL) en leert de vier universele vuurwapenveiligheidsregels en baandiscipline beheersen alvorens enige praktische proef af te leggen.'
-      : 'Begin at a recognized club (such as LEDO Lier under the Flemish Sport Shooting Federation / VSK). A preliminary license establishes strict range safety habits before any practical evaluation.',
+      ? 'Start altijd bij een erkende club (zoals LEDO Lier binnen de Vlaamse Schietsportkoepel / VSK). Je leert eerst de vier universele vuurwapenveiligheidsregels, veilige wapenhantering en baandiscipline onder begeleiding van clubinstructeurs.'
+      : 'Start at an accredited club (such as LEDO Lier under the Flemish Sport Shooting Federation / VSK), mastering the four universal firearm safety rules and range commands under instructor supervision.',
   },
   {
     step: '02',
-    title: isNl ? 'Praktijkuren, Theoretische Proef & Definitieve SSL' : 'Practice Sessions, Theory Test & Full SSL',
+    title: isNl ? 'Voorlopige Sportschutterslicentie (VSSL) & Model VL3' : 'Preliminary License (VSSL) & Model VL3',
     body: isNl
-      ? 'Na voldoende aantoonbare schietbeurten onder toezicht en het slagen voor de officiële VSK-theorie en praktijkproef per wapencategorie volgt de aanvraag voor de definitieve Sportschutterslicentie (SSL), samen met de verplichte uittreksels uit het strafregister en medisch attest.'
-      : 'Following supervised training sessions and official VSK theoretical and practical exams per category, you qualify for the full Sport Shooter License (SSL) alongside background and medical clearances.',
+      ? 'Via de federatie vraag je een voorlopige sportschutterslicentie aan met uittreksel uit het strafregister (Model 596.1-5A) en medisch attest. Gedurende minstens 6 maanden bouw je onder toezicht praktijkervaring op per wapencategorie (zoals vastgelegd op het opleidingsattest / Model VL3).'
+      : 'Through the federation you obtain a preliminary license backed by a clean background extract and medical certificate, logging supervised range sessions over at least 6 months per category (VL3 training record).',
   },
   {
     step: '03',
-    title: isNl ? 'Model 4 / Model 9 Registratie & Vijfjaarlijkse Controle' : 'Model 4 / Model 9 Registration & Five-Year Check',
+    title: isNl ? 'Theoretische & Praktische Proef → Definitieve SSL' : 'Theory & Practical Exams → Full SSL',
     body: isNl
-      ? 'Afhankelijk van de categorie verloopt aankoop via een Model 9 (sportschutterslicentie) of een Model 4-vergunning via de gouverneur. Daarna geldt blijvende zorgplicht: minimaal 12 jaarlijkse schietbeurten bijhouden en periodieke vijfjaarlijkse controles stipt opvolgen.'
-      : 'Depending on the category, acquisition requires Model 9 registration or a governor-approved Model 4 permit, followed by continuous statutory responsibilities including logging 12 annual sessions and five-year compliance checks.',
+      ? 'Je legt een officiële theoretische proef af over de Belgische Wapenwet en veiligheidsregels, gevolgd door een praktische proef per gewenste categorie (bv. revolver, pistool, gladloop of getrokken loop). Na slagen ontvang je jouw definitieve Sportschutterslicentie (SSL).'
+      : 'Pass the official Belgian Weapons Act theory exam and category-specific practical safety exam to receive your full Sport Shooter License (SSL).',
+  },
+  {
+    step: '04',
+    title: isNl ? 'Model 9 vs. Model 4 & 12 Jaarlijkse Schietbeurten' : 'Model 9 vs. Model 4 & 12 Annual Sessions',
+    body: isNl
+      ? 'Bepaalde sportwapens kunnen met een geldige SSL via Model 9 worden geregistreerd; voor andere kalibers of types vraag je een voorafgaande Model 4-vergunning aan bij de provinciegouverneur. Om je SSL geldig te houden, registreer je minstens 12 geldige schietbeurten per jaar gespreid over minstens twee trimesters.'
+      : 'Eligible sporting firearms can be registered via Model 9 under a valid SSL, whereas other categories require prior Model 4 authorization from the provincial governor. Keeping an SSL active requires logging at least 12 valid range sessions per year across multiple quarters.',
+  },
+  {
+    step: '05',
+    title: isNl ? 'Veilige Bewaring & Vijfjaarlijkse Controle' : 'Safe Storage & Five-Year Statutory Check',
+    body: isNl
+      ? 'Wettelijke opslagvereisten (afgesloten bewaring, gescheiden van munitie conform het KB en afhankelijk van aantallen) en de verplichte vijfjaarlijkse hertoetsing zorgen dat verantwoord bezit altijd aantoonbaar blijft.'
+      : 'Strict statutory storage rules (locked storage separated from ammunition per Royal Decree thresholds) and five-year administrative checks ensure continued legal compliance.',
   },
 ];
 ---
@@ -90,6 +104,15 @@ const legalSteps = [
           </article>
         ))}
       </div>
+
+      <aside class="rounded-xl border border-border-subtle bg-surface-1 p-5 text-xs sm:text-sm text-ink-secondary leading-relaxed">
+        <strong class="text-ink-primary">
+          {isNl ? 'Wettelijk kader (Belgische Wapenwet van 8 juni 2006):' : 'Legal notice (Belgian Weapons Act of 8 June 2006):'}
+        </strong>{' '}
+        {isNl
+          ? 'Deze pagina is uitsluitend informatief en educatief bedoeld. Er worden op deze website nooit vuurwapens of munitie te koop aangeboden (conform Art. 19 Wapenwet). Raadpleeg steeds de actuele publicaties van de VSK en FOD Justitie voor bindende wetteksten.'
+          : 'This page is strictly educational and informational. No firearms or ammunition are ever offered for sale here (per Art. 19 of the Belgian Weapons Act). Always consult official VSK and Federal Justice texts for binding legal obligations.'}
+      </aside>
     </section>
 
     <!-- Honest Personal Stats & OpenCV R&D Link -->

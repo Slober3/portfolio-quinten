@@ -13,35 +13,61 @@ const isNl = locale === 'nl';
 const posts = (await getCollection('blog', (e) => e.data.locale === locale)).sort((a, b) =>
   b.data.publishedAt.localeCompare(a.data.publishedAt)
 );
+
+const categories = Array.from(new Set(posts.map((p) => p.data.category)));
 ---
 
 <EditorialLayout
   locale={locale}
   title={isNl ? 'Kennisbank & Blog — Quinten Desmyter' : 'Blog & Knowledge Base — Quinten Desmyter'}
   description={isNl
-    ? 'Artikelen over Flip the Classroom, PowerShell & Pester Systems as Code, en praktische OpSec voor makers.'
-    : 'Technical notes on Flipped Classroom labs, PowerShell & Pester Systems as Code, and automated OpSec for creators.'}
+    ? 'Artikelen over Flip the Classroom, PowerShell & Pester Systems as Code, ESP32/RTOS en praktische OpSec voor makers.'
+    : 'Technical notes on Flipped Classroom labs, PowerShell & Pester Systems as Code, ESP32/RTOS, and automated OpSec for creators.'}
 >
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
-    <header class="space-y-4 border-b border-border-subtle pb-10">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
+    <header class="space-y-4 border-b border-border-subtle pb-8">
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
         {isNl ? 'KENNISBANK · MDX ARTIKELEN' : 'KNOWLEDGE BASE · MDX NOTES'}
       </p>
       <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
-        {isNl ? 'Didactiek, Automatisering & OpSec.' : 'Teaching Craft, Automation & OpSec.'}
+        {isNl ? 'Didactiek, Automatisering, IoT & OpSec.' : 'Teaching Craft, Automation, IoT & OpSec.'}
       </h1>
       <p class="text-lg text-ink-secondary max-w-3xl">
         {isNl
-          ? 'Technische nota’s en ervaringen uit IT-labs, infrastructuurautomatisering en privacyvriendelijk media-beheer.'
-          : 'Field notes from IT engineering labs, infrastructure automation, and privacy-respecting media workflows.'}
+          ? 'Technische nota’s en ervaringen uit IT-labs, embedded hardware (ESP32), infrastructuurautomatisering en privacyvriendelijk media-beheer.'
+          : 'Field notes from IT engineering labs, embedded ESP32 hardware, infrastructure automation, and privacy-respecting media workflows.'}
       </p>
+
+      <!-- Interactive Category Filter -->
+      <div class="flex flex-wrap gap-2 pt-2" role="group" aria-label={isNl ? 'Filter artikelen op categorie' : 'Filter articles by category'}>
+        <button
+          type="button"
+          data-blog-filter="all"
+          data-active="true"
+          aria-pressed="true"
+          class="rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary data-[active=true]:bg-telemetry data-[active=true]:text-canvas data-[active=true]:border-telemetry"
+        >
+          {isNl ? `Alles (${posts.length})` : `All (${posts.length})`}
+        </button>
+        {categories.map((cat) => (
+          <button
+            type="button"
+            data-blog-filter={cat}
+            data-active="false"
+            aria-pressed="false"
+            class="rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary data-[active=true]:bg-telemetry data-[active=true]:text-canvas data-[active=true]:border-telemetry"
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
     </header>
 
     <div class="divide-y divide-border-subtle border-y border-border-subtle">
       {posts.map((post) => {
         const href = `${STATIC_ROUTES.blog[locale]}${post.data.slug}/`;
         return (
-          <article class="py-8 grid grid-cols-1 md:grid-cols-[170px_1fr] gap-4 md:gap-8">
+          <article data-blog-card data-blog-cat={post.data.category} class="py-8 grid grid-cols-1 md:grid-cols-[170px_1fr] gap-4 md:gap-8">
             <div class="font-mono text-xs space-y-1 text-ink-secondary">
               <p class="text-kinetic font-semibold">{post.data.publishedAt}</p>
               <p>{post.data.readingMinutes} {isNl ? 'min leestijd' : 'min read'}</p>
@@ -70,4 +96,30 @@ const posts = (await getCollection('blog', (e) => e.data.locale === locale)).sor
       })}
     </div>
   </div>
+
+  <script is:inline>
+    (() => {
+      const bindBlogFilters = () => {
+        const buttons = document.querySelectorAll('[data-blog-filter]');
+        const cards = document.querySelectorAll('[data-blog-card]');
+        buttons.forEach((btn) => {
+          if (btn.dataset.bound === '1') return;
+          btn.dataset.bound = '1';
+          btn.addEventListener('click', () => {
+            const cat = btn.getAttribute('data-blog-filter') || 'all';
+            cards.forEach((card) => {
+              const show = cat === 'all' || card.getAttribute('data-blog-cat') === cat;
+              card.classList.toggle('hidden', !show);
+            });
+            buttons.forEach((b) => {
+              const active = b === btn;
+              b.setAttribute('aria-pressed', String(active));
+              b.setAttribute('data-active', String(active));
+            });
+          });
+        });
+      };
+      document.addEventListener('astro:page-load', bindBlogFilters);
+    })();
+  </script>
 </EditorialLayout>

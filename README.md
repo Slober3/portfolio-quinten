@@ -15,8 +15,18 @@ Tweetalige (`nl-BE` & `en`), 100% statische portfoliowebsite gebouwd met **Astro
 
 ---
 
-## 1. Lokaal Aanpassen & Bouwen
+## 1. Snel Lokaal Bekijken & Aanpassen op je PC (Windows)
 
+### Optie 1 — Met één dubbelklik in deze map
+- **`START-PREVIEW.bat`**: Bouwt de site indien nodig en opent de volledige statische website meteen in je browser op `http://127.0.0.1:4321/nl/`.
+- **`START-DEV.bat`**: Start de live Astro-ontwikkelserver (`npm run dev`) zodat wijzigingen in MDX/TS direct zichtbaar worden.
+
+### Optie 2 — Los uitpakken op elke PC via `release/portfolio-local-preview.zip`
+Na `npm run build:zip` (of via GitHub Actions Artifacts) staan er **twee** duidelijke `.zip`-bestanden klaar:
+1. **`release/portfolio-local-preview.zip`** — Pak dit bestand ergens op je PC uit (bv. Bureaublad of Downloads) en dubbelklik op **`START-HIER.bat`** (of `./start-hier.sh` op macOS/Linux). Geen `npm install` nodig; werkt direct via Node.js of Python 3 en opent je browser automatisch.
+2. **`release/portfolio-deploy.zip`** — Bevat uitsluitend de schone productiebestanden (`dist/` + `.htaccess` op rootniveau) om rechtstreeks op je webhosting uit te pakken.
+
+### Optie 3 — Via de terminal
 **Vereiste:** Node.js `>= 22.12.0`. *(Op Windows-machines met een oudere globale Node-versie zit `node@22.23.5` al als `devDependency` in dit project, waardoor `npm run <script>` automatisch de juiste runtime gebruikt.)*
 
 ```bash
@@ -29,11 +39,12 @@ cp .env.example .env
 # 3. Lokaal ontwikkelen met live reload
 npm run dev
 
-# 4. Volledige release bouwen: GPX trim + astro check + build + OpSec audit + .zip
+# 4. Lokale preview openen in browser (zero-dependency HTTP-server op dist/)
+npm run preview
+
+# 5. Volledige release bouwen + OpSec/SEO/A11y-audit + beide .zip-bestanden maken
 npm run build:zip
 ```
-
-Het eindresultaat staat in `release/portfolio-deploy.zip`. Alle bestanden staan rechtstreeks op rootniveau in het archief (dus **zonder** extra bovenliggende `dist/`-map), inclusief `.htaccess`.
 
 ---
 
@@ -112,6 +123,6 @@ server {
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()" always;
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://i.ytimg.com; media-src 'self' https://*.b-cdn.net https://iframe.mediadelivery.net; frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com https://iframe.mediadelivery.net; connect-src 'self' https://api.web3forms.com https://formspree.io; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com https://formspree.io; upgrade-insecure-requests;" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://i.ytimg.com https://*.basemaps.cartocdn.com; media-src 'self' https://*.b-cdn.net https://iframe.mediadelivery.net; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://challenges.cloudflare.com https://iframe.mediadelivery.net; connect-src 'self' data: blob: https://api.web3forms.com https://formspree.io; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com https://formspree.io; upgrade-insecure-requests;" always;
 }
 ```

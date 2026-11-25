@@ -1,6 +1,8 @@
 export const externalLinks = {
   github: 'https://github.com/Slober3',
   youtubeMoto: 'https://www.youtube.com/@QuintenMoto',
+  thomasMoreRtc: 'https://thomasmore.be/nl/vormingen/datacommunicatie-en-netwerken',
+  pcbWaySvejr: 'https://www.pcbway.com/project/share/Home__Domotica_Svejr_Station.html',
   // Vul deze optionele URL's aan in CONTENT-TODO.md zodra je je publieke profielen wilt koppelen:
   linkedin: '',
   instagram: '',
@@ -13,6 +15,9 @@ export const books = [
     isbn: '9798651810475',
     pages: 48,
     year: '2020',
+    datePublished: '2020-06-07',
+    inLanguage: 'nl',
+    buyUrl: 'https://www.bol.com/be/nl/p/thoughts-on-cyber-security/9300000004610620/',
     description: {
       nl: 'Praktische en fundamentele inzichten over moderne cybersecurity-dreigingen, preventie en menselijk bewustzijn.',
       en: 'Practical and foundational insights on modern cybersecurity threats, defense hygiene, and human awareness.',
@@ -23,6 +28,9 @@ export const books = [
     isbn: '9798654331892',
     pages: 38,
     year: '2020',
+    datePublished: '2020-06-17',
+    inLanguage: 'nl',
+    buyUrl: 'https://www.bol.com/be/nl/p/informatica/9300000008283801/',
     description: {
       nl: 'Compact, toegankelijk handboek dat beginnende programmeurs stap voor stap begeleidt van logica naar leesbare Python-code.',
       en: 'Compact handbook guiding beginners step-by-step from algorithmic thinking to clean, readable Python code.',
@@ -51,7 +59,7 @@ export const timeline = [
       nl: 'Cisco-labworkshops & Train-the-Trainer',
       en: 'Cisco Lab Workshops & Train-the-Trainer',
     },
-    org: 'RTC Antwerpen',
+    org: 'RTC Antwerpen · Datacommunicatie & Netwerken',
     details: {
       nl: 'Begeleiden van praktijkgerichte Cisco-netwerkworkshops en kennisoverdracht naar collega-leerkrachten in de provincie Antwerpen.',
       en: 'Delivering hands-on Cisco networking labs and Train-the-Trainer sessions for STEM teachers across the Antwerp province.',
@@ -77,9 +85,9 @@ export const timeline = [
       nl: 'Prof. Bachelor Elektronica-ICT & Pedagogisch Getuigschrift Informatica/Techniek',
       en: 'B.Sc. Electronics-ICT & Pedagogical Teaching Certificate',
     },
-    org: 'Vlaamse onderwijs- & VLOR-kwaliteitscommissies',
+    org: 'VTI · VVS / VLOR curriculumkwaliteit',
     details: {
-      nl: 'Gecombineerde technische basis in Elektronica-ICT met didactiek (o.a. VTI Lier-praktijkervaring) en actieve inbreng vanuit de VVS in VLOR-werkgroepen rond curriculumkwaliteit.',
+      nl: 'Gecombineerde technische basis in Elektronica-ICT met onderwijservaring (o.a. VTI Lier-praktijkervaring) en beleidsmatige inbreng namens de Vlaamse Vereniging van Studenten (VVS) in VLOR-publicaties rond hogeronderwijscurricula.',
       en: 'Combined Electronics-ICT engineering degree with formal teaching pedagogy and Flemish higher-education quality assurance participation via VVS & VLOR.',
     },
   },
@@ -123,9 +131,18 @@ export const githubHighlights = [
     },
   },
   {
+    name: 'ScraperAfspraakCheckerGemeente',
+    stack: 'Python · Selenium · Automation',
+    url: 'https://github.com/Slober3/ScraperAfspraakCheckerGemeente',
+    description: {
+      nl: 'Pragmatisch Python/Selenium-script dat automatisch beschikbare gemeentelijke afspraakslots opvolgt — techniek inzetten tegen dagelijkse frictie.',
+      en: 'Pragmatic Python/Selenium automation monitoring municipal appointment availability — applying code to everyday friction.',
+    },
+  },
+  {
     name: 'Home+ Domotica Svejr Station',
-    stack: 'Custom PCB · Hardware',
-    url: 'https://github.com/Slober3',
+    stack: 'Custom PCB · PCBWay',
+    url: 'https://www.pcbway.com/project/share/Home__Domotica_Svejr_Station.html',
     description: {
       nl: 'Zelf ontworpen en geproduceerd printplaat-project voor modulaire thuisautomatisering en sensormetingen.',
       en: 'Custom-designed and fabricated PCB node built for modular home telemetry and sensing.',

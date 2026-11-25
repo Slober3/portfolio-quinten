@@ -13,7 +13,7 @@ function resolvePhoto(filename: string): ImageMetadata {
   return mod.default;
 }
 
-export type PhotoCategory = 'macro' | 'road' | 'travel';
+export type PhotoCategory = 'macro' | 'road' | 'travel' | 'maker';
 
 export interface PhotoEntry {
   id: string;
@@ -42,8 +42,8 @@ export const photoEntries: PhotoEntry[] = [
     category: 'macro',
     title: { nl: 'Kempens Licht door Dennen', en: 'Campine Canopy Golden Hour' },
     caption: {
-      nl: 'Natuur & Macro · Natuurlijk tegenlicht en rustgevend kleurverloop.',
-      en: 'Nature & Macro · Filtered golden-hour canopy light.',
+      nl: 'Natuur & Macro · Belgische bos- en natuurfotografie met rustgevend kleurverloop.',
+      en: 'Nature & Macro · Belgian woodland study in filtered golden-hour light.',
     },
     exposure: '50mm · f/4.0 · 1/320s · ISO 200',
   },
@@ -86,9 +86,31 @@ export const photoEntries: PhotoEntry[] = [
     category: 'travel',
     title: { nl: 'Atlantische Klifkust · Portugal', en: 'Atlantic Cliffs · Portugal' },
     caption: {
-      nl: 'Reizen & Sfeer · Horizonstudie en kustlijn uit de Shutterstock-reiscollectie.',
-      en: 'Travel & Atmosphere · Coastal horizon study from the Shutterstock travel series.',
+      nl: 'Reizen & Sfeer · Horizonstudie uit de reiscollectie (Portugal, Kroatië & Aken).',
+      en: 'Travel & Atmosphere · Coastal horizon study from the travel series (Portugal, Croatia & Aachen).',
     },
     exposure: '35mm · f/8.0 · 1/250s · ISO 100',
+  },
+  {
+    id: 'pcb-bench-craft',
+    image: resolvePhoto('pcb-bench-craft.jpg'),
+    category: 'maker',
+    title: { nl: 'Home+ Custom PCB & Soldeerwerkbank', en: 'Home+ Custom PCB & Soldering Bench' },
+    caption: {
+      nl: 'Maker & Lab Life · Van eigen printplaat-layout naar werkende embedded sensornode.',
+      en: 'Maker & Lab Life · Moving from custom PCB routing to live embedded sensor hardware.',
+    },
+    exposure: '50mm · f/2.8 · 1/125s · ISO 400',
+  },
+  {
+    id: 'lasercut-kalimba-lab',
+    image: resolvePhoto('lasercut-kalimba-lab.jpg'),
+    category: 'maker',
+    title: { nl: 'SVG/DXF Laser-Cutting & 3D-Prototypes', en: 'SVG/DXF Laser-Cutting & 3D Prototypes' },
+    caption: {
+      nl: 'Maker & Lab Life · Precisie-vectorontwerp voor Weavers Fate, D&D-scènes en fysieke behuizingen.',
+      en: 'Maker & Lab Life · Precision vector cuts for Weavers Fate, D&D terrain, and custom enclosures.',
+    },
+    exposure: '35mm · f/3.2 · 1/200s · ISO 250',
   },
 ];

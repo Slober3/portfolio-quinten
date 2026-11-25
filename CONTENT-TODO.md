@@ -19,8 +19,8 @@ Kopieer `.env.example` naar `.env` (lokaal) en stel eventueel dezelfde waarden i
 
 ---
 
-## 2. Echte Foto’s Toevoegen (`src/assets/photos/`)
-Vervang de 6 voorbeeld-JPEGs in `src/assets/photos/` door jouw eigen hoogwaardige foto’s (ideaal **1600×1067 px** of minstens **1600 px** langste zijde, landschap `3:2`, JPEG of PNG zonder zichtbare nummerplaten):
+## 2. Echte Foto’s & Portret Toevoegen (`src/assets/photos/`)
+Vervang de 8 voorbeeld-JPEGs in `src/assets/photos/` door jouw eigen hoogwaardige foto’s (ideaal **1600×1067 px** of minstens **1600 px** langste zijde, landschap `3:2`, JPEG of PNG zonder zichtbare nummerplaten):
 
 - `src/assets/photos/macro-dew-optics.jpg` *(Natuur & Macro)*
 - `src/assets/photos/forest-canopy-light.jpg` *(Natuur & Macro)*
@@ -28,6 +28,10 @@ Vervang de 6 voorbeeld-JPEGs in `src/assets/photos/` door jouw eigen hoogwaardig
 - `src/assets/photos/spa-raidillon-mist.jpg` *(On the Road & Motorsport)*
 - `src/assets/photos/adriatic-stone-dubrovnik.jpg` *(Reizen & Sfeer)*
 - `src/assets/photos/atlantic-cliffs-portugal.jpg` *(Reizen & Sfeer)*
+- `src/assets/photos/pcb-bench-craft.jpg` *(Maker & Lab Life)*
+- `src/assets/photos/lasercut-kalimba-lab.jpg` *(Maker & Lab Life)*
+
+*(Optioneel voor `/over-mij`: vervang het `QD`-monogram in `src/views/AboutView.astro` door een eigen portretfoto in `src/assets/photos/`.)*
 
 Werk vervolgens eventueel titels, omschrijvingen en veilige belichtingsmetadata (`mm · f/ · 1/s · ISO`) bij in `src/data/photos.ts`. De Sharp-pijplijn (`src/lib/safeSharpService.ts`) genereert automatisch AVIF + WebP en stript GPS- en serienummer-EXIF.
 

@@ -10,15 +10,30 @@ interface Props {
 
 const { locale, entry } = Astro.props;
 const isNl = locale === 'nl';
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: entry.data.title,
-  description: entry.data.description,
-  datePublished: entry.data.publishedAt,
-  author: { '@type': 'Person', name: 'Quinten Desmyter' },
+  '@graph': [
+    {
+      '@type': 'BlogPosting',
+      headline: entry.data.title,
+      description: entry.data.description,
+      datePublished: entry.data.publishedAt,
+      inLanguage: isNl ? 'nl-BE' : 'en',
+      author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteBase}${STATIC_ROUTES.home[locale]}` },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteBase}${STATIC_ROUTES.blog[locale]}` },
+        { '@type': 'ListItem', position: 3, name: entry.data.title },
+      ],
+    },
+  ],
 };
 ---
 
@@ -51,6 +66,26 @@ const jsonLd = {
       </h1>
       <p class="text-lg text-ink-secondary">{entry.data.description}</p>
     </header>
+
+    {tocHeadings.length > 1 && (
+      <nav
+        aria-label={isNl ? 'Inhoudsopgave' : 'Table of contents'}
+        class="rounded-2xl border border-border-subtle bg-surface-1 p-5 space-y-2"
+      >
+        <p class="font-mono text-[11px] uppercase tracking-wider text-kinetic">
+          {isNl ? 'In dit artikel' : 'On this page'}
+        </p>
+        <ul class="space-y-1.5 text-sm">
+          {tocHeadings.map((h) => (
+            <li>
+              <a href={`#${h.slug}`} class="text-ink-secondary hover:text-telemetry transition-colors">
+                → {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
 
     <div class="editorial-prose">
       <Content />

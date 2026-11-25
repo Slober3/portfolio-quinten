@@ -13,8 +13,10 @@
     "check": "astro check",
     "build": "node scripts/sanitize-gpx.mjs && astro build",
     "audit:opsec": "node scripts/audit-opsec.mjs",
+    "audit:site": "node scripts/audit-site.mjs",
+    "audit:all": "node scripts/audit-opsec.mjs && node scripts/audit-site.mjs",
     "build:zip": "node scripts/package-zip.mjs",
-    "preview": "astro preview"
+    "preview": "node scripts/local-preview-server.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "6.0.3",

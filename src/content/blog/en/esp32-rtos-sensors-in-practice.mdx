@@ -1,0 +1,49 @@
+---
+locale: en
+slug: esp32-rtos-sensors-in-practice
+translationSlug: esp32-rtos-sensoren-in-de-praktijk
+title: "ESP32 & FreeRTOS: Reliable Sensor Telemetry Without Blocking Loops"
+description: "Why naive delay() loops break real IoT nodes and how FreeRTOS tasks and queues keep ESP32 hardware deterministic."
+publishedAt: "2026-10-26"
+category: "IoT & Embedded"
+tags: ["ESP32", "RTOS", "IoT", "C++", "Hardware"]
+readingMinutes: 5
+---
+
+## Moving Beyond a Blocking `loop()`
+
+A single `delay(2000)` works fine on a breadboard demo. The moment an **ESP32** manages environmental sensors (such as *BeeHive* or a *Home+* PCB), Wi-Fi reconnects, and capacitive touch inputs simultaneously, one slow network retry stalls the whole device.
+
+## Decoupling Tasks on Dual-Core ESP32 with FreeRTOS
+
+Because ESP-IDF runs **FreeRTOS** natively, separating measurement from network transmission via a thread-safe queue takes just a few lines:
+
+```cpp
+#include <Arduino.h>
+
+struct TelemetrySample {
+  float temperatureC;
+  float humidityPct;
+};
+
+QueueHandle_t sampleQueue;
+
+void sensorTask(void *pv) {
+  for (;;) {
+    TelemetrySample sample{ 21.4f, 54.0f };
+    xQueueOverwrite(sampleQueue, &sample);
+    vTaskDelay(pdMS_TO_TICKS(5000));
+  }
+}
+
+void setup() {
+  sampleQueue = xQueueCreate(1, sizeof(TelemetrySample));
+  xTaskCreatePinnedToCore(sensorTask, "SensorRead", 4096, nullptr, 1, nullptr, 1);
+}
+```
+
+## Three Habits from IoT & Embedded Labs
+
+1. **Prefer `vTaskDelay()` over blocking waits** so the scheduler and radio stack never starve.
+2. **Isolate sensor reads from network retries** using queues so transient Wi-Fi drops never pause sampling.
+3. **Monitor stack headroom** early using `uxTaskGetStackHighWaterMark()` before deploying sealed enclosures.

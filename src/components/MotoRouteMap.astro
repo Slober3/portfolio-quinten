@@ -20,7 +20,7 @@ const isNl = locale === 'nl';
   <div class="border-b border-border-subtle px-5 py-4 flex flex-wrap items-center justify-between gap-3">
     <div>
       <p class="font-mono text-[11px] uppercase tracking-wider text-status">
-        {isNl ? 'LAZY-LOADED MAPLIBRE GL JS · GPX ±5 KM OPSEC TRIM' : 'LAZY-LOADED MAPLIBRE GL JS · GPX ±5 KM OPSEC TRIM'}
+        LAZY-LOADED MAPLIBRE GL JS · GPX ±5 KM OPSEC TRIM
       </p>
       <h3 id="moto-map-heading" class="mt-0.5 font-display text-lg font-bold text-ink-primary">
         {isNl ? 'Eifel & Rursee Bochtenroute (Demo-track)' : 'Eifel & Rursee Backroad Loop (Demo Track)'}
@@ -38,13 +38,21 @@ const isNl = locale === 'nl';
       <button type="button" data-map-action="fit" class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-kinetic hover:border-kinetic cursor-pointer min-h-[44px]">
         {isNl ? 'Centreer' : 'Recenter'}
       </button>
+      <button
+        type="button"
+        data-map-action="toggle-tiles"
+        aria-pressed="false"
+        class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-telemetry hover:border-telemetry cursor-pointer min-h-[44px]"
+      >
+        {isNl ? 'Kaartlaag: Uit' : 'Basemap: Off'}
+      </button>
     </div>
   </div>
 
   <div class="relative h-[340px] sm:h-[400px] bg-surface-2">
     <div data-map-canvas class="w-full h-full"></div>
     <div data-map-status class="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-border-subtle bg-canvas/90 px-3 py-1.5 font-mono text-[11px] text-ink-secondary backdrop-blur">
-      {isNl ? 'Track geladen uit /gpx/ (start & finish ±5 km afgeknipt)' : 'Track loaded from /gpx/ (start & finish ±5 km trimmed)'}
+      {isNl ? 'Offline-safe vectorraster actief · Start/finish ±5 km getrimd' : 'Offline-safe vector grid active · Start/finish ±5 km trimmed'}
     </div>
   </div>
 
@@ -96,6 +104,7 @@ const isNl = locale === 'nl';
     const kmEl = root.querySelector('[data-meta-km]');
     const eleEl = root.querySelector('[data-meta-ele]');
     const sparkPath = root.querySelector('[data-ele-path]');
+    const tileBtn = root.querySelector<HTMLButtonElement>('[data-map-action="toggle-tiles"]');
     if (!canvasEl) return;
 
     try {
@@ -106,7 +115,7 @@ const isNl = locale === 'nl';
       ]);
       await import('maplibre-gl/dist/maplibre-gl.css');
 
-      if (kmEl && meta.sanitizedKm) kmEl.textContent = `${meta.sanitizedKm} km`;
+      if (kmEl && meta.sanitizedKm) kmEl.textContent = `${Number(meta.sanitizedKm).toFixed(1)} km`;
       if (eleEl && meta.elevationGainM) eleEl.textContent = `+${meta.elevationGainM} m`;
 
       if (sparkPath && Array.isArray(meta.elevationSample) && meta.elevationSample.length > 2) {
@@ -134,11 +143,13 @@ const isNl = locale === 'nl';
           coords.push([lon, lat]);
         }
       }
-
       if (coords.length < 2) throw new Error('GPX track empty');
 
-      // Generate clean coordinate graticule locally so MapLibre runs with 0 external requests or console errors
-      const gridFeatures = [];
+      const gridFeatures: Array<{
+        type: 'Feature';
+        properties: Record<string, never>;
+        geometry: { type: 'LineString'; coordinates: Array<[number, number]> };
+      }> = [];
       const [sw, ne] = meta.bbox as [[number, number], [number, number]];
       for (let lon = Math.floor(sw[0] * 20) / 20 - 0.15; lon <= ne[0] + 0.15; lon += 0.05) {
         gridFeatures.push({
@@ -155,77 +166,98 @@ const isNl = locale === 'nl';
         });
       }
 
+      const isLight = () => document.documentElement.getAttribute('data-theme') === 'light';
+      let tilesEnabled = false;
+
+      const buildStyle = () => {
+        const light = isLight();
+        const sources: Record<string, any> = {
+          graticule: {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: gridFeatures },
+          },
+          route: {
+            type: 'geojson',
+            data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } },
+          },
+          endpoints: {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: [
+                { type: 'Feature', properties: { role: 'Trimmed Start' }, geometry: { type: 'Point', coordinates: coords[0] } },
+                { type: 'Feature', properties: { role: 'Trimmed End' }, geometry: { type: 'Point', coordinates: coords[coords.length - 1] } },
+              ],
+            },
+          },
+        };
+        const layers: any[] = [
+          {
+            id: 'bg',
+            type: 'background',
+            paint: { 'background-color': light ? '#EEF2F6' : '#101622' },
+          },
+        ];
+
+        if (tilesEnabled) {
+          sources.carto = {
+            type: 'raster',
+            tiles: [
+              light
+                ? 'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+                : 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+            ],
+            tileSize: 256,
+            attribution: '© OpenStreetMap contributors © CARTO',
+          };
+          layers.push({ id: 'carto-tiles', type: 'raster', source: 'carto' });
+        } else {
+          layers.push({
+            id: 'grid-lines',
+            type: 'line',
+            source: 'graticule',
+            paint: { 'line-color': light ? '#CBD5E1' : '#232F44', 'line-width': 1 },
+          });
+        }
+
+        layers.push(
+          {
+            id: 'route-glow',
+            type: 'line',
+            source: 'route',
+            layout: { 'line-join': 'round', 'line-cap': 'round' },
+            paint: { 'line-color': light ? '#0369A1' : '#38BDF8', 'line-width': 9, 'line-opacity': 0.24 },
+          },
+          {
+            id: 'route-core',
+            type: 'line',
+            source: 'route',
+            layout: { 'line-join': 'round', 'line-cap': 'round' },
+            paint: { 'line-color': light ? '#B45309' : '#F59E0B', 'line-width': 3.5 },
+          },
+          {
+            id: 'trimmed-markers',
+            type: 'circle',
+            source: 'endpoints',
+            paint: {
+              'circle-radius': 6,
+              'circle-color': light ? '#047857' : '#34D399',
+              'circle-stroke-color': light ? '#FFFFFF' : '#0B0E14',
+              'circle-stroke-width': 2,
+            },
+          }
+        );
+
+        return { version: 8 as const, sources, layers };
+      };
+
       const maplibregl = maplibreMod.default;
       const map = new maplibregl.Map({
         container: canvasEl,
         center: meta.center || coords[Math.floor(coords.length / 2)],
         zoom: 10.5,
         attributionControl: false,
-        style: {
-          version: 8,
-          sources: {
-            graticule: {
-              type: 'geojson',
-              data: { type: 'FeatureCollection', features: gridFeatures },
-            },
-            route: {
-              type: 'geojson',
-              data: {
-                type: 'Feature',
-                properties: {},
-                geometry: { type: 'LineString', coordinates: coords },
-              },
-            },
-            endpoints: {
-              type: 'geojson',
-              data: {
-                type: 'FeatureCollection',
-                features: [
-                  { type: 'Feature', properties: { role: 'Trimmed Start' }, geometry: { type: 'Point', coordinates: coords[0] } },
-                  { type: 'Feature', properties: { role: 'Trimmed End' }, geometry: { type: 'Point', coordinates: coords[coords.length - 1] } },
-                ],
-              },
-            },
-          },
-          layers: [
-            {
-              id: 'bg',
-              type: 'background',
-              paint: { 'background-color': '#101622' },
-            },
-            {
-              id: 'grid-lines',
-              type: 'line',
-              source: 'graticule',
-              paint: { 'line-color': '#232F44', 'line-width': 1 },
-            },
-            {
-              id: 'route-glow',
-              type: 'line',
-              source: 'route',
-              layout: { 'line-join': 'round', 'line-cap': 'round' },
-              paint: { 'line-color': '#38BDF8', 'line-width': 9, 'line-opacity': 0.22 },
-            },
-            {
-              id: 'route-core',
-              type: 'line',
-              source: 'route',
-              layout: { 'line-join': 'round', 'line-cap': 'round' },
-              paint: { 'line-color': '#F59E0B', 'line-width': 3.5 },
-            },
-            {
-              id: 'trimmed-markers',
-              type: 'circle',
-              source: 'endpoints',
-              paint: {
-                'circle-radius': 6,
-                'circle-color': '#34D399',
-                'circle-stroke-color': '#0B0E14',
-                'circle-stroke-width': 2,
-              },
-            },
-          ],
-        },
+        style: buildStyle(),
       });
 
       const fitRoute = () => {
@@ -235,6 +267,11 @@ const isNl = locale === 'nl';
       };
 
       map.on('load', fitRoute);
+
+      const themeObserver = new MutationObserver(() => {
+        map.setStyle(buildStyle());
+      });
+      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
       root.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -246,8 +283,19 @@ const isNl = locale === 'nl';
           else if (act === 'pan-up') map.panBy([0, -100], { duration: 200 });
           else if (act === 'pan-down') map.panBy([0, 100], { duration: 200 });
           else if (act === 'fit') fitRoute();
+          else if (act === 'toggle-tiles') {
+            tilesEnabled = !tilesEnabled;
+            map.setStyle(buildStyle());
+            btn.setAttribute('aria-pressed', String(tilesEnabled));
+            const isDutch = document.documentElement.lang.startsWith('nl');
+            btn.textContent = tilesEnabled
+              ? (isDutch ? 'Kaartlaag: Carto' : 'Basemap: Carto')
+              : (isDutch ? 'Kaartlaag: Uit' : 'Basemap: Off');
+          }
         });
       });
+
+      if (tileBtn) tileBtn.setAttribute('aria-pressed', 'false');
     } catch {
       if (statusEl) {
         statusEl.textContent = 'MapLibre vector canvas unavailable — GPX file ready for direct download below.';
@@ -255,20 +303,26 @@ const isNl = locale === 'nl';
     }
   }
 
-  document.querySelectorAll<HTMLElement>('[data-moto-map-root]').forEach((el) => {
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            io.disconnect();
-            initMotoMap(el);
-          }
-        },
-        { rootMargin: '160px' }
-      );
-      io.observe(el);
-    } else {
-      initMotoMap(el);
-    }
-  });
+  function mountMotoMaps() {
+    document.querySelectorAll<HTMLElement>('[data-moto-map-root]').forEach((el) => {
+      if (el.dataset.observed === 'true') return;
+      el.dataset.observed = 'true';
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              io.disconnect();
+              initMotoMap(el);
+            }
+          },
+          { rootMargin: '160px' }
+        );
+        io.observe(el);
+      } else {
+        initMotoMap(el);
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', mountMotoMaps);
 </script>

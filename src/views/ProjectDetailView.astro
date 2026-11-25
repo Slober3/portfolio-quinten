@@ -14,13 +14,27 @@ const { locale, entry } = Astro.props;
 const isNl = locale === 'nl';
 const { Content } = await render(entry);
 const isWeavers = entry.data.slug === 'weavers-fate';
+const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'CreativeWork',
-  name: entry.data.title,
-  description: entry.data.summary,
-  author: { '@type': 'Person', name: 'Quinten Desmyter' },
+  '@graph': [
+    {
+      '@type': 'CreativeWork',
+      name: entry.data.title,
+      description: entry.data.summary,
+      inLanguage: isNl ? 'nl-BE' : 'en',
+      author: { '@type': 'Person', '@id': `${siteBase}/#person`, name: 'Quinten Desmyter' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteBase}${STATIC_ROUTES.home[locale]}` },
+        { '@type': 'ListItem', position: 2, name: isNl ? 'Projecten' : 'Projects', item: `${siteBase}${STATIC_ROUTES.projects[locale]}` },
+        { '@type': 'ListItem', position: 3, name: entry.data.title },
+      ],
+    },
+  ],
 };
 ---
 

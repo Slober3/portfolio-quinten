@@ -1,5 +1,8 @@
 ---
+import type { Locale } from '@/i18n/routes';
+
 interface Props {
+  locale: Locale;
   videoId: string;
   title: string;
   playLabel: string;
@@ -8,7 +11,8 @@ interface Props {
   notes: string;
 }
 
-const { videoId, title, playLabel, isPlaceholder = false, meta, notes } = Astro.props;
+const { locale, videoId, title, playLabel, isPlaceholder = false, meta, notes } = Astro.props;
+const isNl = locale === 'nl';
 ---
 
 <article class="editorial-card rounded-2xl overflow-hidden flex flex-col">
@@ -23,7 +27,7 @@ const { videoId, title, playLabel, isPlaceholder = false, meta, notes } = Astro.
     ></lite-youtube>
   </div>
 
-  <div class="p-6 space-y-2.5 flex-1 flex flex-col justify-between">
+  <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
     <div>
       <div class="flex flex-wrap items-center justify-between gap-2">
         <span class="font-mono text-[11px] uppercase tracking-wider text-kinetic">{meta}</span>
@@ -36,6 +40,12 @@ const { videoId, title, playLabel, isPlaceholder = false, meta, notes } = Astro.
       <h3 class="mt-1.5 font-display text-lg font-bold text-ink-primary">{title}</h3>
       <p class="mt-2 text-sm text-ink-secondary leading-relaxed">{notes}</p>
     </div>
+
+    <p class="pt-2.5 border-t border-border-subtle/70 font-mono text-[11px] text-ink-secondary">
+      {isNl
+        ? 'Privacy: afspelen opent YouTube (youtube-nocookie.com) pas na jouw klik.'
+        : 'Privacy: clicking Play loads YouTube via youtube-nocookie.com only on demand.'}
+    </p>
   </div>
 </article>
 
