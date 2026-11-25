@@ -1,0 +1,79 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import type { Locale } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl ? 'Privacyverklaring (GDPR) — Quinten Desmyter' : 'Privacy Policy (GDPR) — Quinten Desmyter'}
+  description={isNl
+    ? 'Transparante Belgische GDPR/AVG-privacyverklaring: 100% statische site, geen cookies, geen tracking, lokale fonts en privacyvriendelijke embeds.'
+    : 'Transparent Belgian GDPR privacy notice: 100% static website, zero cookies, zero behavioral tracking, self-hosted fonts, and privacy-first embeds.'}
+>
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8">
+    <header class="space-y-3 border-b border-border-subtle pb-6">
+      <p class="font-mono text-xs uppercase tracking-[0.16em] text-status">PRIVACY & GDPR / AVG</p>
+      <h1 class="font-display text-3xl sm:text-4xl font-bold text-ink-primary">
+        {isNl ? 'Privacy zonder cookiebanner' : 'Privacy without a cookie banner'}
+      </h1>
+      <p class="text-base text-ink-secondary">
+        {isNl
+          ? 'Deze website is 100% statisch ontworpen en verzamelt standaard geen persoonsgegevens of advertentieprofielen.'
+          : 'This site is architected as a pure static build and collects zero personal tracking data by default.'}
+      </p>
+    </header>
+
+    <div class="editorial-prose">
+      {isNl ? (
+        <>
+          <h2>1. Nul trackingcookies & lokale typografie</h2>
+          <p>
+            Er worden geen marketing-, tracking- of sessiecookies geplaatst. Lettertypes (<code>Space Grotesk</code>, <code>Inter</code> en <code>JetBrains Mono</code>) worden volledig lokaal vanuit dezelfde domeinnaam geserveerd zonder runtime-verzoeken naar Google Fonts.
+          </p>
+          <h2>2. Voorkeursthema (<code>localStorage</code>)</h2>
+          <p>
+            Wanneer je wisselt tussen Dark Mode en Light Mode, bewaart jouw browser uitsluitend de waarde <code>"dark"</code> of <code>"light"</code> lokaal in <code>localStorage</code>. Deze voorkeur bevat geen persoonsgegevens en wordt nooit naar een server verzonden.
+          </p>
+          <h2>3. Contactformulier & ingebedde video’s</h2>
+          <p>
+            Berichten via het contactformulier worden pas verstuurd wanneer je expliciet op verzenden klikt en worden enkel gebruikt om je vraag te beantwoorden. YouTube-video’s laden via een privacyvriendelijke <code>youtube-nocookie.com</code>-facade pas ná jouw eigen klik.
+          </p>
+          <h2>4. Geautomatiseerde beeld- & GPX-privacy</h2>
+          <p>
+            Elke foto doorloopt een build-controle die GPS- en hardware-EXIF verwijdert, en alle GPX-motorroutes worden aan start en finish met minstens 5 km ingekort.
+          </p>
+          <h2>5. Jouw rechten onder de GDPR / AVG</h2>
+          <p>
+            Je hebt recht op inzage, verbetering of verwijdering van eventuele via het contactformulier gedeelde correspondentie. Gebruik het contactformulier om een verzoek in te dienen. Voor klachten kan je in België terecht bij de Gegevensbeschermingsautoriteit (GBA).
+          </p>
+        </>
+      ) : (
+        <>
+          <h2>1. Zero Tracking Cookies & Local Fonts</h2>
+          <p>
+            No advertising, analytics, or session cookies are set. All typography (<code>Space Grotesk</code>, <code>Inter</code>, and <code>JetBrains Mono</code>) is bundled locally with zero runtime calls to external font servers.
+          </p>
+          <h2>2. Theme Preference (<code>localStorage</code>)</h2>
+          <p>
+            Switching between Dark and Light Mode stores only <code>"dark"</code> or <code>"light"</code> locally inside browser <code>localStorage</code>. No personal identifiers are stored or transmitted.
+          </p>
+          <h2>3. Contact Form & Embedded Media</h2>
+          <p>
+            Contact submissions are only sent when you actively submit the form and are used solely to reply to your message. YouTube facades use <code>youtube-nocookie.com</code> and remain dormant until clicked.
+          </p>
+          <h2>4. Your GDPR Rights</h2>
+          <p>
+            Under European GDPR law, you may request access, correction, or deletion of any correspondence shared via the contact form.
+          </p>
+        </>
+      )}
+    </div>
+  </div>
+</EditorialLayout>

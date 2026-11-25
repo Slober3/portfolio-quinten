@@ -1,0 +1,120 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
+import { timeline } from '@/data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+const cvHref = isNl ? '/cv/quinten-desmyter-cv-nl.pdf' : '/cv/quinten-desmyter-cv-en.pdf';
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl ? 'Over mij — Quinten Desmyter' : 'About — Quinten Desmyter'}
+  description={isNl
+    ? 'Het verhaal, de didactische visie en de loopbaan van Quinten Desmyter: Thomas More IT Factory, RTC Antwerpen en vakmanschap buiten de uren.'
+    : 'Biography, teaching philosophy, and career timeline of Quinten Desmyter: Thomas More IT Factory, RTC Antwerp, and off-clock craft.'}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+    <!-- Hero Bio -->
+    <header class="space-y-6 border-b border-border-subtle pb-12">
+      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+        {isNl ? 'OVER MIJ · REGIO LIER / KEMPEN, BELGIË' : 'ABOUT · LIER / CAMPINE REGION, BELGIUM'}
+      </p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+        {isNl
+          ? 'Systemen bouwen, helder uitleggen en onderweg blijven leren.'
+          : 'Building reliable systems, teaching clearly, and staying curious off the clock.'}
+      </h1>
+      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+        {isNl
+          ? 'Als praktijklector aan de IT Factory van Thomas More (Campus Geel) deel ik mijn dagelijkse passie voor cloud, netwerken en cybersecurity met studenten uit 1ITF en 1ACS. Naast mijn werk voor de klas begeleid ik als coach studentenorganisatie SIN, geef ik Cisco-workshops via RTC Antwerpen en trek ik er graag op uit met de Honda CB750 Hornet.'
+          : 'As a senior lecturer at Thomas More IT Factory (Geel Campus), I teach cloud, networking, and cybersecurity across the 1ITF and 1ACS programs. Beyond the classroom I also serve as a coach for student organization SIN, facilitate Cisco labs via RTC Antwerp, and spend weekends riding twisty roads on a Honda CB750 Hornet.'}
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a
+          href={cvHref}
+          download
+          class="inline-flex items-center gap-2 rounded-full bg-kinetic px-6 py-3 text-sm font-semibold text-canvas hover:bg-kinetic-hover transition-colors min-h-[44px]"
+        >
+          {isNl ? 'Download CV (PDF)' : 'Download Resume (PDF)'}
+        </a>
+        <a
+          href={STATIC_ROUTES.contact[locale]}
+          class="inline-flex items-center rounded-full border border-border-subtle bg-surface-1 px-6 py-3 text-sm font-semibold text-ink-primary hover:border-telemetry transition-colors min-h-[44px]"
+        >
+          {isNl ? 'Neem contact op' : 'Get in touch'}
+        </a>
+      </div>
+    </header>
+
+    <!-- Didactic Philosophy -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="editorial-card rounded-2xl p-6 space-y-2">
+        <p class="font-mono text-xs text-telemetry">01 · FLIP THE CLASSROOM</p>
+        <h2 class="font-display text-lg font-bold text-ink-primary">
+          {isNl ? 'Ruimte voor echt labwerk' : 'Room for real lab debugging'}
+        </h2>
+        <p class="text-sm text-ink-secondary">
+          {isNl
+            ? 'Basisstof wordt voorbereid vóór de les, zodat contacttijd gaat naar samen fouten opsporen en architectuur begrijpen.'
+            : 'Core theory happens before class so lab hours focus on diagnosing real failures together.'}
+        </p>
+      </div>
+      <div class="editorial-card rounded-2xl p-6 space-y-2">
+        <p class="font-mono text-xs text-kinetic">02 · HANDS-ON PRECIEZIE</p>
+        <h2 class="font-display text-lg font-bold text-ink-primary">
+          {isNl ? 'Van tekstboek naar productielab' : 'From handbook to real lab'}
+        </h2>
+        <p class="text-sm text-ink-secondary">
+          {isNl
+            ? 'Of het nu gaat om PowerShell/Pester, Cisco CCNA of een ESP32-honeypot: studenten leren door te bouwen en te testen.'
+            : 'Whether configuring Pester tests, Cisco routers, or ESP32 honeypots, students learn by shipping verifiable work.'}
+        </p>
+      </div>
+      <div class="editorial-card rounded-2xl p-6 space-y-2">
+        <p class="font-mono text-xs text-status">03 · BALANS & CREATIVITEIT</p>
+        <h2 class="font-display text-lg font-bold text-ink-primary">
+          {isNl ? 'Analoog buiten de schermuren' : 'Analog craft beyond screens'}
+        </h2>
+        <p class="text-sm text-ink-secondary">
+          {isNl
+            ? 'Kalimba (Hokema B17), SVG/DXF laser-cutting, Stargate SG-1 & Dungeon Crawler Carl, Japanse ramen en teckel Stitch houden alles scherp.'
+            : 'Learning the Hokema B17 kalimba, SVG/DXF laser-cutting, Stargate SG-1 & Dungeon Crawler Carl, ramen, and dachshund Stitch keep balance.'}
+        </p>
+      </div>
+    </section>
+
+    <!-- Career & Education Timeline -->
+    <section class="space-y-8">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-telemetry">
+          {isNl ? 'LOOPBAAN & OPLEIDING' : 'CAREER & EDUCATION TIMELINE'}
+        </p>
+        <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Waar techniek en onderwijs samenkomen' : 'Where engineering meets education'}
+        </h2>
+      </div>
+
+      <div class="divide-y divide-border-subtle border-y border-border-subtle">
+        {timeline.map((step) => (
+          <article class="py-6 grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-8">
+            <p class="font-mono text-xs text-kinetic font-semibold">
+              {isNl ? step.period : step.periodEn}
+            </p>
+            <div class="space-y-1.5">
+              <h3 class="font-display text-lg font-bold text-ink-primary">{step.role[locale]}</h3>
+              <p class="font-mono text-xs text-telemetry">{step.org}</p>
+              <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{step.details[locale]}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</EditorialLayout>

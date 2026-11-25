@@ -1,0 +1,143 @@
+---
+import { Picture } from 'astro:assets';
+import type { Locale } from '@/i18n/routes';
+import { photoEntries } from '@/data/photos';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+
+const categories = [
+  { id: 'all', label: isNl ? 'Alles (6)' : 'All (6)' },
+  { id: 'macro', label: isNl ? 'Natuur & Macro' : 'Nature & Macro' },
+  { id: 'road', label: isNl ? 'On the Road & Motorsport' : 'On the Road & Motorsport' },
+  { id: 'travel', label: isNl ? 'Reizen & Sfeer' : 'Travel & Atmosphere' },
+];
+---
+
+<section class="space-y-6" aria-labelledby="gallery-filter-heading">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border-subtle pb-4">
+    <h2 id="gallery-filter-heading" class="font-mono text-xs uppercase tracking-wider text-telemetry">
+      {isNl ? 'Categoriefilters · PhotoSwipe 5 Lightbox' : 'Category Filters · PhotoSwipe 5 Lightbox'}
+    </h2>
+
+    <div class="flex flex-wrap gap-2" role="group" aria-label={isNl ? 'Filter fotografiecategorieën' : 'Filter photography categories'}>
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          data-photo-filter={cat.id}
+          aria-pressed={idx === 0 ? 'true' : 'false'}
+          class:list={[
+            'photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px]',
+            idx === 0
+              ? 'bg-telemetry text-canvas border-telemetry'
+              : 'bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary',
+          ]}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Gallery Grid: Sharp AVIF/WebP + PhotoSwipe 5 lightbox links -->
+  <div id="pswp-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {photoEntries.map((item) => (
+      <figure
+        data-photo-card
+        data-photo-category={item.category}
+        class="editorial-card rounded-2xl overflow-hidden flex flex-col"
+      >
+        <a
+          href={item.image.src}
+          data-pswp-width={item.image.width}
+          data-pswp-height={item.image.height}
+          data-pswp-caption={`${item.title[locale]} — ${item.exposure}`}
+          class="group relative block aspect-[3/2] overflow-hidden bg-surface-2 focus-visible:outline-offset-[-3px]"
+        >
+          <Picture
+            src={item.image}
+            alt={item.title[locale]}
+            formats={['avif', 'webp']}
+            widths={[480, 960, 1600]}
+            sizes="(max-width: 640px) 96vw, (max-width: 1024px) 48vw, 31vw"
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+          <span class="sr-only">
+            {isNl ? `Open ${item.title.nl} in lightbox` : `Open ${item.title.en} in lightbox`}
+          </span>
+        </a>
+        <figcaption class="p-4 space-y-1.5 flex-1 flex flex-col justify-between">
+          <div>
+            <p class="font-display text-base font-bold text-ink-primary">{item.title[locale]}</p>
+            <p class="mt-1 text-xs text-ink-secondary leading-relaxed">{item.caption[locale]}</p>
+          </div>
+          <p class="pt-2 font-mono text-[11px] text-kinetic border-t border-border-subtle/70">
+            {item.exposure}
+          </p>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#pswp-gallery',
+    children: 'a[data-pswp-width]',
+    pswpModule: () => import('photoswipe'),
+    zoom: true,
+    arrowPrev: true,
+    arrowNext: true,
+    close: true,
+    escKey: true,
+    arrowKeys: true,
+  });
+
+  lightbox.on('uiRegister', () => {
+    lightbox.pswp?.ui?.registerElement({
+      name: 'custom-caption',
+      order: 9,
+      isButton: false,
+      appendTo: 'root',
+      html: '',
+      onInit: (el, pswp) => {
+        el.className = 'pswp__custom-caption';
+        el.style.cssText =
+          'position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(11,14,20,0.86);color:#EDF2F7;padding:8px 16px;border-radius:10px;border:1px solid #2A3446;font-size:12px;font-family:monospace;max-width:90vw;text-align:center;';
+        pswp.on('change', () => {
+          const currEl = pswp.currSlide?.data?.element as HTMLElement | undefined;
+          el.textContent = currEl?.dataset.pswpCaption || '';
+        });
+      },
+    });
+  });
+
+  lightbox.init();
+
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-photo-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-photo-card]');
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.photoFilter || 'all';
+      cards.forEach((card) => {
+        const show = cat === 'all' || card.dataset.photoCategory === cat;
+        card.classList.toggle('hidden', !show);
+      });
+      filterButtons.forEach((b) => {
+        const active = b === btn;
+        b.setAttribute('aria-pressed', String(active));
+        b.className = active
+          ? 'photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-telemetry text-canvas border-telemetry'
+          : 'photo-filter-btn rounded-xl border px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer min-h-[44px] bg-surface-1 text-ink-secondary border-border-subtle hover:text-ink-primary';
+      });
+    });
+  });
+</script>

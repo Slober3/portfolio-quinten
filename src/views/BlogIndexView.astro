@@ -1,0 +1,73 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+
+const posts = (await getCollection('blog', (e) => e.data.locale === locale)).sort((a, b) =>
+  b.data.publishedAt.localeCompare(a.data.publishedAt)
+);
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl ? 'Kennisbank & Blog — Quinten Desmyter' : 'Blog & Knowledge Base — Quinten Desmyter'}
+  description={isNl
+    ? 'Artikelen over Flip the Classroom, PowerShell & Pester Systems as Code, en praktische OpSec voor makers.'
+    : 'Technical notes on Flipped Classroom labs, PowerShell & Pester Systems as Code, and automated OpSec for creators.'}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
+    <header class="space-y-4 border-b border-border-subtle pb-10">
+      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+        {isNl ? 'KENNISBANK · MDX ARTIKELEN' : 'KNOWLEDGE BASE · MDX NOTES'}
+      </p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+        {isNl ? 'Didactiek, Automatisering & OpSec.' : 'Teaching Craft, Automation & OpSec.'}
+      </h1>
+      <p class="text-lg text-ink-secondary max-w-3xl">
+        {isNl
+          ? 'Technische nota’s en ervaringen uit IT-labs, infrastructuurautomatisering en privacyvriendelijk media-beheer.'
+          : 'Field notes from IT engineering labs, infrastructure automation, and privacy-respecting media workflows.'}
+      </p>
+    </header>
+
+    <div class="divide-y divide-border-subtle border-y border-border-subtle">
+      {posts.map((post) => {
+        const href = `${STATIC_ROUTES.blog[locale]}${post.data.slug}/`;
+        return (
+          <article class="py-8 grid grid-cols-1 md:grid-cols-[170px_1fr] gap-4 md:gap-8">
+            <div class="font-mono text-xs space-y-1 text-ink-secondary">
+              <p class="text-kinetic font-semibold">{post.data.publishedAt}</p>
+              <p>{post.data.readingMinutes} {isNl ? 'min leestijd' : 'min read'}</p>
+            </div>
+            <div class="space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-wider text-telemetry">{post.data.category}</p>
+              <h2 class="font-display text-2xl font-bold text-ink-primary">
+                <a href={href} class="hover:text-kinetic transition-colors">{post.data.title}</a>
+              </h2>
+              <p class="text-base text-ink-secondary leading-relaxed">{post.data.description}</p>
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+                <div class="flex flex-wrap gap-1.5">
+                  {post.data.tags.map((t) => (
+                    <span class="rounded-full border border-border-subtle bg-surface-1 px-2.5 py-0.5 font-mono text-[11px] text-ink-secondary">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <a href={href} class="font-mono text-xs font-semibold text-telemetry hover:underline">
+                  {isNl ? 'Artikel lezen →' : 'Read article →'}
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</EditorialLayout>

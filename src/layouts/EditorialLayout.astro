@@ -1,0 +1,308 @@
+---
+import { Font } from 'astro:assets';
+import '@/styles/global.css';
+import { STATIC_ROUTES, getAlternateUrls, normalizePathname, type Locale } from '@/i18n/routes';
+import { UI_COPY } from '@/i18n/ui';
+import { externalLinks } from '@/data/profile';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  showReadingProgress?: boolean;
+  noindex?: boolean;
+}
+
+const {
+  locale,
+  title,
+  description,
+  jsonLd,
+  showReadingProgress = false,
+  noindex = false,
+} = Astro.props;
+
+const copy = UI_COPY[locale];
+const siteBase = Astro.site ?? new URL('https://quintendesmyter.be');
+const pathname = normalizePathname(Astro.url.pathname);
+const { nlPath, enPath, nlUrl, enUrl, xDefaultUrl } = getAlternateUrls(pathname, siteBase);
+const canonicalUrl = locale === 'nl' ? nlUrl : enUrl;
+const otherLocale: Locale = locale === 'nl' ? 'en' : 'nl';
+const switchUrl = locale === 'nl' ? enPath : nlPath;
+---
+
+<!doctype html>
+<html lang={copy.htmlLang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" hreflang="nl-BE" href={nlUrl} />
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+      </>
+    )}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={locale === 'nl' ? 'nl_BE' : 'en_US'} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-mono" />
+
+    {jsonLd && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('qd-theme');
+          const theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-canvas text-ink-primary antialiased selection:bg-kinetic/25 selection:text-ink-primary flex flex-col min-h-dvh">
+    {showReadingProgress && <div class="reading-progress-bar" aria-hidden="true" />}
+
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[80] focus:rounded-lg focus:bg-surface-1 focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-ink-primary focus:border focus:border-telemetry"
+    >
+      {copy.skipToContent}
+    </a>
+
+    <!-- Editorial Masthead Navigation -->
+    <header class="sticky top-0 z-50 border-b border-border-subtle bg-canvas/92 backdrop-blur-md">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-16 sm:h-[4.25rem] flex items-center justify-between gap-4">
+        <a href={STATIC_ROUTES.home[locale]} class="flex items-baseline gap-3 group py-1.5 shrink-0">
+          <span class="font-display text-base sm:text-lg font-bold tracking-tight text-ink-primary group-hover:text-kinetic transition-colors whitespace-nowrap">
+            Quinten Desmyter
+          </span>
+          <span class="hidden xl:inline font-mono text-[11px] text-ink-secondary whitespace-nowrap">
+            — {copy.motto}
+          </span>
+        </a>
+
+        <!-- Desktop Editorial Nav -->
+        <nav aria-label={locale === 'nl' ? 'Hoofdnavigatie' : 'Main navigation'} class="hidden lg:flex items-center gap-4 xl:gap-5 text-sm">
+          {copy.navItems.map((item) => {
+            const href = STATIC_ROUTES[item.key][locale];
+            const isActive = pathname === href || (href !== STATIC_ROUTES.home[locale] && pathname.startsWith(href));
+            return (
+              <a
+                href={href}
+                aria-current={isActive ? 'page' : undefined}
+                class:list={[
+                  'py-1.5 whitespace-nowrap transition-colors border-b-2',
+                  isActive
+                    ? 'border-kinetic text-ink-primary font-semibold'
+                    : 'border-transparent text-ink-secondary hover:text-ink-primary',
+                ]}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
+
+        <!-- Controls: Language Switcher, Theme Toggle & Mobile Menu -->
+        <div class="flex items-center gap-2 shrink-0">
+          <a
+            href={switchUrl}
+            hreflang={otherLocale === 'nl' ? 'nl-BE' : 'en'}
+            aria-label={copy.langSwitchLabel}
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry transition-colors min-h-[40px]"
+          >
+            {locale === 'nl' ? (
+              <>
+                <span class="text-kinetic">NL</span>
+                <span class="mx-1 text-ink-secondary">/</span>
+                <span class="text-ink-secondary">EN</span>
+              </>
+            ) : (
+              <>
+                <span class="text-ink-secondary">NL</span>
+                <span class="mx-1 text-ink-secondary">/</span>
+                <span class="text-kinetic">EN</span>
+              </>
+            )}
+          </a>
+
+          <button
+            type="button"
+            data-theme-toggle
+            aria-label={copy.themeToggleLabel}
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-kinetic transition-colors cursor-pointer min-h-[40px]"
+          >
+            <span data-theme-label>{copy.themeDark}</span>
+          </button>
+
+          <button
+            type="button"
+            data-mobile-menu-open
+            aria-label={copy.menuOpen}
+            aria-expanded="false"
+            aria-controls="mobile-nav-dialog"
+            class="lg:hidden inline-flex items-center justify-center rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]"
+          >
+            Menu
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Accessible Mobile Navigation Dialog -->
+    <dialog
+      id="mobile-nav-dialog"
+      class="m-0 ml-auto h-dvh max-h-dvh w-[min(86vw,22rem)] border-l border-border-subtle bg-canvas p-6 text-ink-primary backdrop:bg-black/65"
+    >
+      <div class="flex items-center justify-between border-b border-border-subtle pb-4 mb-5">
+        <span class="font-display text-base font-bold text-ink-primary">Quinten Desmyter</span>
+        <button
+          type="button"
+          data-mobile-menu-close
+          aria-label={copy.menuClose}
+          class="inline-flex items-center justify-center rounded-xl border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs text-ink-primary min-h-[44px] min-w-[44px] cursor-pointer"
+        >
+          ✕
+        </button>
+      </div>
+      <nav aria-label="Mobiele navigatie" class="flex flex-col gap-1.5">
+        <a
+          href={STATIC_ROUTES.home[locale]}
+          class="rounded-xl px-3.5 py-3 text-base font-medium text-ink-primary hover:bg-surface-1"
+        >
+          Home
+        </a>
+        {copy.navItems.map((item) => {
+          const href = STATIC_ROUTES[item.key][locale];
+          const isActive = pathname === href || pathname.startsWith(href);
+          return (
+            <a
+              href={href}
+              aria-current={isActive ? 'page' : undefined}
+              class:list={[
+                'rounded-xl px-3.5 py-3 text-base font-medium',
+                isActive ? 'bg-surface-1 text-kinetic border border-border-subtle' : 'text-ink-secondary hover:bg-surface-1 hover:text-ink-primary',
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+        <div class="mt-4 border-t border-border-subtle pt-4 flex gap-3">
+          <a href={STATIC_ROUTES.uses[locale]} class="rounded-lg border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs text-ink-secondary">/uses</a>
+          <a href={STATIC_ROUTES.now[locale]} class="rounded-lg border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs text-ink-secondary">/now</a>
+          <a href={STATIC_ROUTES.privacy[locale]} class="rounded-lg border border-border-subtle bg-surface-1 px-3 py-2 font-mono text-xs text-ink-secondary">Privacy</a>
+        </div>
+      </nav>
+    </dialog>
+
+    <main id="main-content" class="flex-1 editorial-backdrop">
+      <slot />
+    </main>
+
+    <!-- Editorial Footer -->
+    <footer class="border-t border-border-subtle bg-surface-1/60 mt-16">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-border-subtle">
+          <div class="space-y-1.5">
+            <p class="font-display text-base font-bold text-ink-primary">
+              Quinten Desmyter <span class="text-kinetic font-mono text-xs ml-2">· {copy.motto}</span>
+            </p>
+            <p class="font-mono text-xs text-ink-secondary">{copy.region}</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 text-sm">
+            {copy.footerNav.map((item) => (
+              <a
+                href={STATIC_ROUTES[item.key][locale]}
+                class="text-ink-secondary hover:text-ink-primary transition-colors py-1"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-ink-secondary">
+          <p class="font-mono">{copy.footerColophon}</p>
+          <div class="flex flex-wrap items-center gap-4 font-mono">
+            <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="hover:text-telemetry">
+              GitHub (@Slober3)
+            </a>
+            <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="hover:text-kinetic">
+              YouTube (@QuintenMoto)
+            </a>
+            {externalLinks.linkedin ? (
+              <a href={externalLinks.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-telemetry">
+                LinkedIn
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const themeToggle = document.querySelector('[data-theme-toggle]');
+        const themeLabel = document.querySelector('[data-theme-label]');
+
+        const syncThemeLabel = () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          if (themeLabel) {
+            themeLabel.textContent = current === 'dark' ? 'Dark ●' : 'Light ○';
+          }
+        };
+        syncThemeLabel();
+
+        themeToggle?.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('qd-theme', next);
+          } catch {}
+          syncThemeLabel();
+        });
+
+        const dialog = document.getElementById('mobile-nav-dialog');
+        const openBtn = document.querySelector('[data-mobile-menu-open]');
+        const closeBtn = document.querySelector('[data-mobile-menu-close]');
+
+        openBtn?.addEventListener('click', () => {
+          dialog?.showModal();
+          openBtn.setAttribute('aria-expanded', 'true');
+        });
+        const closeMenu = () => {
+          dialog?.close();
+          openBtn?.setAttribute('aria-expanded', 'false');
+        };
+        closeBtn?.addEventListener('click', closeMenu);
+        dialog?.addEventListener('close', () => {
+          openBtn?.setAttribute('aria-expanded', 'false');
+        });
+      })();
+    </script>
+  </body>
+</html>

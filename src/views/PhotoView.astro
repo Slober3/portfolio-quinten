@@ -1,0 +1,81 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import PhotoGallery from '@/components/PhotoGallery.astro';
+import type { Locale } from '@/i18n/routes';
+import { externalLinks } from '@/data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+const showreelUrl = import.meta.env.PUBLIC_SHOWREEL_URL || '';
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl ? 'Fotografie & Video — Quinten Desmyter' : 'Photography & Video — Quinten Desmyter'}
+  description={isNl
+    ? 'Shutterstock-portfolio (Natuur & Macro, On the Road, Reizen & Sfeer) geserveerd via EXIF-gestripte AVIF/WebP pipeline en PhotoSwipe 5 lightbox.'
+    : 'Shutterstock photography portfolio (Nature & Macro, On the Road, Travel & Atmosphere) served via an EXIF-stripped AVIF/WebP pipeline and PhotoSwipe 5.'}
+>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
+    <header class="space-y-5 border-b border-border-subtle pb-10">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+          {isNl ? 'FOTOGRAFIE & VIDEO · SHUTTERSTOCK PORTFOLIO' : 'PHOTOGRAPHY & VIDEO · SHUTTERSTOCK PORTFOLIO'}
+        </p>
+        {externalLinks.shutterstock && (
+          <a href={externalLinks.shutterstock} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline">
+            Shutterstock Contributor ↗
+          </a>
+        )}
+      </div>
+
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
+        {isNl
+          ? 'Natuur & Macro, Onderweg & Architecturaal Reislicht.'
+          : 'Nature & Macro, On the Road & Travel Atmospheres.'}
+      </h1>
+      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+        {isNl
+          ? 'Elke afbeelding in deze galerij doorloopt tijdens de statische build een strikte Sharp-pijplijn (.rotate() + .keepIccProfile()): oriëntatie en kleurprofiel blijven intact, terwijl GPS-coördinaten en serienummers automatisch worden gewist.'
+          : 'Every photograph passes through an automated Sharp pipeline (.rotate() + .keepIccProfile()) at build time, preserving orientation and ICC profiles while stripping all GPS coordinates and serial tags.'}
+      </p>
+    </header>
+
+    <PhotoGallery locale={locale} />
+
+    <!-- Showreel Video Slot (ready for Bunny Stream / local MP4) -->
+    <section class="editorial-card rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-2 max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
+          {isNl ? 'VIDEOSHOWREEL · KOOKVRIJE WEERGAVE' : 'VIDEO SHOWREEL · COOKIE-FREE PLAYBACK'}
+        </p>
+        <h2 class="font-display text-2xl font-bold text-ink-primary">
+          {isNl ? 'Korte Showreel (4K60 Moto & Reissfeer)' : 'Short Showreel (4K60 Moto & Travel Moments)'}
+        </h2>
+        <p class="text-sm text-ink-secondary">
+          {isNl
+            ? 'Voorzien voor een directe MP4-clip of Bunny Stream embed zonder reclame of externe trackingcookies. Configureerbaar via PUBLIC_SHOWREEL_URL of direct onder public/video/.'
+            : 'Prepared for a brand-free local MP4 clip or Bunny Stream player without third-party tracking. Configurable via PUBLIC_SHOWREEL_URL or public/video/.'}
+        </p>
+      </div>
+
+      {showreelUrl ? (
+        <div class="w-full md:w-96 aspect-video rounded-xl overflow-hidden border border-border-subtle bg-surface-2">
+          <video controls preload="metadata" class="w-full h-full object-cover">
+            <source src={showreelUrl} type="video/mp4" />
+          </video>
+        </div>
+      ) : (
+        <div class="w-full md:w-80 rounded-xl border border-dashed border-border-subtle bg-surface-2/60 p-5 text-center font-mono text-xs text-ink-secondary">
+          {isNl
+            ? 'Showreel-slot klaar — voeg MP4 of Bunny Stream URL toe via CONTENT-TODO.md'
+            : 'Showreel slot ready — attach MP4 or Bunny Stream URL via CONTENT-TODO.md'}
+        </div>
+      )}
+    </section>
+  </div>
+</EditorialLayout>

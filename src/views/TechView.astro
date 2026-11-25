@@ -1,0 +1,158 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import EditorialVisuals from '@/components/EditorialVisuals.astro';
+import type { Locale } from '@/i18n/routes';
+import { books, githubHighlights, tryHackMeBadges, externalLinks } from '@/data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+
+const teachingModules = [
+  {
+    code: 'CLOUD & INFRA',
+    title: 'AWS, Docker, Kubernetes & Linux',
+    desc: isNl
+      ? 'Containerisatie, orchestratie en cloud-fundamenten voor 1ITF en 1ACS met aandacht voor reproduceerbaarheid en netwerkarchitectuur.'
+      : 'Containers, orchestration, and Linux/cloud foundations for 1ITF and 1ACS focused on reproducibility.',
+  },
+  {
+    code: 'SYSADMIN',
+    title: 'Windows SysAdmin & Systems as Code',
+    desc: isNl
+      ? 'Active Directory, UAC, Registry, PowerShell-automatisering en geautomatiseerde infrastructuurvalidatie met Pester.'
+      : 'Active Directory, UAC, Registry internals, PowerShell automation, and Pester infrastructure testing.',
+  },
+  {
+    code: 'NETWORKING',
+    title: 'Cisco CCNA 1 & 2 · Network Services · RTC Antwerpen',
+    desc: isNl
+      ? 'Switching, routing, subnetting en praktische labworkshops, zowel in het hoger onderwijs als via RTC Train-the-Trainer.'
+      : 'Switching, routing, subnetting, and hands-on Train-the-Trainer lab workshops with RTC Antwerp.',
+  },
+  {
+    code: 'IOT & SEC',
+    title: 'IoT / Embedded Development & Cybersecurity',
+    desc: isNl
+      ? 'Sensoren, microcontrollers (ESP32), veilige netwerksegmentatie en defensieve honeypot-monitoring.'
+      : 'Sensors, microcontrollers (ESP32), network segmentation, and defensive honeypot telemetry.',
+  },
+];
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl ? 'Tech & Onderwijs — Quinten Desmyter' : 'Tech & Teaching — Quinten Desmyter'}
+  description={isNl
+    ? 'Thomas More IT Factory, RTC Antwerpen, gepubliceerde ISBN-handboeken (Cybersecurity & Python), GitHub Slober3 en TryHackMe.'
+    : 'Thomas More IT Factory, RTC Antwerp, published ISBN handbooks (Cybersecurity & Python), GitHub Slober3, and TryHackMe.'}
+>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+    <header class="space-y-5 border-b border-border-subtle pb-10">
+      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+        {isNl ? 'TECH & ONDERWIJS · THOMAS MORE IT FACTORY' : 'TECH & TEACHING · THOMAS MORE IT FACTORY'}
+      </p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
+        {isNl
+          ? 'Cloud, Netwerken, Cybersecurity & Didactiek.'
+          : 'Cloud, Networking, Cybersecurity & Practical Didactics.'}
+      </h1>
+      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+        {isNl
+          ? 'Mijn focus ligt op heldere fundamenten en reproduceerbare labs binnen Thomas More IT Factory (Campus Geel) en RTC Antwerpen. Daarnaast ben ik betrokken als coach bij studentenorganisatie SIN.'
+          : 'Focused on solid engineering fundamentals and reproducible labs at Thomas More IT Factory (Geel Campus) and RTC Antwerp. Alongside teaching, I also coach at student organization SIN.'}
+      </p>
+    </header>
+
+    <div class="aspect-[21/7] overflow-hidden rounded-2xl border border-border-subtle">
+      <EditorialVisuals kind="cloud" />
+    </div>
+
+    <!-- Teaching Tracks -->
+    <section class="space-y-6">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+        {isNl ? 'Vakgebieden & Onderwijspraktijk' : 'Teaching Domains & Lab Tracks'}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {teachingModules.map((mod) => (
+          <article class="editorial-card rounded-2xl p-6 space-y-2.5">
+            <p class="font-mono text-xs text-telemetry">{mod.code}</p>
+            <h3 class="font-display text-xl font-bold text-ink-primary">{mod.title}</h3>
+            <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{mod.desc}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Published Books -->
+    <section class="space-y-6">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">
+          {isNl ? 'BOEKENKAST · AUTEUR' : 'BOOKSHELF · AUTHOR'}
+        </p>
+        <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Gepubliceerde handboeken' : 'Published Handbooks'}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {books.map((book) => (
+          <article class="editorial-card rounded-2xl p-6 flex flex-col justify-between gap-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2 font-mono text-xs">
+                <span class="text-kinetic font-semibold">ISBN {book.isbn}</span>
+                <span class="text-ink-secondary">{book.pages} p. · {book.year}</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-ink-primary">{book.title}</h3>
+              <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{book.description[locale]}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- GitHub Slober3 & TryHackMe -->
+    <section class="space-y-6">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-wider text-status">GITHUB · SLOBER3</p>
+          <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+            {isNl ? 'Gecureerde Open Source & Hardware' : 'Curated Open Source & Hardware'}
+          </h2>
+        </div>
+        <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
+          github.com/Slober3 ↗
+        </a>
+      </div>
+
+      <div class="divide-y divide-border-subtle border-y border-border-subtle">
+        {githubHighlights.map((repo) => (
+          <article class="py-5 grid grid-cols-1 md:grid-cols-[240px_1fr_auto] gap-3 md:gap-6 items-baseline">
+            <div>
+              <h3 class="font-display text-lg font-bold text-ink-primary">{repo.name}</h3>
+              <p class="font-mono text-xs text-telemetry">{repo.stack}</p>
+            </div>
+            <p class="text-sm sm:text-base text-ink-secondary">{repo.description[locale]}</p>
+            <a href={repo.url} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-kinetic hover:underline">
+              Repo ↗
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <div class="rounded-2xl border border-border-subtle bg-surface-1 p-5 flex flex-wrap items-center justify-between gap-4">
+        <span class="font-mono text-xs uppercase tracking-wider text-status">TryHackMe Learning Paths</span>
+        <div class="flex flex-wrap gap-2">
+          {tryHackMeBadges.map((b) => (
+            <span class="rounded-full border border-status/35 bg-status/10 px-3 py-1 font-mono text-xs text-status">
+              ✓ {b}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</EditorialLayout>

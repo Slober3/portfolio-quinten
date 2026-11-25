@@ -1,0 +1,68 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<'blog'>;
+}
+
+const { locale, entry } = Astro.props;
+const isNl = locale === 'nl';
+const { Content } = await render(entry);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.publishedAt,
+  author: { '@type': 'Person', name: 'Quinten Desmyter' },
+};
+---
+
+<EditorialLayout
+  locale={locale}
+  title={`${entry.data.title} — Quinten Desmyter`}
+  description={entry.data.description}
+  jsonLd={jsonLd}
+  showReadingProgress={true}
+>
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
+    <nav aria-label="Breadcrumb" class="font-mono text-xs text-ink-secondary flex items-center gap-2">
+      <a href={STATIC_ROUTES.home[locale]} class="hover:text-telemetry">Home</a>
+      <span>/</span>
+      <a href={STATIC_ROUTES.blog[locale]} class="hover:text-telemetry">Blog</a>
+      <span>/</span>
+      <span class="text-ink-primary truncate">{entry.data.title}</span>
+    </nav>
+
+    <header class="space-y-4 border-b border-border-subtle pb-8">
+      <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+        <span class="text-telemetry uppercase tracking-wider">{entry.data.category}</span>
+        <span class="text-ink-secondary">·</span>
+        <span class="text-kinetic">{entry.data.publishedAt}</span>
+        <span class="text-ink-secondary">·</span>
+        <span class="text-ink-secondary">{entry.data.readingMinutes} {isNl ? 'min leestijd' : 'min read'}</span>
+      </div>
+      <h1 class="font-display text-3xl sm:text-4xl font-bold leading-[1.15] text-ink-primary">
+        {entry.data.title}
+      </h1>
+      <p class="text-lg text-ink-secondary">{entry.data.description}</p>
+    </header>
+
+    <div class="editorial-prose">
+      <Content />
+    </div>
+
+    <div class="border-t border-border-subtle pt-6 flex items-center justify-between gap-4">
+      <a href={STATIC_ROUTES.blog[locale]} class="font-mono text-sm text-telemetry hover:underline">
+        ← {isNl ? 'Alle artikelen' : 'All articles'}
+      </a>
+      <a href={STATIC_ROUTES.contact[locale]} class="font-mono text-xs text-kinetic hover:underline">
+        {isNl ? 'Reageren of doorpraten →' : 'Discuss this note →'}
+      </a>
+    </div>
+  </article>
+</EditorialLayout>

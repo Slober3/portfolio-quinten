@@ -1,0 +1,219 @@
+---
+import type { Locale } from '@/i18n/routes';
+import { externalLinks } from '@/data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+
+const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || '';
+const web3FormsKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || '';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+const isConfigured = Boolean(contactEndpoint || web3FormsKey);
+const effectiveAction = contactEndpoint || (web3FormsKey ? 'https://api.web3forms.com/submit' : '');
+---
+
+<div class="editorial-card rounded-2xl p-6 sm:p-8 space-y-6">
+  {!isConfigured && (
+    <div
+      role="status"
+      class="rounded-xl border border-kinetic/40 bg-kinetic/10 p-4 text-sm text-ink-primary space-y-1.5"
+    >
+      <p class="font-mono text-xs uppercase tracking-wider text-kinetic font-semibold">
+        {isNl ? 'Statische Formulierstatus · .env Endpoint Nog Niet Ingesteld' : 'Static Form Status · .env Endpoint Not Configured Yet'}
+      </p>
+      <p class="text-ink-secondary">
+        {isNl
+          ? 'Dit formulier werkt volledig zonder backend via Web3Forms of Formspree zodra PUBLIC_CONTACT_ENDPOINT of PUBLIC_WEB3FORMS_ACCESS_KEY in .env wordt ingevuld. Er wordt om OpSec-redenen bewust geen ruw e-mailadres in de publieke HTML getoond.'
+          : 'This form submits cleanly without a backend via Web3Forms or Formspree once PUBLIC_CONTACT_ENDPOINT or PUBLIC_WEB3FORMS_ACCESS_KEY is configured in .env. No raw email address is ever exposed in public HTML.'}
+      </p>
+    </div>
+  )}
+
+  <form
+    id="static-contact-form"
+    data-endpoint={effectiveAction}
+    data-configured={isConfigured ? 'true' : 'false'}
+    class="space-y-5"
+    novalidate
+  >
+    {web3FormsKey && <input type="hidden" name="access_key" value={web3FormsKey} />}
+
+    <!-- Anti-spam honeypot -->
+    <div class="sr-only" aria-hidden="true">
+      <label for="company_website">Website (leave empty)</label>
+      <input id="company_website" type="text" name="botcheck" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="contact-name" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+          {isNl ? 'Naam' : 'Name'} *
+        </label>
+        <input
+          id="contact-name"
+          name="name"
+          type="text"
+          required
+          autocomplete="name"
+          placeholder={isNl ? 'Jouw naam of organisatie' : 'Your name or organization'}
+          class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
+        />
+      </div>
+
+      <div>
+        <label for="contact-replyto" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+          {isNl ? 'Antwoordadres' : 'Reply email'} *
+        </label>
+        <input
+          id="contact-replyto"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="naam@organisatie.be"
+          class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label for="contact-topic" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+        {isNl ? 'Onderwerp' : 'Topic'}
+      </label>
+      <select
+        id="contact-topic"
+        name="topic"
+        class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary"
+      >
+        <option value="teaching-cloud">{isNl ? 'Onderwijs, Workshops & Cloud / Netwerken' : 'Teaching, Workshops & Cloud / Networking'}</option>
+        <option value="projects">{isNl ? 'Projectdossiers (Weavers Fate / Open Source)' : 'Projects (Weavers Fate / Open Source)'}</option>
+        <option value="moto-media">{isNl ? 'MotoAdventures & Fotografie' : 'MotoAdventures & Photography'}</option>
+        <option value="other">{isNl ? 'Overig bericht' : 'General inquiry'}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="contact-message" class="block font-mono text-xs uppercase tracking-wider text-ink-secondary mb-1.5">
+        {isNl ? 'Bericht' : 'Message'} *
+      </label>
+      <textarea
+        id="contact-message"
+        name="message"
+        rows="5"
+        required
+        placeholder={isNl ? 'Waarmee kan ik helpen?' : 'How can I help?'}
+        class="w-full rounded-xl border border-border-subtle bg-surface-2 px-4 py-3 text-sm text-ink-primary placeholder:text-ink-secondary/60"
+      ></textarea>
+    </div>
+
+    {turnstileSiteKey && (
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="auto"></div>
+    )}
+
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center rounded-xl bg-kinetic px-6 py-3 text-sm font-semibold text-canvas hover:bg-kinetic-hover transition-colors cursor-pointer min-h-[44px]"
+      >
+        {isNl ? 'Bericht versturen' : 'Send message'}
+      </button>
+
+      <div class="flex flex-wrap gap-3 font-mono text-xs text-ink-secondary">
+        <a href={externalLinks.github} target="_blank" rel="noopener noreferrer" class="hover:text-telemetry">
+          GitHub (@Slober3)
+        </a>
+        <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="hover:text-kinetic">
+          YouTube (@QuintenMoto)
+        </a>
+      </div>
+    </div>
+
+    <p id="contact-feedback" class="hidden rounded-xl border p-3.5 text-sm" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+{turnstileSiteKey && (
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+)}
+
+<script is:inline define:vars={{ isNl }}>
+  (() => {
+    const form = document.getElementById('static-contact-form');
+    const feedback = document.getElementById('contact-feedback');
+    if (!form || !feedback) return;
+
+    function showFeedback(text, ok) {
+      feedback.textContent = text;
+      feedback.classList.remove('hidden', 'border-status/40', 'bg-status/10', 'border-kinetic/40', 'bg-kinetic/10');
+      if (ok) {
+        feedback.classList.add('border-status/40', 'bg-status/10', 'text-ink-primary');
+      } else {
+        feedback.classList.add('border-kinetic/40', 'bg-kinetic/10', 'text-ink-primary');
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const configured = form.getAttribute('data-configured') === 'true';
+      const endpoint = form.getAttribute('data-endpoint') || '';
+
+      const formData = new FormData(form);
+      if (formData.get('botcheck')) {
+        return;
+      }
+
+      const name = String(formData.get('name') || '').trim();
+      const email = String(formData.get('email') || '').trim();
+      const message = String(formData.get('message') || '').trim();
+
+      if (!name || !email.includes('@') || message.length < 5) {
+        showFeedback(
+          isNl
+            ? 'Vul minstens je naam, een geldig antwoordadres en een kort bericht in.'
+            : 'Please enter your name, a valid email address, and a short message.',
+          false
+        );
+        return;
+      }
+
+      if (!configured || !endpoint) {
+        showFeedback(
+          isNl
+            ? 'Het formulier wacht op een endpoint-sleutel in .env (Web3Forms / Formspree). Zie CONTENT-TODO.md om dit in één minuut te activeren.'
+            : 'This static form is awaiting an endpoint key in .env (Web3Forms / Formspree). See CONTENT-TODO.md to enable submissions.',
+          false
+        );
+        return;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: formData,
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.reset();
+          showFeedback(
+            isNl ? 'Bedankt! Je bericht is succesvol verzonden.' : 'Thank you! Your message has been sent.',
+            true
+          );
+        } else {
+          showFeedback(
+            isNl ? 'Verzenden mislukt bij het externe endpoint. Probeer later opnieuw.' : 'Submission failed at the form endpoint. Please try again later.',
+            false
+          );
+        }
+      } catch {
+        showFeedback(
+          isNl ? 'Netwerkfout tijdens het verzenden.' : 'Network error while submitting the form.',
+          false
+        );
+      }
+    });
+  })();
+</script>

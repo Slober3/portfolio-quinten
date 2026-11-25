@@ -1,0 +1,128 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import EditorialVisuals from '@/components/EditorialVisuals.astro';
+import YoutubeFacade from '@/components/YoutubeFacade.astro';
+import MotoRouteMap from '@/components/MotoRouteMap.astro';
+import type { Locale } from '@/i18n/routes';
+import { motoProfile, featuredVideos, spaTestRides } from '@/data/moto';
+import { externalLinks } from '@/data/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl ? 'MotoAdventures (@QuintenMoto) — Quinten Desmyter' : 'MotoAdventures (@QuintenMoto) — Quinten Desmyter'}
+  description={isNl
+    ? 'Honda CB750 Hornet (~35.000 km), bochtige binnendoorwegen via Kurviger/Calimoto, Spa-Francorchamps Bikers’Festival 2025, DJI-rig en ±5 km OpSec GPX-kaart.'
+    : 'Honda CB750 Hornet (~35,000 km), twisty backroads via Kurviger/Calimoto, Spa-Francorchamps Bikers’Festival 2025, DJI rig, and ±5 km OpSec GPX map.'}
+>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+    <header class="space-y-5 border-b border-border-subtle pb-10">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-kinetic">
+          MOTOADVENTURES · {motoProfile.handle}
+        </p>
+        <a href={externalLinks.youtubeMoto} target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-telemetry hover:underline">
+          YouTube {motoProfile.handle} ↗
+        </a>
+      </div>
+
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary max-w-4xl">
+        {isNl
+          ? 'Honda CB750 Hornet (~35.000 km): bochtenwerk buiten de snelweg.'
+          : 'Honda CB750 Hornet (~35,000 km): chasing twisties off the highway.'}
+      </h1>
+      <p class="text-lg text-ink-secondary max-w-3xl leading-relaxed">
+        {isNl
+          ? 'Elke rit draait om bochtige binnendoorwegen uitgestippeld met Kurviger, Calimoto en Waze — van de Belgische Ardennen tot de Duitse Eifel (zoals Trier – Nürburg) — en zes testritten op één dag tijdens het Spa-Francorchamps Bikers’Festival.'
+          : 'Every ride prioritizes winding backroads curated via Kurviger, Calimoto, and Waze — from the Belgian Ardennes to the German Eifel (including Trier – Nürburg) — plus six back-to-back test rides at Spa-Francorchamps Bikers’Festival.'}
+      </p>
+
+      <div class="flex flex-wrap gap-2 pt-1">
+        {motoProfile.navigationApps.map((app) => (
+          <span class="rounded-full border border-border-subtle bg-surface-1 px-3.5 py-1 font-mono text-xs text-ink-primary">
+            {app}
+          </span>
+        ))}
+        {motoProfile.regions[locale].map((reg) => (
+          <span class="rounded-full border border-kinetic/30 bg-kinetic/10 px-3.5 py-1 font-mono text-xs text-kinetic">
+            {reg}
+          </span>
+        ))}
+      </div>
+    </header>
+
+    <div class="aspect-[21/8] overflow-hidden rounded-2xl border border-border-subtle">
+      <EditorialVisuals kind="hornet" />
+    </div>
+
+    <!-- Video Facades (youtube-nocookie, zero preload) -->
+    <section class="space-y-6">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Videoreportages (@QuintenMoto)' : 'Ride Videos (@QuintenMoto)'}
+        </h2>
+        <span class="font-mono text-xs text-status">
+          {isNl ? 'Privacy-first facade · Nul YouTube-cookies vóór Play' : 'Privacy-first facade · Zero YouTube requests before Play'}
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredVideos.map((v) => (
+          <YoutubeFacade
+            videoId={v.youtubeId}
+            title={v.title[locale]}
+            playLabel={isNl ? `Speel video: ${v.title.nl}` : `Play video: ${v.title.en}`}
+            isPlaceholder={v.isPlaceholder}
+            meta={v.meta}
+            notes={v.notes[locale]}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- Spa-Francorchamps 2025 Test Rides -->
+    <section class="space-y-6">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-kinetic">16 AUGUSTUS 2025 · CIRCUIT-REGIO SPA</p>
+        <h2 class="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+          {isNl ? 'Spa-Francorchamps Bikers’Festival: 6 Testritten' : 'Spa-Francorchamps Bikers’Festival: 6 Test Rides'}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {spaTestRides.map((ride) => (
+          <article class="editorial-card rounded-2xl p-5 space-y-2">
+            <p class="font-mono text-[11px] uppercase tracking-wider text-telemetry">{ride.category}</p>
+            <h3 class="font-display text-lg font-bold text-ink-primary">{ride.bike}</h3>
+            <p class="text-sm text-ink-secondary leading-relaxed">{ride.impression[locale]}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- DJI Camera & Audio Rig -->
+    <section class="space-y-6">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+        {isNl ? 'Moto Camera- & Audiorig' : 'Moto Camera & Audio Rig'}
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {motoProfile.cameraRig.map((gear) => (
+          <div class="editorial-card rounded-2xl p-5 space-y-1.5">
+            <h3 class="font-display text-base font-bold text-ink-primary">{gear.name}</h3>
+            <p class="text-sm text-ink-secondary">{gear.role[locale]}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Interactive Lazy-Loaded MapLibre GPX Viewer -->
+    <MotoRouteMap locale={locale} />
+  </div>
+</EditorialLayout>

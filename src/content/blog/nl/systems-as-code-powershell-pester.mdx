@@ -1,0 +1,36 @@
+---
+locale: nl
+slug: systems-as-code-powershell-pester
+translationSlug: systems-as-code-powershell-pester
+title: "Systems as Code op Windows: Serverconfiguraties Verifiëren met Pester"
+description: "Waarom handmatig doorklikken in Server Manager niet schaalt en hoe je infrastructuur deterministisch test met PowerShell & Pester."
+publishedAt: "2026-09-28"
+category: "Infrastructuur & Automatisering"
+tags: ["PowerShell", "Pester", "Windows SysAdmin", "Systems as Code"]
+readingMinutes: 5
+---
+
+## Het gevaar van 'klikkende beheerders'
+
+Zodra je meer dan één Windows-server of Active Directory-domein beheert, leidt handmatig configureren via GUI-wizards tot stille *configuration drift*. Een vergeten DNS-record of afwijkend GPO-recht merk je pas tijdens een incident. Door **Systems as Code** te combineren met **Pester** krijgen infrastructuurwijzigingen dezelfde automatische controle als softwarecode.
+
+## Minimale Pester-validatie voor AD & DNS
+
+Hieronder een compact voorbeeld uit mijn *Pester-Test-Examples* repository (`Slober3`) waarmee studenten meteen controleren of kritieke diensten actief en resolvable zijn:
+
+```powershell
+Describe 'Core Infrastructure Baseline' {
+  It 'Active Directory Domain Services service is running' {
+    $svc = Get-Service -Name 'NTDS' -ErrorAction SilentlyContinue
+    $svc | Should -Not -BeNullOrEmpty
+    $svc.Status | Should -Be 'Running'
+  }
+
+  It 'Internal DNS resolves expected gateway record' {
+    $res = Resolve-DnsName -Name 'gw.lab.local' -Type A -ErrorAction SilentlyContinue
+    $res.IPAddress | Should -Contain '10.10.1.1'
+  }
+}
+```
+
+Door na elke lab-deployment automatisch `Invoke-Pester` te draaien, verschuift beheer van gokken naar aantoonbare precisie.

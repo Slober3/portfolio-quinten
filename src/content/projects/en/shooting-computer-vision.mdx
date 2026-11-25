@@ -1,0 +1,28 @@
+---
+locale: en
+slug: shooting-computer-vision
+translationSlug: schietsport-computer-vision
+title: "Sport Shooting, Training Telemetry & Computer Vision R&D"
+subtitle: "Licensed VSK sport shooter · Personal training logs & ISSF OpenCV exploration"
+category: "Bridge Project · Safety, Data & Computer Vision"
+status: "R&D & Active Documentation"
+order: 2
+summary: "How personal training stats (tracked privately via RangeBook and Shooting Companion for personal use) and the VSK Belgian legislation guide 'From Zero to Item' inspire exploration into OpenCV target scoring."
+stack: ["VSK / LEDO Lier", "From Zero to Item", "Personal Stats Tracking", "OpenCV R&D", "ISSF 25m/50m"]
+visualKind: cvTarget
+featuredOnHome: true
+---
+
+## From Personal Range Logs to Computer Vision Research
+
+As a licensed sport shooter affiliated with **VSK (Flemish Sport Shooting Federation)** at **LEDO Lier**, strict firearm safety and adherence to Belgian regulations always come first. To track my own progress across training sessions, I use existing tools such as **RangeBook** and **Shooting Companion** purely for personal use to record my own range sessions and consistency over time.
+
+Reviewing paper ISSF 25m/50m targets after a session naturally sparked a technical R&D question: how reliably can standard Computer Vision turn a quick smartphone photo of a paper target into objective group-dispersion metrics (`Δr`)?
+
+## Target-Scoring Pipeline Architecture (R&D Scope)
+
+1. **Perspective Rectification:** A hand-held photo is rarely perpendicular to the target frame. Corner detection and homography warp the paper card back to normalized 2D coordinates.
+2. **Concentric Ring Alignment & Shot Detection:** Concentric scoring rings are mapped against adaptive-thresholded hole contours, separating clean holes from overlapping edge hits.
+3. **Trend & Biomechanics Insight:** Plotting center-of-group drift across sessions helps link breathing timing and trigger consistency directly to visible score stability.
+
+> *Strict OpSec Notice:* No serial numbers, storage details, license identifiers, or residential details are ever published here. Content focuses strictly on safety education and Computer Vision principles.

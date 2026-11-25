@@ -9,6 +9,7 @@ dist/
 .astro/
 
 # Static release archives
+release/
 *.zip
 
 # Environment variables

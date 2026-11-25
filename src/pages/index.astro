@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="nl-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content="0;url=/nl/" />
+    <title>Quinten Desmyter — Kies taal / Choose language</title>
+    <script is:inline>
+      (() => {
+        const lang = (navigator.language || '').toLowerCase();
+        window.location.replace(lang.startsWith('en') ? '/en/' : '/nl/');
+      })();
+    </script>
+  </head>
+  <body style="background:#0B0E14;color:#EDF2F7;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100dvh;">
+    <p>
+      <a href="/nl/" style="color:#F59E0B;">Nederlands (/nl/)</a> · <a href="/en/" style="color:#38BDF8;">English (/en/)</a>
+    </p>
+  </body>
+</html>

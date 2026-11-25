@@ -1,0 +1,65 @@
+name: Build & Package Static Portfolio Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build, run OpSec audit, and package portfolio-deploy.zip
+        env:
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL || 'https://quintendesmyter.be' }}
+          PUBLIC_CONTACT_ENDPOINT: ${{ vars.PUBLIC_CONTACT_ENDPOINT }}
+          PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+          PUBLIC_SHOWREEL_URL: ${{ vars.PUBLIC_SHOWREEL_URL }}
+        run: npm run build:zip
+
+      - name: Upload deployable ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-deploy-zip
+          path: release/portfolio-deploy.zip
+          retention-days: 30
+
+  # Optionele automatische SFTP/FTP-deploy (uitgeschakeld als voorbeeld).
+  # Activeer door 'if: false' te verwijderen en FTP_SERVER / FTP_USERNAME / FTP_PASSWORD in GitHub Secrets te zetten.
+  # deploy-ftp:
+  #   needs: build-and-audit
+  #   if: false
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download ZIP artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: portfolio-deploy-zip
+  #         path: ./release
+  #     - name: Unzip into upload staging dir
+  #       run: mkdir -p ./upload && unzip -q ./release/portfolio-deploy.zip -d ./upload
+  #     - name: Deploy via FTPS/SFTP
+  #       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  #       with:
+  #         server: ${{ secrets.FTP_SERVER }}
+  #         username: ${{ secrets.FTP_USERNAME }}
+  #         password: ${{ secrets.FTP_PASSWORD }}
+  #         local-dir: ./upload/
+  #         server-dir: /public_html/

@@ -1,0 +1,274 @@
+---
+import type { Locale } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  gpxSlug?: string;
+}
+
+const { locale, gpxSlug = 'eifel-ardennen-twisties' } = Astro.props;
+const isNl = locale === 'nl';
+---
+
+<section
+  class="editorial-card rounded-2xl overflow-hidden"
+  data-moto-map-root
+  data-gpx-url={`/gpx/${gpxSlug}.gpx`}
+  data-meta-url={`/gpx/${gpxSlug}.meta.json`}
+  aria-labelledby="moto-map-heading"
+>
+  <div class="border-b border-border-subtle px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <p class="font-mono text-[11px] uppercase tracking-wider text-status">
+        {isNl ? 'LAZY-LOADED MAPLIBRE GL JS · GPX ±5 KM OPSEC TRIM' : 'LAZY-LOADED MAPLIBRE GL JS · GPX ±5 KM OPSEC TRIM'}
+      </p>
+      <h3 id="moto-map-heading" class="mt-0.5 font-display text-lg font-bold text-ink-primary">
+        {isNl ? 'Eifel & Rursee Bochtenroute (Demo-track)' : 'Eifel & Rursee Backroad Loop (Demo Track)'}
+      </h3>
+    </div>
+
+    <!-- WCAG 2.2 SC 2.5.7 accessible non-drag map controls -->
+    <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label={isNl ? 'Kaartbediening' : 'Map controls'}>
+      <button type="button" data-map-action="zoom-in" aria-label="Zoom in" class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]">+</button>
+      <button type="button" data-map-action="zoom-out" aria-label="Zoom out" class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-ink-primary hover:border-telemetry cursor-pointer min-h-[44px] min-w-[44px]">−</button>
+      <button type="button" data-map-action="pan-left" aria-label={isNl ? 'Schuif west' : 'Pan west'} class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs text-ink-secondary hover:text-ink-primary cursor-pointer min-h-[44px] min-w-[44px]">←</button>
+      <button type="button" data-map-action="pan-up" aria-label={isNl ? 'Schuif noord' : 'Pan north'} class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs text-ink-secondary hover:text-ink-primary cursor-pointer min-h-[44px] min-w-[44px]">↑</button>
+      <button type="button" data-map-action="pan-down" aria-label={isNl ? 'Schuif zuid' : 'Pan south'} class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs text-ink-secondary hover:text-ink-primary cursor-pointer min-h-[44px] min-w-[44px]">↓</button>
+      <button type="button" data-map-action="pan-right" aria-label={isNl ? 'Schuif oost' : 'Pan east'} class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs text-ink-secondary hover:text-ink-primary cursor-pointer min-h-[44px] min-w-[44px]">→</button>
+      <button type="button" data-map-action="fit" class="map-ctrl-btn rounded-lg border border-border-subtle bg-surface-2 px-3 py-2 font-mono text-xs font-semibold text-kinetic hover:border-kinetic cursor-pointer min-h-[44px]">
+        {isNl ? 'Centreer' : 'Recenter'}
+      </button>
+    </div>
+  </div>
+
+  <div class="relative h-[340px] sm:h-[400px] bg-surface-2">
+    <div data-map-canvas class="w-full h-full"></div>
+    <div data-map-status class="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-border-subtle bg-canvas/90 px-3 py-1.5 font-mono text-[11px] text-ink-secondary backdrop-blur">
+      {isNl ? 'Track geladen uit /gpx/ (start & finish ±5 km afgeknipt)' : 'Track loaded from /gpx/ (start & finish ±5 km trimmed)'}
+    </div>
+  </div>
+
+  <!-- Telemetry metrics + elevation sparkline -->
+  <div class="border-t border-border-subtle bg-surface-1 p-5 grid grid-cols-1 md:grid-cols-[1fr_260px] gap-5 items-center">
+    <dl class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">
+      <div>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Gepubliceerde afstand' : 'Sanitized distance'}</dt>
+        <dd data-meta-km class="mt-0.5 text-sm font-semibold text-kinetic">56.0 km</dd>
+      </div>
+      <div>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Privacy-trim' : 'OpSec Trim'}</dt>
+        <dd class="mt-0.5 text-sm font-semibold text-status">± 5.0 km</dd>
+      </div>
+      <div>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Hoogtemeters' : 'Elevation gain'}</dt>
+        <dd data-meta-ele class="mt-0.5 text-sm font-semibold text-ink-primary">+323 m</dd>
+      </div>
+      <div>
+        <dt class="text-ink-secondary text-[10px] uppercase">{isNl ? 'Bronbestand' : 'GPX File'}</dt>
+        <dd class="mt-0.5 text-sm font-semibold text-telemetry">
+          <a href={`/gpx/${gpxSlug}.gpx`} download class="underline underline-offset-2 hover:text-kinetic">
+            {isNl ? 'Download GPX' : 'Download GPX'}
+          </a>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="rounded-xl border border-border-subtle bg-surface-2/60 p-2.5">
+      <p class="font-mono text-[10px] uppercase text-ink-secondary mb-1">
+        {isNl ? 'Hoogteprofiel (m)' : 'Elevation profile (m)'}
+      </p>
+      <svg data-ele-spark viewBox="0 0 240 44" class="w-full h-9 block" aria-hidden="true">
+        <path data-ele-path d="M 4 36 L 236 16" fill="none" stroke="var(--accent-kinetic)" stroke-width="2" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<script>
+  async function initMotoMap(root: HTMLElement) {
+    if (root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    const gpxUrl = root.dataset.gpxUrl!;
+    const metaUrl = root.dataset.metaUrl!;
+    const canvasEl = root.querySelector('[data-map-canvas]') as HTMLElement | null;
+    const statusEl = root.querySelector('[data-map-status]') as HTMLElement | null;
+    const kmEl = root.querySelector('[data-meta-km]');
+    const eleEl = root.querySelector('[data-meta-ele]');
+    const sparkPath = root.querySelector('[data-ele-path]');
+    if (!canvasEl) return;
+
+    try {
+      const [gpxText, meta, maplibreMod] = await Promise.all([
+        fetch(gpxUrl).then((r) => r.text()),
+        fetch(metaUrl).then((r) => r.json()),
+        import('maplibre-gl'),
+      ]);
+      await import('maplibre-gl/dist/maplibre-gl.css');
+
+      if (kmEl && meta.sanitizedKm) kmEl.textContent = `${meta.sanitizedKm} km`;
+      if (eleEl && meta.elevationGainM) eleEl.textContent = `+${meta.elevationGainM} m`;
+
+      if (sparkPath && Array.isArray(meta.elevationSample) && meta.elevationSample.length > 2) {
+        const vals: number[] = meta.elevationSample;
+        const minE = Math.min(...vals);
+        const maxE = Math.max(...vals);
+        const span = Math.max(1, maxE - minE);
+        const d = vals
+          .map((v, idx) => {
+            const x = 4 + (idx / (vals.length - 1)) * 232;
+            const y = 38 - ((v - minE) / span) * 30;
+            return `${idx === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`;
+          })
+          .join(' ');
+        sparkPath.setAttribute('d', d);
+      }
+
+      const coords: Array<[number, number]> = [];
+      const regex = /<trkpt[^>]*lat="([^"]+)"[^>]*lon="([^"]+)"/gi;
+      let match;
+      while ((match = regex.exec(gpxText)) !== null) {
+        const lat = Number.parseFloat(match[1]);
+        const lon = Number.parseFloat(match[2]);
+        if (Number.isFinite(lat) && Number.isFinite(lon)) {
+          coords.push([lon, lat]);
+        }
+      }
+
+      if (coords.length < 2) throw new Error('GPX track empty');
+
+      // Generate clean coordinate graticule locally so MapLibre runs with 0 external requests or console errors
+      const gridFeatures = [];
+      const [sw, ne] = meta.bbox as [[number, number], [number, number]];
+      for (let lon = Math.floor(sw[0] * 20) / 20 - 0.15; lon <= ne[0] + 0.15; lon += 0.05) {
+        gridFeatures.push({
+          type: 'Feature' as const,
+          properties: {},
+          geometry: { type: 'LineString' as const, coordinates: [[lon, sw[1] - 0.15], [lon, ne[1] + 0.15]] },
+        });
+      }
+      for (let lat = Math.floor(sw[1] * 20) / 20 - 0.15; lat <= ne[1] + 0.15; lat += 0.05) {
+        gridFeatures.push({
+          type: 'Feature' as const,
+          properties: {},
+          geometry: { type: 'LineString' as const, coordinates: [[sw[0] - 0.15, lat], [ne[0] + 0.15, lat]] },
+        });
+      }
+
+      const maplibregl = maplibreMod.default;
+      const map = new maplibregl.Map({
+        container: canvasEl,
+        center: meta.center || coords[Math.floor(coords.length / 2)],
+        zoom: 10.5,
+        attributionControl: false,
+        style: {
+          version: 8,
+          sources: {
+            graticule: {
+              type: 'geojson',
+              data: { type: 'FeatureCollection', features: gridFeatures },
+            },
+            route: {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'LineString', coordinates: coords },
+              },
+            },
+            endpoints: {
+              type: 'geojson',
+              data: {
+                type: 'FeatureCollection',
+                features: [
+                  { type: 'Feature', properties: { role: 'Trimmed Start' }, geometry: { type: 'Point', coordinates: coords[0] } },
+                  { type: 'Feature', properties: { role: 'Trimmed End' }, geometry: { type: 'Point', coordinates: coords[coords.length - 1] } },
+                ],
+              },
+            },
+          },
+          layers: [
+            {
+              id: 'bg',
+              type: 'background',
+              paint: { 'background-color': '#101622' },
+            },
+            {
+              id: 'grid-lines',
+              type: 'line',
+              source: 'graticule',
+              paint: { 'line-color': '#232F44', 'line-width': 1 },
+            },
+            {
+              id: 'route-glow',
+              type: 'line',
+              source: 'route',
+              layout: { 'line-join': 'round', 'line-cap': 'round' },
+              paint: { 'line-color': '#38BDF8', 'line-width': 9, 'line-opacity': 0.22 },
+            },
+            {
+              id: 'route-core',
+              type: 'line',
+              source: 'route',
+              layout: { 'line-join': 'round', 'line-cap': 'round' },
+              paint: { 'line-color': '#F59E0B', 'line-width': 3.5 },
+            },
+            {
+              id: 'trimmed-markers',
+              type: 'circle',
+              source: 'endpoints',
+              paint: {
+                'circle-radius': 6,
+                'circle-color': '#34D399',
+                'circle-stroke-color': '#0B0E14',
+                'circle-stroke-width': 2,
+              },
+            },
+          ],
+        },
+      });
+
+      const fitRoute = () => {
+        if (meta.bbox) {
+          map.fitBounds(meta.bbox, { padding: 48, duration: 300 });
+        }
+      };
+
+      map.on('load', fitRoute);
+
+      root.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const act = btn.dataset.mapAction;
+          if (act === 'zoom-in') map.zoomIn({ duration: 200 });
+          else if (act === 'zoom-out') map.zoomOut({ duration: 200 });
+          else if (act === 'pan-left') map.panBy([-120, 0], { duration: 200 });
+          else if (act === 'pan-right') map.panBy([120, 0], { duration: 200 });
+          else if (act === 'pan-up') map.panBy([0, -100], { duration: 200 });
+          else if (act === 'pan-down') map.panBy([0, 100], { duration: 200 });
+          else if (act === 'fit') fitRoute();
+        });
+      });
+    } catch {
+      if (statusEl) {
+        statusEl.textContent = 'MapLibre vector canvas unavailable — GPX file ready for direct download below.';
+      }
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-moto-map-root]').forEach((el) => {
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            initMotoMap(el);
+          }
+        },
+        { rootMargin: '160px' }
+      );
+      io.observe(el);
+    } else {
+      initMotoMap(el);
+    }
+  });
+</script>

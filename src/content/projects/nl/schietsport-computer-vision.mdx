@@ -1,0 +1,28 @@
+---
+locale: nl
+slug: schietsport-computer-vision
+translationSlug: shooting-computer-vision
+title: "Schietsport, Trainingsdata & Computer Vision R&D"
+subtitle: "Gelicentieerd VSK-sportschutter · Eigen trainingslogboeken & ISSF OpenCV-onderzoek"
+category: "Brugproject · Veiligheid, Data & Computer Vision"
+status: "R&D & Actieve Documentatie"
+order: 2
+summary: "Hoe persoonlijke schietstatistieken (via RangeBook en Shooting Companion voor eigen gebruik) en de VSK-wetgevingsgids 'From Zero to Item' de springplank vormen voor onderzoek naar geautomatiseerde OpenCV-doelkaartscoring."
+stack: ["VSK / LEDO Lier", "From Zero to Item", "Eigen Trainingsstats", "OpenCV R&D", "ISSF 25m/50m"]
+visualKind: cvTarget
+featuredOnHome: true
+---
+
+## Van persoonlijke trainingsdata naar technische verkenning
+
+Als gelicentieerd sportschutter binnen de **Vlaamse Schietsportkoepel (VSK)** bij **LEDO Lier** staat discipline, veilig omgaan met materiaal en stipte naleving van de Belgische wapenwetgeving altijd voorop. Om mijn eigen voortgang op de baan overzichtelijk bij te houden, gebruik ik tools zoals **RangeBook** en **Shooting Companion** puur voor eigen gebruik: om persoonlijke schietbeurten, aantallen en groepsresultaten gestructureerd te loggen.
+
+Precies dat eigen trainingslogboek vormt een boeiende brug naar mijn technische achtergrond. Wie na elke sessie papieren ISSF-kaarten (25m / 50m) analyseert, merkt meteen hoe waardevol snelle, objectieve beeldverwerking is om de spreiding rond het trefpunt (`Δr`) consistent te meten.
+
+## De Computer Vision-pijplijn (R&D-concept)
+
+1. **Perspectiefcorrectie (Homography):** Een smartphonefoto wordt zelden perfect loodrecht genomen. Via hoekdetectie van het kaartkader wordt de foto eerst vlakgetrokken naar een genormeerd coördinatensysteem.
+2. **Ring- & kaliberdetectie:** De concentrische ISSF-scoringcirkels worden genormaliseerd, waarna contouren en inslagclusters via *adaptive thresholding* worden gelokaliseerd — inclusief nauwkeurige afhandeling van randrakende inslagen.
+3. **Biomechanische correlatie:** Door schotgroepering in tijdreeksen te koppelen aan hartslag, ademhalingspauzes en trekkercontrole wordt een ruwe fotokaart bruikbare feedback over houding en consistentie.
+
+> *OpSec & Privacy:* Op deze website verschijnen nooit serienummers, kluislocaties, persoonlijke vergunningen of exacte thuisgegevens. De focus ligt uitsluitend op veiligheid, wetgevingseducatie en algemene beeldverwerking.

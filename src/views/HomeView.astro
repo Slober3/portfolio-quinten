@@ -1,0 +1,351 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import EditorialVisuals from '@/components/EditorialVisuals.astro';
+import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
+import { books, githubHighlights } from '@/data/profile';
+import { motoProfile } from '@/data/moto';
+import { nowSection } from '@/data/usesAndNow';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+
+const siteBase = String(Astro.site ?? 'https://quintendesmyter.be').replace(/\/$/, '');
+const allProjects = (await getCollection('projects', (e) => e.data.locale === locale && e.data.featuredOnHome))
+  .sort((a, b) => a.data.order - b.data.order);
+const latestPosts = (await getCollection('blog', (e) => e.data.locale === locale))
+  .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt))
+  .slice(0, 2);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Quinten Desmyter',
+  url: `${siteBase}${STATIC_ROUTES.home[locale]}`,
+  jobTitle: isNl ? 'Praktijklector Cloud, Netwerken & Cybersecurity' : 'Senior Lecturer Cloud, Networking & Cybersecurity',
+  worksFor: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Thomas More Hogeschool (IT Factory, Campus Geel)',
+  },
+  homeLocation: {
+    '@type': 'Place',
+    name: isNl ? 'Regio Lier / Kempen, België' : 'Lier / Campine Region, Belgium',
+  },
+  sameAs: ['https://github.com/Slober3', 'https://www.youtube.com/@QuintenMoto'],
+};
+
+const techRows = [
+  {
+    tag: isNl ? 'ONDERWIJS & DIDACTIEK' : 'TEACHING & DIDACTICS',
+    title: 'Thomas More IT Factory (1ITF & 1ACS) · RTC Antwerpen',
+    subtitle: isNl ? 'Campus Geel · Flip the Classroom' : 'Geel Campus · Flipped Classroom',
+    desc: isNl
+      ? 'Praktijklector Cloud & Infrastructure (AWS, Docker, Kubernetes, Linux), Windows SysAdmin (Active Directory, Systems as Code, PowerShell), Cisco CCNA 1 & 2, IoT/Electronics en RTC-workshops voor collega-leerkrachten.'
+      : 'Senior lecturer in Cloud & Infrastructure (AWS, Docker, Kubernetes, Linux), Windows SysAdmin (Active Directory, Systems as Code, PowerShell), Cisco CCNA 1 & 2, IoT/Electronics, and RTC Train-the-Trainer workshops.',
+    badges: ['AWS / Docker / K8s', 'Cisco CCNA 1–2', 'PowerShell + Pester', 'Coach bij SIN'],
+  },
+  {
+    tag: isNl ? 'PUBLICATIES' : 'PUBLICATIONS',
+    title: isNl ? 'Boekenkast: Cybersecurity & Python' : 'Bookshelf: Cybersecurity & Python',
+    subtitle: '2× ISBN Handboeken',
+    desc: isNl
+      ? 'Auteur van Thoughts on cyber security (ISBN 9798651810475) en Informatica: Programmeren met Python (ISBN 9798654331892) — geschreven om studenten en starters een helder fundament te geven.'
+      : 'Author of Thoughts on cyber security (ISBN 9798651810475) and Informatica: Programmeren met Python (ISBN 9798654331892) — built to bridge theory and real practice.',
+    badges: books.map((b) => `ISBN ${b.isbn}`),
+  },
+  {
+    tag: isNl ? 'OPEN SOURCE & HARDWARE' : 'OPEN SOURCE & HARDWARE',
+    title: 'GitHub (Slober3) · Honeypots, IoT & Custom PCB',
+    subtitle: isNl ? 'Deceptie & Elektronica-ICT' : 'Deception & Electronics-ICT',
+    desc: isNl
+      ? 'Bouwer van PotHead (PHP web-honeypot), ESP32-Public-Honeypot, BeeHive IoT, Pester-Test-Examples en de eigen Home+ Domotica Svejr Station printplaat.'
+      : 'Creator of PotHead (PHP web honeypot), ESP32-Public-Honeypot, BeeHive IoT, Pester-Test-Examples, and the custom Home+ Domotica Svejr Station PCB.',
+    badges: githubHighlights.slice(0, 4).map((g) => g.name),
+  },
+];
+---
+
+<EditorialLayout
+  locale={locale}
+  title={isNl
+    ? 'Quinten Desmyter — Systemen, Precisie & Vrijheid'
+    : 'Quinten Desmyter — Systems, Precision & Freedom'}
+  description={isNl
+    ? 'Persoonlijk tweetalig portfolio van Quinten Desmyter: praktijklector Cloud, Netwerken & Cybersecurity (Thomas More), auteur, Honda CB750 Hornet rijder (@QuintenMoto), fotograaf en maker.'
+    : 'Bilingual portfolio of Quinten Desmyter: Senior Lecturer in Cloud, Networking & Cybersecurity (Thomas More), author, Honda CB750 Hornet rider (@QuintenMoto), photographer, and maker.'}
+  jsonLd={jsonLd}
+>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-12">
+    <!-- Unhurried Editorial Hero -->
+    <section class="pb-14 border-b border-border-subtle">
+      <div class="max-w-4xl space-y-6">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">
+          {isNl
+            ? 'SYSTEMEN, PRECISIE & VRIJHEID · REGIO LIER / CAMPUS GEEL'
+            : 'SYSTEMS, PRECISION & FREEDOM · LIER REGION / GEEL CAMPUS'}
+        </p>
+
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-[3.35rem] font-bold leading-[1.08] text-ink-primary">
+          {isNl
+            ? 'Praktijklector Cloud & Security, auteur en reiziger op twee wielen.'
+            : 'Cloud & Security lecturer, published author, and twisty-backroad rider.'}
+        </h1>
+
+        <p class="text-lg sm:text-xl text-ink-secondary max-w-3xl leading-relaxed">
+          {isNl
+            ? 'Van AWS, Cisco CCNA en Flip the Classroom in Geel tot bochtige binnendoorwegen op mijn Honda CB750 Hornet, macrofotografie en strategisch spelontwerp. Overal keert dezelfde nuchtere blik op techniek en vakmanschap terug.'
+            : 'From AWS, Cisco CCNA, and Flipped Classroom teaching in Geel to winding backroads on my Honda CB750 Hornet, macro photography, and game design. One grounded focus on craft connects every layer.'}
+        </p>
+
+        <div class="pt-3 flex flex-wrap items-center gap-4">
+          <a
+            href={STATIC_ROUTES.tech[locale]}
+            class="inline-flex items-center rounded-full bg-ink-primary px-6 py-3 text-sm font-semibold text-canvas hover:opacity-90 transition-opacity min-h-[44px]"
+          >
+            {isNl ? 'Bekijk Tech & Onderwijs' : 'Explore Tech & Teaching'}
+          </a>
+          <a
+            href={STATIC_ROUTES.about[locale]}
+            class="inline-flex items-center rounded-full border border-border-subtle bg-surface-1 px-6 py-3 text-sm font-semibold text-ink-primary hover:border-telemetry transition-colors min-h-[44px]"
+          >
+            {isNl ? 'Verhaal & CV' : 'Story & Resume'}
+          </a>
+          <a
+            href="#ch-03"
+            class="inline-flex items-center text-sm font-semibold text-kinetic hover:text-kinetic-hover px-2 py-2"
+          >
+            {isNl ? '@QuintenMoto & Fotografie ↓' : '@QuintenMoto & Photography ↓'}
+          </a>
+        </div>
+      </div>
+
+      <!-- Calibrated Authority Strip (no oversized SIN spotlight) -->
+      <dl class="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-6 border-t border-border-subtle pt-8">
+        <div>
+          <dt class="font-mono text-[11px] uppercase tracking-wider text-ink-secondary">
+            {isNl ? 'Onderwijs' : 'Education'}
+          </dt>
+          <dd class="mt-1 font-display text-base font-semibold text-ink-primary">Thomas More IT Factory · RTC</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[11px] uppercase tracking-wider text-ink-secondary">
+            {isNl ? 'Publicaties' : 'Publications'}
+          </dt>
+          <dd class="mt-1 font-display text-base font-semibold text-ink-primary">2× ISBN · Cybersecurity & Python</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[11px] uppercase tracking-wider text-ink-secondary">
+            {isNl ? 'Open Source & Hardware' : 'Open Source & Hardware'}
+          </dt>
+          <dd class="mt-1 font-display text-base font-semibold text-ink-primary">GitHub Slober3 · IoT & PCB</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[11px] uppercase tracking-wider text-ink-secondary">
+            {isNl ? 'Op twee wielen' : 'Two Wheels'}
+          </dt>
+          <dd class="mt-1 font-display text-base font-semibold text-ink-primary">{motoProfile.bike}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- Editorial Chapters with Sticky Left Chapter Rail -->
+    <div class="mt-14 grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10 lg:gap-14 items-start">
+      <aside
+        aria-label={isNl ? 'Hoofdstuknavigatie' : 'Chapter navigation'}
+        class="hidden lg:block sticky top-24 space-y-3 border-l border-border-subtle pl-4"
+      >
+        <p class="font-mono text-[11px] uppercase tracking-widest text-ink-secondary mb-4">
+          {isNl ? 'Hoofdstukken' : 'Chapters'}
+        </p>
+        <a href="#ch-01" class="block py-1 text-sm font-medium text-ink-primary hover:text-telemetry">
+          01 · {isNl ? 'Tech & Onderwijs' : 'Tech & Teaching'}
+        </a>
+        <a href="#ch-02" class="block py-1 text-sm text-ink-secondary hover:text-telemetry">
+          02 · {isNl ? 'Brugprojecten' : 'Bridge Projects'}
+        </a>
+        <a href="#ch-03" class="block py-1 text-sm text-ink-secondary hover:text-kinetic">
+          03 · MotoAdventures
+        </a>
+        <a href="#ch-04" class="block py-1 text-sm text-ink-secondary hover:text-status">
+          04 · {isNl ? 'Lens, Blog & /now' : 'Lens, Blog & /now'}
+        </a>
+      </aside>
+
+      <div class="space-y-20">
+        <!-- Chapter 01 -->
+        <section id="ch-01" class="space-y-8 scroll-reveal">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="space-y-2">
+              <p class="font-mono text-xs text-telemetry">01 / {isNl ? 'SYSTEMEN & DIDACTIEK' : 'SYSTEMS & DIDACTICS'}</p>
+              <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+                {isNl ? 'Onderwijs, infrastructuur & publicaties' : 'Education, infrastructure & publications'}
+              </h2>
+            </div>
+            <a href={STATIC_ROUTES.tech[locale]} class="font-mono text-xs text-telemetry hover:underline">
+              {isNl ? 'Volledig Tech-dossier →' : 'Full Tech dossier →'}
+            </a>
+          </div>
+
+          <div class="aspect-[21/8] overflow-hidden rounded-2xl border border-border-subtle">
+            <EditorialVisuals kind="cloud" />
+          </div>
+
+          <div class="divide-y divide-border-subtle border-y border-border-subtle">
+            {techRows.map((row) => (
+              <article class="py-7 grid grid-cols-1 md:grid-cols-[170px_1fr] gap-4 md:gap-8 items-baseline">
+                <div class="font-mono text-xs uppercase tracking-wider text-ink-secondary">{row.tag}</div>
+                <div class="space-y-3">
+                  <div class="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 class="font-display text-xl font-bold text-ink-primary">{row.title}</h3>
+                    <span class="font-mono text-xs text-telemetry">{row.subtitle}</span>
+                  </div>
+                  <p class="text-base text-ink-secondary leading-relaxed">{row.desc}</p>
+                  <div class="flex flex-wrap gap-2 pt-1">
+                    {row.badges.map((b) => (
+                      <span class="rounded-full border border-border-subtle bg-surface-1 px-3 py-1 font-mono text-xs text-ink-primary">
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <!-- Chapter 02: Bridge Projects -->
+        <section id="ch-02" class="space-y-8 scroll-reveal">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="space-y-2">
+              <p class="font-mono text-xs text-status">02 / {isNl ? 'WAAR TECHNIEK & VRIJE TIJD KRUISEN' : 'WHERE SYSTEMS & HOBBIES INTERSECT'}</p>
+              <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+                {isNl ? 'Uitgelichte brugprojecten' : 'Featured bridge projects'}
+              </h2>
+            </div>
+            <a href={STATIC_ROUTES.projects[locale]} class="font-mono text-xs text-status hover:underline">
+              {isNl ? 'Alle projecten →' : 'All projects →'}
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {allProjects.map((entry) => {
+              const baseProj = STATIC_ROUTES.projects[locale];
+              return (
+                <article class="space-y-4">
+                  <a href={`${baseProj}${entry.data.slug}/`} class="block aspect-[21/10] overflow-hidden rounded-2xl border border-border-subtle hover:border-telemetry transition-colors">
+                    <EditorialVisuals kind={entry.data.visualKind} />
+                  </a>
+                  <p class="font-mono text-[11px] uppercase tracking-wider text-kinetic">{entry.data.category}</p>
+                  <h3 class="font-display text-2xl font-bold text-ink-primary">
+                    <a href={`${baseProj}${entry.data.slug}/`} class="hover:text-kinetic transition-colors">
+                      {entry.data.title}
+                    </a>
+                  </h3>
+                  <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">{entry.data.summary}</p>
+                  <p class="font-mono text-xs text-ink-primary border-t border-border-subtle pt-3">
+                    {entry.data.stack.slice(0, 4).join(' · ')}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <!-- Chapter 03: MotoAdventures -->
+        <section id="ch-03" class="space-y-6 scroll-reveal">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="space-y-2">
+              <p class="font-mono text-xs text-kinetic">03 / @QUINTENMOTO · {isNl ? 'VRIJHEID' : 'FREEDOM'}</p>
+              <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+                MotoAdventures · Honda CB750 Hornet
+              </h2>
+            </div>
+            <a href={STATIC_ROUTES.moto[locale]} class="font-mono text-xs text-kinetic hover:underline">
+              {isNl ? 'Open GPX-kaart & Spa 2025 →' : 'Open GPX Map & Spa 2025 →'}
+            </a>
+          </div>
+
+          <div class="aspect-[21/9] w-full overflow-hidden rounded-2xl border border-border-subtle">
+            <EditorialVisuals kind="hornet" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <p class="md:col-span-2 text-base text-ink-secondary leading-relaxed">
+              {isNl
+                ? 'Geen rechttoe-rechtaan snelwegkilometers, wel bochtige binnendoorwegen via Kurviger, Calimoto en Waze door de Ardennen en Duitse Eifel — aangevuld met zes opeenvolgende testritten tijdens het Spa-Francorchamps Bikers’Festival.'
+                : 'Skipping straight highways for twisty backroads crafted with Kurviger, Calimoto, and Waze across the Ardennes and German Eifel — plus six test rides at Spa-Francorchamps Bikers’Festival.'}
+            </p>
+            <div class="rounded-2xl border border-border-subtle bg-surface-1 p-4 space-y-2">
+              <p class="font-mono text-[11px] uppercase text-kinetic">Rig & OpSec</p>
+              <ul class="space-y-1 font-mono text-xs text-ink-primary">
+                <li>• CB750 Hornet (~35.000 km)</li>
+                <li>• DJI Osmo Action + ND</li>
+                <li>• DJI Mic Mini (1 TX + 1 RX)</li>
+                <li>• GPX ±5 km trim</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chapter 04: Photography, Recent Notes & /now Colophon -->
+        <section id="ch-04" class="space-y-10 scroll-reveal">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="space-y-2">
+              <p class="font-mono text-xs text-telemetry">04 / {isNl ? 'DOOR DE LENS, BLOG & /NOW' : 'THROUGH THE LENS, BLOG & /NOW'}</p>
+              <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+                {isNl ? 'Fotografie, notities & buiten het klaslokaal' : 'Photography, notes & off-clock craft'}
+              </h2>
+            </div>
+            <a href={STATIC_ROUTES.photography[locale]} class="font-mono text-xs text-telemetry hover:underline">
+              {isNl ? 'Bekijk Fotogalerij →' : 'Open Photo Gallery →'}
+            </a>
+          </div>
+
+          <div class="aspect-[16/7] w-full overflow-hidden rounded-2xl border border-border-subtle">
+            <EditorialVisuals kind="macro" />
+          </div>
+
+          <!-- Latest 2 Blog Notes -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {latestPosts.map((post) => (
+              <article class="editorial-card rounded-2xl p-6 space-y-2.5">
+                <p class="font-mono text-[11px] text-telemetry uppercase">{post.data.category} · {post.data.readingMinutes} min</p>
+                <h3 class="font-display text-lg font-bold text-ink-primary">
+                  <a href={`${STATIC_ROUTES.blog[locale]}${post.data.slug}/`} class="hover:text-kinetic transition-colors">
+                    {post.data.title}
+                  </a>
+                </h3>
+                <p class="text-sm text-ink-secondary">{post.data.description}</p>
+              </article>
+            ))}
+          </div>
+
+          <!-- /now & /uses Colophon -->
+          <div class="rounded-2xl border border-border-subtle bg-surface-1 p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
+              <h3 class="font-mono text-xs uppercase tracking-wider text-kinetic">
+                {isNl ? '/now & /uses · Actuele focus' : '/now & /uses · Current focus'}
+              </h3>
+              <div class="flex gap-3 font-mono text-xs">
+                <a href={STATIC_ROUTES.uses[locale]} class="text-telemetry hover:underline">/uses →</a>
+                <a href={STATIC_ROUTES.now[locale]} class="text-telemetry hover:underline">/now →</a>
+              </div>
+            </div>
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+              {nowSection.items.map((item) => (
+                <div class="border-b border-border-subtle/70 pb-3">
+                  <dt class="font-mono text-xs text-ink-secondary">{item.label[locale]}</dt>
+                  <dd class="mt-1 text-sm font-medium text-ink-primary">{item.value[locale]}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</EditorialLayout>

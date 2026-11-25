@@ -1,0 +1,34 @@
+---
+locale: en
+slug: systems-as-code-powershell-pester
+translationSlug: systems-as-code-powershell-pester
+title: "Systems as Code on Windows: Verifying Server State with Pester"
+description: "Why clicking through Server Manager fails at scale and how PowerShell + Pester keep infrastructure deterministic."
+publishedAt: "2026-09-28"
+category: "Infrastructure & Automation"
+tags: ["PowerShell", "Pester", "Windows SysAdmin", "Systems as Code"]
+readingMinutes: 5
+---
+
+## Eliminating Silent Configuration Drift
+
+Clicking through GUI wizards works once, fails under pressure, and hides subtle differences between machines. Treating Windows Server setup as **Systems as Code** paired with **Pester** assertions makes infrastructure verifiable from day one.
+
+## Minimal Pester Check for AD & DNS
+
+```powershell
+Describe 'Core Infrastructure Baseline' {
+  It 'Active Directory Domain Services service is running' {
+    $svc = Get-Service -Name 'NTDS' -ErrorAction SilentlyContinue
+    $svc | Should -Not -BeNullOrEmpty
+    $svc.Status | Should -Be 'Running'
+  }
+
+  It 'Internal DNS resolves expected gateway record' {
+    $res = Resolve-DnsName -Name 'gw.lab.local' -Type A -ErrorAction SilentlyContinue
+    $res.IPAddress | Should -Contain '10.10.1.1'
+  }
+}
+```
+
+Running `Invoke-Pester` after every provisioning run turns manual checklists into repeatable verification.

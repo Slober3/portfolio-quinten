@@ -1,0 +1,52 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import type { Locale } from '@/i18n/routes';
+import { usesCategories } from '@/data/usesAndNow';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+---
+
+<EditorialLayout
+  locale={locale}
+  title={`/uses — Quinten Desmyter`}
+  description={isNl
+    ? 'Overzicht van Quinten’s hardware, audio (Blue Yeti & boom arm), Honda CB750 Hornet rig, DJI camera-setup, laser-cutting en Hokema B17 kalimba.'
+    : 'Overview of Quinten’s desk audio (Blue Yeti + boom arm), Honda CB750 Hornet rig, DJI camera gear, laser-cutting, and Hokema B17 kalimba.'}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
+    <header class="space-y-4 border-b border-border-subtle pb-10">
+      <p class="font-mono text-xs uppercase tracking-[0.16em] text-telemetry">/USES · HARDWARE & TOOLKIT</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">
+        {isNl ? 'Wat ik dagelijks gebruik.' : 'What I use every day.'}
+      </h1>
+      <p class="text-lg text-ink-secondary max-w-3xl">
+        {isNl
+          ? 'Betrouwbare apparatuur op het bureau, onderweg op de motor en in het maker-lab — steeds gekozen op duurzaamheid en precisie.'
+          : 'Dependable gear across the desk studio, backroad rides, and the maker workbench — chosen for reliability and craft.'}
+      </p>
+    </header>
+
+    <div class="space-y-12">
+      {usesCategories.map((cat) => (
+        <section class="space-y-5">
+          <h2 class="font-display text-2xl font-bold text-ink-primary border-b border-border-subtle pb-3">
+            {cat.title[locale]}
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {cat.items.map((item) => (
+              <article class="editorial-card rounded-2xl p-5 space-y-1.5">
+                <h3 class="font-display text-lg font-bold text-ink-primary">{item.name}</h3>
+                <p class="text-sm text-ink-secondary leading-relaxed">{item.detail[locale]}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</EditorialLayout>

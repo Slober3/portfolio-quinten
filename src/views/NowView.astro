@@ -1,0 +1,50 @@
+---
+import EditorialLayout from '@/layouts/EditorialLayout.astro';
+import { STATIC_ROUTES, type Locale } from '@/i18n/routes';
+import { nowSection } from '@/data/usesAndNow';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isNl = locale === 'nl';
+---
+
+<EditorialLayout
+  locale={locale}
+  title={`/now — Quinten Desmyter`}
+  description={isNl
+    ? 'Waar Quinten Desmyter nu aan werkt: IT Factory onderwijs, CB750 Hornet ritten, Hokema B17 kalimba, laser-cutting en sci-fi/LitRPG fictie.'
+    : 'What Quinten Desmyter is focused on now: IT Factory teaching, CB750 Hornet rides, Hokema B17 kalimba, laser-cutting, and sci-fi/LitRPG fiction.'}
+>
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
+    <header class="space-y-4 border-b border-border-subtle pb-8">
+      <p class="font-mono text-xs uppercase tracking-[0.16em] text-kinetic">{nowSection.updatedLabel[locale]}</p>
+      <h1 class="font-display text-4xl sm:text-5xl font-bold leading-[1.1] text-ink-primary">/now</h1>
+      <p class="text-lg text-ink-secondary">
+        {isNl
+          ? 'Een bewust actueel overzicht van wat er vandaag speelt in onderwijs, projecten en vrije tijd (zonder real-time reisstatus om OpSec-redenen).'
+          : 'A focused snapshot of current priorities across teaching, side projects, and creative hobbies (omitting live travel dates for OpSec).'}
+      </p>
+    </header>
+
+    <dl class="divide-y divide-border-subtle border-y border-border-subtle">
+      {nowSection.items.map((item) => (
+        <div class="py-6 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-3 md:gap-8">
+          <dt class="font-mono text-xs uppercase tracking-wider text-telemetry font-semibold">
+            {item.label[locale]}
+          </dt>
+          <dd class="text-base text-ink-primary leading-relaxed">{item.value[locale]}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <p class="font-mono text-xs text-ink-secondary">
+      {isNl ? 'Benieuwd naar de vaste uitrusting?' : 'Curious about the daily hardware setup?'}{' '}
+      <a href={STATIC_ROUTES.uses[locale]} class="text-kinetic hover:underline">
+        {isNl ? 'Bekijk /uses →' : 'See /uses →'}
+      </a>
+    </p>
+  </div>
+</EditorialLayout>
